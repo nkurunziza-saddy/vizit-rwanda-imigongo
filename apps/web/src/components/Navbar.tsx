@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Globe, ChevronDown, User } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Menu, X, Globe, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,8 +8,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
+  {name: "Home", href: "/"},
   { name: "Stays", href: "/listings?category=stays" },
   { name: "Transport", href: "/listings?category=transport" },
   { name: "Tours", href: "/listings?category=tours" },
@@ -27,23 +28,19 @@ const currencies = [
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currency, setCurrency] = useState(currencies[0]);
-  const location = useLocation();
-  const isHome = location.pathname === "/";
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isHome ? "bg-transparent" : "bg-card/95 backdrop-blur-md shadow-soft"
-      }`}
+    <nav
+
+ 
+      className={cn("fixed top-0 left-0 right-0 z-50 transition-all duration-300", "bg-transparent")}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
+            <div
+      
               className="flex items-center"
             >
               <span className="text-2xl font-display font-bold text-gradient-safari">
@@ -52,7 +49,7 @@ export const Navbar = () => {
               <span className="text-2xl font-display font-bold text-accent">
                 Africa
               </span>
-            </motion.div>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -61,8 +58,11 @@ export const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.href}
-                className={`font-medium transition-colors hover:text-primary ${
-                  isHome ? "text-card" : "text-foreground"
+                activeProps={{
+                  className: "text-primary",
+                }}
+                className={`font-medium hover:text-primary ${
+                 "text-primary-foreground"
                 }`}
               >
                 {link.name}
@@ -74,15 +74,15 @@ export const Navbar = () => {
           <div className="hidden lg:flex items-center gap-4">
             {/* Currency Selector */}
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
+              <DropdownMenuTrigger render={ <Button
                   variant="ghost"
-                  className={`gap-2 ${isHome ? "text-card hover:text-card/80" : ""}`}
-                >
+                  className={`gap-2`}
+                />}>
+               
                   <Globe className="h-4 w-4" />
                   {currency.code}
                   <ChevronDown className="h-3 w-3" />
-                </Button>
+            
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {currencies.map((curr) => (
@@ -98,10 +98,10 @@ export const Navbar = () => {
             </DropdownMenu>
 
             {/* Auth Buttons */}
-            <Button variant="ghost" className={isHome ? "text-card hover:text-card/80" : ""}>
+            <Button variant="ghost" className={""}>
               Sign In
             </Button>
-            <Button variant="safari" className="rounded-full">
+            <Button variant="default" className="rounded-full">
               Get Started
             </Button>
           </div>
@@ -109,20 +109,17 @@ export const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`lg:hidden p-2 ${isHome ? "text-card" : "text-foreground"}`}
+            className={`lg:hidden p-2`}
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
+ 
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+          <div
+
             className="lg:hidden bg-card border-t border-border"
           >
             <div className="container mx-auto px-4 py-4 space-y-4">
@@ -140,15 +137,15 @@ export const Navbar = () => {
                 <Button variant="outline" className="w-full">
                   Sign In
                 </Button>
-                <Button variant="safari" className="w-full">
+                <Button variant="default" className="w-full">
                   Get Started
                 </Button>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
-    </motion.nav>
+    
+    </nav>
   );
 };
 

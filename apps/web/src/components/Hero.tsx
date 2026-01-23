@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, MapPin, Calendar, Users, ChevronDown } from "lucide-react";
+import { Search, MapPin, Calendar, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
@@ -45,10 +45,8 @@ export const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 pt-20 pb-32">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+        <div
+  
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-primary-foreground mb-6 leading-tight">
@@ -59,13 +57,10 @@ export const Hero = () => {
             Your one-stop destination for authentic Rwandan adventures. 
             Book trusted accommodations, transport, and unforgettable experiences.
           </p>
-        </motion.div>
+        </div>
 
         {/* Search Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+        <div
           className="max-w-5xl mx-auto"
         >
           {/* Category Tabs */}
@@ -129,8 +124,7 @@ export const Hero = () => {
               {/* Check In */}
               <div className="md:col-span-2">
                 <Popover>
-                  <PopoverTrigger asChild>
-                    <button className="w-full text-left px-4 py-3 hover:bg-secondary/50 rounded-xl transition-colors">
+                  <PopoverTrigger render={<button className="w-full text-left px-4 py-3 hover:bg-secondary/50 rounded-xl transition-colors"/>}>
                       <label className="block text-xs font-semibold text-muted-foreground mb-1">
                         Check in
                       </label>
@@ -140,7 +134,7 @@ export const Hero = () => {
                           {checkIn ? format(checkIn, "MMM d") : "Add date"}
                         </span>
                       </div>
-                    </button>
+               
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <CalendarComponent
@@ -159,8 +153,7 @@ export const Hero = () => {
               {/* Check Out */}
               <div className="md:col-span-2">
                 <Popover>
-                  <PopoverTrigger asChild>
-                    <button className="w-full text-left px-4 py-3 hover:bg-secondary/50 rounded-xl transition-colors">
+                  <PopoverTrigger render={<button className="w-full text-left px-4 py-3 hover:bg-secondary/50 rounded-xl transition-colors"/>}>
                       <label className="block text-xs font-semibold text-muted-foreground mb-1">
                         Check out
                       </label>
@@ -170,7 +163,6 @@ export const Hero = () => {
                           {checkOut ? format(checkOut, "MMM d") : "Add date"}
                         </span>
                       </div>
-                    </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <CalendarComponent
@@ -189,8 +181,7 @@ export const Hero = () => {
               {/* Guests */}
               <div className="md:col-span-2">
                 <Popover>
-                  <PopoverTrigger asChild>
-                    <button className="w-full text-left px-4 py-3 hover:bg-secondary/50 rounded-xl transition-colors">
+                  <PopoverTrigger render={<button className="w-full text-left px-4 py-3 hover:bg-secondary/50 rounded-xl transition-colors"/>}>
                       <label className="block text-xs font-semibold text-muted-foreground mb-1">
                         Guests
                       </label>
@@ -198,7 +189,6 @@ export const Hero = () => {
                         <Users className="h-4 w-4 text-muted-foreground" />
                         <span className="text-foreground">{guests} guest{guests > 1 ? 's' : ''}</span>
                       </div>
-                    </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-48" align="start">
                     <div className="flex items-center justify-between">
@@ -225,20 +215,17 @@ export const Hero = () => {
 
               {/* Search Button */}
               <div className="md:col-span-1 flex items-center justify-center px-2">
-                <Button variant="hero" size="xl" className="rounded-full w-full md:w-auto md:aspect-square md:px-0">
+                <Button variant="outline" size="lg" className="rounded-full w-full md:w-auto md:aspect-square md:px-0">
                   <Search className="h-5 w-5" />
                   <span className="md:hidden">Search</span>
                 </Button>
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Trust Badges */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+        <div
           className="flex flex-wrap justify-center gap-8 mt-12"
         >
           <div className="text-center">
@@ -257,7 +244,7 @@ export const Hero = () => {
             <div className="text-3xl font-display font-bold text-primary-foreground">10k+</div>
             <div className="text-sm text-primary-foreground/70">Happy Travelers</div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

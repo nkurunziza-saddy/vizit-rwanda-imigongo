@@ -11,10 +11,14 @@ import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
-import Navigation from '@/components/navigation'
+import Navbar from '@/components/navbar'
 
 interface MyRouterContext {
   queryClient: QueryClient
+}
+
+function NotFoundPage() {
+  return <div>404 Not Found</div>
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
@@ -38,7 +42,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
-
+  notFoundComponent: NotFoundPage,
   shellComponent: RootDocument,
 })
 
@@ -49,7 +53,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <Navigation/>
+        <Navbar/>
      
         {children}
         <TanStackDevtools
