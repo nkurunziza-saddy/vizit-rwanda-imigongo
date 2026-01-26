@@ -1,3 +1,4 @@
+import { ImageGallery } from '@/curated/image-gallery'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/gallery')({
@@ -5,5 +6,5 @@ export const Route = createFileRoute('/gallery')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/gallery"!</div>
+  return <ImageGallery />
 }

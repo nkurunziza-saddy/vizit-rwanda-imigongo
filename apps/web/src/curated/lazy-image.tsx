@@ -10,11 +10,8 @@ type LazyImageProps = {
 	src: string;
 	className?: string;
 	AspectRatioClassName?: string;
-	/** URL of the fallback image. default: undefined */
 	fallback?: string;
-	/** The ratio of the image. */
 	ratio: number;
-	/** Whether the image should only load when it is in view. default: false */
 	inView?: boolean;
 };
 

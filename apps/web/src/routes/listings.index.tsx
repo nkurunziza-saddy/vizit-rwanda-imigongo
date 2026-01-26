@@ -24,6 +24,12 @@ export const Route = createFileRoute('/listings/')({
     sortBy: search.sortBy as string | undefined,
     priceRange: search.priceRange as number[] | undefined,
     amenities: search.amenities as string[] | undefined,
+    
+    // Booking Widget Params
+    from: search.from as string | undefined,
+    checkIn: search.checkIn as string | undefined,
+    checkOut: search.checkOut as string | undefined,
+    guests: search.guests as number | undefined,
   }),
 })
 
