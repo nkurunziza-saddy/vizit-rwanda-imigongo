@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+
 import ListingCard from '@/components/listing-card';
 import { PageWrapper } from '@/components/layouts/page-wrapper';
 import { useListings } from '@/hooks/use-listings';
@@ -35,6 +36,7 @@ const categories = [
 ];
 
 function Listings(){
+  const [currentPage, setCurrentPage] = useState(1);
   const searchParams = useSearch({ from: '/listings/' });
   const categoryParam = searchParams.category;
   
@@ -68,7 +70,7 @@ function Listings(){
 
   // Pagination Logic
   const ITEMS_PER_PAGE = 9;
-  const [currentPage, setCurrentPage] = useState(1);
+  
   const totalPages = Math.ceil(filteredListings.length / ITEMS_PER_PAGE);
   
   const paginatedListings = filteredListings.slice(

@@ -85,8 +85,7 @@ export function LazyImage({
 					onError={handleError}
 					onLoad={handleLoad}
 					ref={imgRef}
-					role="presentation" // Changed from "img" to "presentation" since it's decorative
-					src={imgSrc}
+					role="presentation" 
 				/>
 			)}
 		</AspectRatio>
