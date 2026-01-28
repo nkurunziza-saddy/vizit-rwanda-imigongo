@@ -26,8 +26,8 @@ const features = [
 
 export const TrustSection = () => {
 	return (
-		<SectionContainer 
-			title="Why Vizit Africa" 
+		<SectionContainer
+			title="Why Vizit Africa"
 			description="Experience safety, reliability, and best prices."
 			align="start"
 		>

@@ -29,7 +29,7 @@ export function LazyImage({
 	const isInView = useInView(ref, { once: true });
 
 	const [imgSrc, setImgSrc] = React.useState<string | undefined>(
-		inView ? undefined : src
+		inView ? undefined : src,
 	);
 	const [isLoading, setIsLoading] = React.useState(true);
 
@@ -51,7 +51,6 @@ export function LazyImage({
 		}
 	}, [inView, isInView, src, imgSrc]);
 
-	// Handle cached images instantly
 	React.useEffect(() => {
 		if (imgRef.current?.complete) {
 			handleLoad();
@@ -62,7 +61,7 @@ export function LazyImage({
 		<AspectRatio
 			className={cn(
 				"relative size-full overflow-hidden rounded-lg border bg-accent/30",
-				AspectRatioClassName
+				AspectRatioClassName,
 			)}
 			ratio={ratio}
 			ref={ref}
@@ -70,10 +69,11 @@ export function LazyImage({
 			{imgSrc && (
 				<img
 					alt={alt}
+					src={imgSrc}
 					className={cn(
 						"size-full rounded-md object-cover transition-opacity duration-500",
 						isLoading ? "opacity-0" : "opacity-100",
-						className
+						className,
 					)}
 					decoding="async"
 					fetchPriority={inView ? "high" : "low"}
@@ -81,7 +81,7 @@ export function LazyImage({
 					onError={handleError}
 					onLoad={handleLoad}
 					ref={imgRef}
-					role="presentation" 
+					role="presentation"
 				/>
 			)}
 		</AspectRatio>

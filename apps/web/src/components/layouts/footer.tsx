@@ -4,7 +4,7 @@ import {
 	FacebookIcon,
 	InstagramIcon,
 	TwitterIcon,
-    YoutubeIcon,
+	YoutubeIcon,
 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Logo } from "@/components/logo";
@@ -40,20 +40,22 @@ export function Footer() {
 						<div className="flex flex-col gap-8 pt-12 md:flex-row">
 							<AnimatedContainer className="w-full min-w-2xs max-w-sm space-y-4">
 								<div className="flex items-center gap-2 text-xl font-bold">
-                                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                                        <Logo className="size-4" />
-                                    </div>
-                                    Vizit Africa
-                                </div>
+									<div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+										<Logo className="size-4" />
+									</div>
+									Vizit Africa
+								</div>
 								<p className="mt-8 text-muted-foreground text-sm md:mt-0">
-                                    Your gateway to authentic African adventures. Discover Rwanda's beauty with trusted accommodations, premium transport, and expert local guides.
+									Your gateway to authentic African adventures. Discover
+									Rwanda's beauty with trusted accommodations, premium
+									transport, and expert local guides.
 								</p>
 								<div className="flex gap-2">
 									{socialLinks.map((link, index) => (
 										<a
-                                            key={`social-${link.href}-${index}`}
-                                            href={link.href}
-                                            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground"
+											key={`social-${link.href}-${index}`}
+											href={link.href}
+											className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground"
 										>
 											<link.icon className="size-4" />
 										</a>
@@ -67,7 +69,9 @@ export function Footer() {
 									key={group.label}
 								>
 									<div className="mb-10 md:mb-0">
-										<h3 className="text-sm uppercase font-semibold">{group.label}</h3>
+										<h3 className="text-sm uppercase font-semibold">
+											{group.label}
+										</h3>
 										<ul className="mt-4 space-y-2 text-muted-foreground text-sm md:text-xs lg:text-sm">
 											{group.links.map((link) => (
 												<li key={link.title}>
@@ -87,16 +91,17 @@ export function Footer() {
 						</div>
 						<div className="flex flex-col items-center justify-between gap-2 border-t py-4 text-muted-foreground text-sm md:flex-row">
 							<p>
-								&copy; {new Date().getFullYear()} Vizit Africa, All rights reserved.
+								&copy; {new Date().getFullYear()} Vizit Africa, All rights
+								reserved.
 							</p>
 							<div className="flex gap-4">
-                                <Link className="hover:text-foreground" to="/privacy">
-                                    Privacy Policy
-                                </Link>
-                                <Link className="hover:text-foreground" to="/terms">
-                                    Terms of Service
-                                </Link>
-                            </div>
+								<Link className="hover:text-foreground" to="/privacy">
+									Privacy Policy
+								</Link>
+								<Link className="hover:text-foreground" to="/terms">
+									Terms of Service
+								</Link>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -130,7 +135,7 @@ const footerLinkGroups: FooterLinkGroup[] = [
 			{ title: "Safety Information", href: "/safety" },
 			{ title: "Cancellation Options", href: "/cancellations" },
 			{ title: "Report a Concern", href: "/contact" },
-            { title: "Contact Us", href: "/contact" },
+			{ title: "Contact Us", href: "/contact" },
 		],
 	},
 	{

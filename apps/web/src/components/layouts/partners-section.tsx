@@ -2,48 +2,59 @@ import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { SectionContainer } from "@/components/ui/section";
 
-const logos = [
+const partners = [
 	{
-		name: "Vercel",
-		src: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276558/logos/t2awrrfzdvvt1ykgzouy.svg",
+		name: "Wilderness Safaris",
+		src: "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=300&q=80", // Safari Jeep
 	},
 	{
-		name: "Supabase",
-		src: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276558/logos/pb2jkefwv169wja3xzkq.svg",
+		name: "Singita",
+		src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=300&q=80", // Luxury Resort
 	},
 	{
-		name: "Nvidia",
-		src: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276558/logos/c446umfu4d27ihf4i8q5.svg",
+		name: "African Parks",
+		src: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=300&q=80", // Elephants/Sunset
 	},
 	{
-		name: "OpenAI",
-		src: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276558/logos/i6yv4t8d4z3257o9r5g2.svg",
+		name: "RwandAir",
+		src: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=300&q=80", // Airplane
 	},
 	{
-		name: "Google",
-		src: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276558/logos/h617bd22tq12r4g6g23.svg",
+		name: "Virunga National Park",
+		src: "https://images.unsplash.com/photo-1534234828563-025a1d2f60db?auto=format&fit=crop&w=300&q=80", // Gorilla (Representation)
 	},
 	{
-		name: "Mistral",
-		src: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276558/logos/f7123d14-3615-4630-9755-b5e2u7h6f5g4.svg",
+		name: "Serena Hotels",
+		src: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=300&q=80", // Hotel Building
+	},
+	{
+		name: "&Beyond",
+		src: "https://images.unsplash.com/photo-1519092433925-6563982850ea?auto=format&fit=crop&w=300&q=80", // Nature
 	},
 ];
 
 export const PartnersSection = () => {
 	return (
 		<SectionContainer title="Affiliated Partners">
-			<div className="relative border-y bg-linear-to-r from-secondary via-transparent to-secondary py-6">
-				<InfiniteSlider gap={42} speed={60} speedOnHover={20}>
-					{logos.map((logo) => (
-						<img
-							src={logo.src}
-							className="pointer-events-none h-4 select-none md:h-5 dark:brightness-0 dark:invert"
-							alt={logo.name}
-							loading="lazy"
-							key={`logo-${logo.name}`}
-							width="auto"
-							height="auto"
-						/>
+			<div className="relative border-y bg-linear-to-r from-secondary via-transparent to-secondary py-8">
+				<InfiniteSlider gap={48} speed={40} speedOnHover={20}>
+					{partners.map((partner) => (
+						<div
+							key={`partner-${partner.name}`}
+							className="flex items-center gap-3 group cursor-pointer"
+						>
+							<img
+								src={partner.src}
+								className="h-12 w-20 object-cover rounded-md grayscale group-hover:grayscale-0 transition-all duration-500 opacity-70 group-hover:opacity-100"
+								alt={partner.name}
+								loading="lazy"
+								width={80}
+								height={48}
+							/>
+							<span className="text-sm font-semibold text-muted-foreground group-hover:text-foreground transition-colors uppercase tracking-wider">
+								{partner.name}
+							</span>
+						</div>
 					))}
 				</InfiniteSlider>
 

@@ -5,7 +5,7 @@ import ListingCard, { type ListingCardProps } from "../listing-card";
 import { SectionContainer } from "../ui/section";
 
 // Helper to create mock listing for the card
-import { Listing } from "@/utils/mock-db";
+import type { Listing } from "@/utils/mock-db";
 
 const featuredListings: (ListingCardProps & { listing: Listing })[] = [
 	{
@@ -15,22 +15,23 @@ const featuredListings: (ListingCardProps & { listing: Listing })[] = [
 		price: 350,
 		rating: 4.9,
 		reviewCount: 128,
-		image: "https://images.unsplash.com/photo-1493246507139-91e8bef99c02?auto=format&fit=crop&w=800&q=80", 
+		image:
+			"https://images.unsplash.com/photo-1493246507139-91e8bef99c02?auto=format&fit=crop&w=800&q=80",
 		category: "hotel",
-        listing: {
-            id: 1,
-            vendor_id: 1,
-            location_id: 2, // Musanze/Volcanoes
-            title: "Luxury Safari Lodge",
-            description: "Experience the ultimate safari luxury.",
-            listing_type: "hotel_room",
-            base_price: 350,
-            currency: "USD",
-            capacity: 4,
-            status: "active",
-            created_at: new Date().toISOString(),
-            addons: []
-        }
+		listing: {
+			id: 1,
+			vendor_id: 1,
+			location_id: 2, // Musanze/Volcanoes
+			title: "Luxury Safari Lodge",
+			description: "Experience the ultimate safari luxury.",
+			listing_type: "hotel_room",
+			base_price: 350,
+			currency: "USD",
+			capacity: 4,
+			status: "active",
+			created_at: new Date().toISOString(),
+			addons: [],
+		},
 	},
 	{
 		id: "2",
@@ -39,22 +40,23 @@ const featuredListings: (ListingCardProps & { listing: Listing })[] = [
 		price: 85,
 		rating: 4.7,
 		reviewCount: 64,
-		image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800&q=80",
+		image:
+			"https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800&q=80",
 		category: "bnb",
-        listing: {
-            id: 2,
-            vendor_id: 2,
-            location_id: 2,
-            title: "Cozy Mountain BnB",
-            description: "A cozy retreat in the mountains.",
-            listing_type: "bnb",
-            base_price: 85,
-            currency: "USD",
-            capacity: 2,
-            status: "active",
-            created_at: new Date().toISOString(),
-            addons: []
-        }
+		listing: {
+			id: 2,
+			vendor_id: 2,
+			location_id: 2,
+			title: "Cozy Mountain BnB",
+			description: "A cozy retreat in the mountains.",
+			listing_type: "bnb",
+			base_price: 85,
+			currency: "USD",
+			capacity: 2,
+			status: "active",
+			created_at: new Date().toISOString(),
+			addons: [],
+		},
 	},
 	{
 		id: "3",
@@ -63,22 +65,23 @@ const featuredListings: (ListingCardProps & { listing: Listing })[] = [
 		price: 120,
 		rating: 4.8,
 		reviewCount: 92,
-		image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80",
+		image:
+			"https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80",
 		category: "car",
-        listing: {
-            id: 3,
-            vendor_id: 3,
-            location_id: 1,
-            title: "Toyota Land Cruiser",
-            description: "Robust 4x4 for your adventures.",
-            listing_type: "car",
-            base_price: 120,
-            currency: "USD",
-            capacity: 5,
-            status: "active",
-            created_at: new Date().toISOString(),
-            addons: []
-        }
+		listing: {
+			id: 3,
+			vendor_id: 3,
+			location_id: 1,
+			title: "Toyota Land Cruiser",
+			description: "Robust 4x4 for your adventures.",
+			listing_type: "car",
+			base_price: 120,
+			currency: "USD",
+			capacity: 5,
+			status: "active",
+			created_at: new Date().toISOString(),
+			addons: [],
+		},
 	},
 	{
 		id: "4",
@@ -87,42 +90,29 @@ const featuredListings: (ListingCardProps & { listing: Listing })[] = [
 		price: 1500,
 		rating: 5.0,
 		reviewCount: 256,
-		image: "https://images.unsplash.com/photo-1543326166-51f67f0f6224?auto=format&fit=crop&w=800&q=80",
+		image:
+			"https://images.unsplash.com/photo-1543326166-51f67f0f6224?auto=format&fit=crop&w=800&q=80",
 		category: "tour",
-        listing: {
-            id: 4,
-            vendor_id: 4,
-            location_id: 2,
-            title: "Gorilla Trekking",
-            description: "Once in a lifetime experience.",
-            listing_type: "tour",
-            base_price: 1500,
-            currency: "USD",
-            capacity: 10,
-            status: "active",
-            created_at: new Date().toISOString(),
-            addons: []
-        }
+		listing: {
+			id: 4,
+			vendor_id: 4,
+			location_id: 2,
+			title: "Gorilla Trekking",
+			description: "Once in a lifetime experience.",
+			listing_type: "tour",
+			base_price: 1500,
+			currency: "USD",
+			capacity: 10,
+			status: "active",
+			created_at: new Date().toISOString(),
+			addons: [],
+		},
 	},
 ];
 
 export const FeaturedListings = () => {
 	const action = (
-		<Link
-			to="/listings"
-			search={{
-				category: undefined,
-				search: undefined,
-				sortBy: undefined,
-				priceRange: undefined,
-				amenities: undefined,
-				from: undefined,
-				checkIn: undefined,
-				checkOut: undefined,
-				guests: undefined,
-				page: 1,
-			}}
-		>
+		<Link to="/listings">
 			<Button
 				variant="ghost"
 				size="sm"

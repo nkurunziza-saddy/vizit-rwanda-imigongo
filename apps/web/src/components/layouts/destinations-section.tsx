@@ -94,8 +94,8 @@ export const DestinationsSection = () => {
 						search={destination.search}
 						className="group block focus:outline-none"
 					>
-						<div className="p-3 rounded-lg hover:shadow-md transition-all border border-border bg-card hover:border-primary/50">
-							<h3 className="font-medium text-base mb-0.5 group-hover:underline decoration-1 underline-offset-4">
+						<div className="p-3 rounded-lg transition-all border border-border bg-card">
+							<h3 className="font-medium text-base mb-0.5">
 								{destination.name}
 							</h3>
 							<p className="text-xs text-muted-foreground">

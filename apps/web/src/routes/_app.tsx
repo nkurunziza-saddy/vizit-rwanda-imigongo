@@ -8,10 +8,10 @@ export const Route = createFileRoute("/_app")({
 
 function RouteComponent() {
 	return (
-		<div className="min-h-screen bg-background font-sans antialiased">
+		<div className="">
 			<Header />
 			<Outlet />
-            <CartSheet />
+			<CartSheet />
 		</div>
 	);
 }

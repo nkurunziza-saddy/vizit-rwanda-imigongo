@@ -1,4 +1,9 @@
-import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Link,
+	useNavigate,
+	useSearch,
+} from "@tanstack/react-router";
 import { AtSignIcon, ChevronLeftIcon } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -12,30 +17,29 @@ import { useAuth } from "@/context/auth-context";
 import { z } from "zod";
 
 const searchSchema = z.object({
-  redirect: z.string().optional(),
+	redirect: z.string().optional(),
 });
 
 export const Route = createFileRoute("/login")({
 	component: LoginPage,
-    validateSearch: (search) => searchSchema.parse(search),
+	validateSearch: (search) => searchSchema.parse(search),
 });
 
 function LoginPage() {
 	const { login, isLoading } = useAuth();
 	const navigate = useNavigate();
-    const search = useSearch({ from: "/login" });
+	const search = useSearch({ from: "/login" });
 
 	const handleTestLogin = async (email: string, pass: string) => {
 		try {
 			await login(email, pass);
-            if (search.redirect) {
-                navigate({ to: search.redirect });
-            } else {
-			    navigate({ to: "/dashboard" });
-            }
+			if (search.redirect) {
+				navigate({ to: search.redirect });
+			} else {
+				navigate({ to: "/dashboard" });
+			}
 		} catch (error) {
 			console.error("Login failed", error);
-			// In a real app we'd show a toast here
 		}
 	};
 

@@ -96,33 +96,26 @@ function DashboardLayout() {
 
 	return (
 		<div className="flex flex-col min-h-[calc(100vh-4rem)]">
-			<div className="border-b bg-card">
-				<PageWrapper className="py-0">
-					<div className="flex h-12 items-center space-x-4 overflow-x-auto">
-						{filteredItems.map((item) => (
-							<Link
-								key={item.href}
-								to={item.href}
-								activeProps={{
-									className: "text-primary border-b-2 border-primary",
-								}}
-								className="flex items-center gap-2 whitespace-nowrap border-b-2 border-transparent px-4 py-2 text-sm font-medium transition-colors hover:text-primary"
-							>
-								<item.icon className="h-4 w-4" />
-								{item.label}
-							</Link>
-						))}
-					</div>
-				</PageWrapper>
-			</div>
-
-			<div className="flex-1 bg-muted/20">
-				<PageWrapper className="py-8">
-					<main className="min-w-0">
-						<Outlet />
-					</main>
-				</PageWrapper>
-			</div>
+			<PageWrapper>
+				<div className="flex h-12 border-b items-center space-x-4 overflow-x-auto gap-2">
+					{filteredItems.map((item) => (
+						<Link
+							key={item.href}
+							to={item.href}
+							activeProps={{
+								className: "text-primary border-b-2 border-primary",
+							}}
+							className="flex items-center gap-1.5 whitespace-nowrap border-b-2 border-transparent text-sm font-medium transition-colors hover:text-primary"
+						>
+							<item.icon className="size-3.5" />
+							{item.label}
+						</Link>
+					))}
+				</div>
+				<main className="py-4 mt-4">
+					<Outlet />
+				</main>
+			</PageWrapper>
 		</div>
 	);
 }
