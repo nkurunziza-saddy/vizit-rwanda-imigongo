@@ -11,6 +11,7 @@
 - booking functionality
 - checkout and payment integration
 - admin dashboard interfaces for administrators to approve vendors, negotiate/set prices, and manage content.
+- best seo for flexibility
 - vendor management: Capability to list and manage inventory for Hotels, BNBs, and Car Rentals.
 - bookings management (approve and many more features)
 - user management (approve and many more features)
