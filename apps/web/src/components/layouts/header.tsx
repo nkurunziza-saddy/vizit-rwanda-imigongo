@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useScroll } from "@/hooks/use-scroll";
 import { Logo } from "@/components/logo";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -11,7 +10,6 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/context/auth-context";
 import { useCart } from "@/context/cart-context";
 import { NotificationBell } from "@/components/notifications";
-import { LanguageSwitcher } from "@/components/i18n";
 import { ShoppingCart } from "lucide-react";
 import {
   DropdownMenu,
@@ -52,7 +50,6 @@ export function Header() {
   const { user, logout, isAuthenticated } = useAuth();
   const { cart, setOpenCart } = useCart();
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const [notifications, setNotifications] =
     useState<Notification[]>(mockNotifications);
 
@@ -155,25 +152,25 @@ export function Header() {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       <Link to="/saved" className="w-full cursor-pointer">
-                        {t("nav.savedTrips")}
+                        Saved Trips
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Link to="/profile" className="w-full cursor-pointer">
-                        {t("nav.profile")}
+                        Profile
                       </Link>
                     </DropdownMenuItem>
                     {user.role === "admin" && (
                       <DropdownMenuItem>
                         <Link to="/dashboard" className="w-full cursor-pointer">
-                          {t("nav.dashboard")}
+                          Dashboard
                         </Link>
                       </DropdownMenuItem>
                     )}
                     {user.role === "vendor" && (
                       <DropdownMenuItem>
                         <Link to="/dashboard" className="w-full cursor-pointer">
-                          {t("nav.dashboard")}
+                          Dashboard
                         </Link>
                       </DropdownMenuItem>
                     )}
@@ -182,16 +179,15 @@ export function Header() {
                       onClick={logout}
                       className="cursor-pointer"
                     >
-                      {t("common.logout")}
+                      Logout
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <>
-                <LanguageSwitcher />
                 <Link to="/login" className={buttonVariants()}>
-                  {t("common.login")}
+                  Login
                 </Link>
               </>
             )}
