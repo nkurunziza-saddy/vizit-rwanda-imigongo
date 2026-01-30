@@ -395,35 +395,128 @@ function VendorDashboard() {
   );
 }
 
+import { useEffect, useState } from "react";
+import { api } from "@/api/client";
+import { VendorApprovalCard } from "@/components/vendor/vendor-approval-card";
+
+// ... existing imports ...
+
 function AdminDashboard() {
+  const [pendingVendors, setPendingVendors] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchPendingVendors = async () => {
+    try {
+      setIsLoading(true);
+      const vendors = await api.getPendingVendors();
+      setPendingVendors(vendors);
+    } catch (error) {
+      console.error("Failed to fetch pending vendors:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPendingVendors();
+  }, []);
+
+  const handleApprove = async (vendorId: string, commissionRate: number) => {
+     try {
+        await api.approveVendor(Number(vendorId), true);
+        // Refresh list
+        fetchPendingVendors();
+     } catch (e) {
+        console.error("Failed to approve vendor", e);
+     }
+  };
+
+  const handleReject = async (vendorId: string, reason: string) => {
+     try {
+        // For now, mapping reject to approve(false)
+        await api.approveVendor(Number(vendorId), false);
+        // Refresh list
+        fetchPendingVendors();
+     } catch (e) {
+        console.error("Failed to reject vendor", e);
+     }
+  };
+
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-      <Card className="shadow-sm">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-          <Users className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">1,234</div>
-          <p className="text-xs text-green-600 font-medium">
-            +180 from last month
-          </p>
-        </CardContent>
-      </Card>
-      <Card className="shadow-sm border-2 border-primary/10">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Pending Vendors</CardTitle>
-          <Badge variant="destructive" className="animate-pulse">
-            5
-          </Badge>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">5</div>
-          <p className="text-xs text-muted-foreground font-medium">
-            Requires verification
-          </p>
-        </CardContent>
-      </Card>
+    <div className="space-y-8">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Card className="shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">1,234</div>
+            <p className="text-xs text-green-600 font-medium">
+              +180 from last month
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="shadow-sm border-2 border-primary/10">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Pending Vendors
+            </CardTitle>
+            {pendingVendors.length > 0 && (
+              <Badge variant="destructive" className="animate-pulse">
+                {pendingVendors.length}
+              </Badge>
+            )}
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{pendingVendors.length}</div>
+            <p className="text-xs text-muted-foreground font-medium">
+              Requires verification
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold tracking-tight">
+          Pending Applications
+        </h2>
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+             {[1,2].map(i => (
+                 <div key={i} className="h-[200px] w-full bg-muted animate-pulse rounded-xl" />
+             ))}
+          </div>
+        ) : pendingVendors.length === 0 ? (
+          <div className="text-center py-12 border rounded-lg bg-muted/20">
+            <p className="text-muted-foreground">No pending vendor applications.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            {pendingVendors.map((vendor) => (
+              <VendorApprovalCard
+                key={vendor.id}
+                vendor={{
+                    ...vendor,
+                    id: String(vendor.id),
+                    // Ensure compatibility with schema expected by Card
+                    status: vendor.is_approved ? 'approved' : 'pending',
+                    documents: vendor.documents || [],
+                    bankAccountName: vendor.bank_account_name, // Map snake_case to camelCase if needed, mock db uses snake_case mostly but schema uses camelCase.
+                    // Mock data return currently matches internal DB structure (snake_case) likely.
+                    // But VendorApprovalCard expects camelCase schema.
+                    // I will need to map fields if they differ.
+                    // Let's check mockKeys.
+                    businessName: vendor.business_name,
+                    vendorType: vendor.vendor_type,
+                }}
+                onApprove={handleApprove}
+                onReject={handleReject}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

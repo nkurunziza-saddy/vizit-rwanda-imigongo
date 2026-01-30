@@ -16,6 +16,7 @@ import type {
   VendorRegistrationInput,
   VendorBankDetailsInput,
 } from "@/schemas/vendor.schema";
+import { api } from "@/api/client";
 
 /**
  * Become a Vendor Page
@@ -63,17 +64,20 @@ function BecomeVendorPage() {
     setError(null);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      console.log("Vendor registration:", {
-        ...data.registration,
-        documents: data.documents.map((d) => d.name),
-        bankDetails: data.bankDetails,
+      // Register vendor using the API
+      await api.registerVendor({
+        businessName: data.registration.businessName,
+        vendorType: data.registration.vendorType,
+        bio: data.registration.bio || "",
       });
 
+      // In a real app we would upload documents and save bank details here too
+      // await uploadDocuments(data.documents);
+      // await saveBankDetails(data.bankDetails);
+
       setIsSuccess(true);
-    } catch (err) {
-      setError("Failed to submit application. Please try again.");
+    } catch (err: any) {
+      setError(err.message || "Failed to submit application. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

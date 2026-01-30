@@ -77,7 +77,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Explore */}
           <div>
             <h4 className="font-heading text-accent mb-6">Explore</h4>
             <ul className="space-y-3 text-primary-foreground/80">
@@ -118,7 +117,6 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-primary-foreground/10">
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-primary-foreground/50 text-sm">

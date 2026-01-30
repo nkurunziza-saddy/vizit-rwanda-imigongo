@@ -400,10 +400,22 @@ export const mockHandlers = {
 
   // Admin handlers
   admin: {
-    getPendingVendors: async (): Promise<Vendor[]> => {
+    getPendingVendors: async (): Promise<any[]> => {
       await delay(500);
       const vendors = getFromStorage<Vendor>(DB_KEYS.VENDORS);
-      return vendors.filter((v) => !v.is_approved);
+      const users = getFromStorage<User>(DB_KEYS.USERS);
+      
+      return vendors
+        .filter((v) => !v.is_approved)
+        .map(v => {
+          const user = users.find(u => u.id === v.user_id);
+          return {
+            ...v,
+            email: user?.email || "",
+            phone: user?.phone || "",
+            documents: []
+          };
+        });
     },
 
     approveVendor: async (

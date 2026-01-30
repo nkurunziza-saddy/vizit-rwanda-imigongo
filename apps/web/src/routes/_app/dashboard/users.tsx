@@ -31,13 +31,6 @@ import { Search, MoreHorizontal, UserCheck, UserX, Shield } from "lucide-react";
 import { api } from "@/api";
 import type { User } from "@/schemas/user.schema";
 
-/**
- * Admin Users Management Page
- *
- * Manage system users, their roles, and account status.
- * Accessible only to admin users.
- */
-
 export const Route = createFileRoute("/_app/dashboard/users")({
   component: UsersPage,
 });
@@ -47,17 +40,19 @@ function UsersPage() {
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
-  // Fetch users using API client
   const { data: users, isLoading } = useQuery({
     queryKey: ["users"],
     queryFn: () => api.getAllUsers() as Promise<User[]>,
   });
 
-  // Filter users
   const filteredUsers = users?.filter((user) => {
+    const query = searchQuery.toLowerCase();
+    const fullName = user.fullName?.toLowerCase() || "";
+    const email = user.email?.toLowerCase() || "";
+
     const matchesSearch =
-      user.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase());
+      fullName.includes(query) ||
+      email.includes(query);
     const matchesRole = roleFilter === "all" || user.role === roleFilter;
     const matchesStatus =
       statusFilter === "all" ||
@@ -67,7 +62,6 @@ function UsersPage() {
     return matchesSearch && matchesRole && matchesStatus;
   });
 
-  // Count by role
   const counts = {
     total: users?.length || 0,
     tourists: users?.filter((u) => u.role === "tourist").length || 0,
@@ -76,12 +70,10 @@ function UsersPage() {
   };
 
   const handleRoleChange = (userId: number, newRole: string) => {
-    // TODO: Implement role change API call
     console.log(`Change user ${userId} role to ${newRole}`);
   };
 
   const handleStatusToggle = (userId: number, currentStatus: boolean) => {
-    // TODO: Implement status toggle API call
     console.log(`Toggle user ${userId} status to ${!currentStatus}`);
   };
 
@@ -100,7 +92,6 @@ function UsersPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">User Management</h1>
@@ -110,7 +101,6 @@ function UsersPage() {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="pb-2">
@@ -157,7 +147,6 @@ function UsersPage() {
         </Card>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -199,7 +188,6 @@ function UsersPage() {
         </Select>
       </div>
 
-      {/* Users Table */}
       <Card>
         <CardHeader>
           <CardTitle>User Directory</CardTitle>
@@ -232,11 +220,11 @@ function UsersPage() {
                           src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.email}`}
                         />
                         <AvatarFallback>
-                          {user.fullName.charAt(0)}
+                          {user.fullName?.charAt(0) || "?"}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium">{user.fullName}</p>
+                        <p className="font-medium">{user.fullName || "Unknown User"}</p>
                         <p className="text-xs text-muted-foreground">
                           {user.phone || "No phone"}
                         </p>
@@ -259,7 +247,7 @@ function UsersPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-xs">
-                      {new Date(user.createdAt).toLocaleDateString()}
+                      {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "-"}
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>

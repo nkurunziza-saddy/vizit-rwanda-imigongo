@@ -247,6 +247,47 @@ const locationsData: Location[] = [
   },
 ];
 
+const HOTEL_IMAGES = [
+  "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1596436889106-be35e843f974?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1590490360182-f33efe293b3b?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1507720365775-f9a888a7c2ac?auto=format&fit=crop&w=800&q=80",
+];
+
+const BNB_IMAGES = [
+  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1499916078039-922301b0eb9b?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&w=800&q=80",
+];
+
+const CAR_IMAGES = [
+  "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1503376763036-066120622c74?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80",
+];
+
+const TOUR_IMAGES = [
+  "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1517400508447-f8dd518b86db?auto=format&fit=crop&w=800&q=80",
+];
+
+const GUIDE_IMAGES = [
+  "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80",
+];
+
 const generateListings = (count: number, vendors: Vendor[]): Listing[] => {
   const listings: Listing[] = [];
   for (let i = 1; i <= count; i++) {
@@ -258,8 +299,37 @@ const generateListings = (count: number, vendors: Vendor[]): Listing[] => {
     let title = faker.commerce.productName();
     if (listingType === "hotel_room")
       title = `${faker.word.adjective()} Suite at ${vendor.business_name}`;
+    if (listingType === "bnb")
+      title = `${faker.word.adjective()} City Apartment`;
     if (listingType === "car")
       title = `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`;
+    if (listingType === "tour")
+      title = `${faker.location.city()} Full-Day Experience`;
+    if (listingType === "guide")
+      title = `Expert Guide: ${faker.person.fullName()}`;
+
+
+    let listingImage = "";
+    switch (listingType) {
+      case "hotel_room":
+        listingImage = faker.helpers.arrayElement(HOTEL_IMAGES);
+        break;
+      case "bnb":
+        listingImage = faker.helpers.arrayElement(BNB_IMAGES);
+        break;
+      case "car":
+        listingImage = faker.helpers.arrayElement(CAR_IMAGES);
+        break;
+      case "tour":
+        listingImage = faker.helpers.arrayElement(TOUR_IMAGES);
+        break;
+      case "guide":
+        listingImage = faker.helpers.arrayElement(GUIDE_IMAGES);
+        break;
+      default:
+        listingImage = faker.helpers.arrayElement(TOUR_IMAGES);
+    }
+
 
     const addonCount = faker.number.int({ min: 0, max: 4 });
     const addons: Addon[] = [];
@@ -288,6 +358,7 @@ const generateListings = (count: number, vendors: Vendor[]): Listing[] => {
       currency: "USD",
       capacity: faker.number.int({ min: 1, max: 10 }),
       status: "active",
+      image_url: listingImage,
       created_at: faker.date.past().toISOString(),
       addons: addons,
     });
@@ -302,10 +373,20 @@ const generateListingMedia = (listings: Listing[]): ListingMedia[] => {
     // Add 1-3 images per listing
     const count = faker.number.int({ min: 1, max: 3 });
     for (let i = 0; i < count; i++) {
+        // Here we could also try to be specific but listing object has the main image
+        // For simplicity we use the same pool or listing image for now,
+        // or just travel images for generic media.
+        // Let's reuse the listing image for the first one to match card
+        let mediaUrl = listing.image_url;
+        if (i > 0) {
+             // For additional images, pick random from same category pool if possible, or generic
+             mediaUrl = faker.image.urlLoremFlickr({ category: "travel" });
+        }
+
       media.push({
         id: id++,
         listing_id: listing.id,
-        media_url: faker.image.urlLoremFlickr({ category: "travel" }),
+        media_url: mediaUrl || "",
         media_type: "image",
         sort_order: i,
       });
@@ -319,7 +400,19 @@ const generateListingMedia = (listings: Listing[]): ListingMedia[] => {
 export const initializeMockDB = () => {
   if (typeof window === "undefined") return; // Server-side guard
 
-  if (!localStorage.getItem(DB_KEYS.USERS)) {
+  const DB_VERSION = "3"; // Increment this to force re-seed
+  const storedVersion = localStorage.getItem("vizit_db_version");
+  let shouldReseed = storedVersion !== DB_VERSION;
+
+  if (shouldReseed) {
+    console.log("♻️ Database version mismatch. Forcing re-seed...");
+    localStorage.clear(); // Clear everything to be safe
+    localStorage.setItem("vizit_db_version", DB_VERSION);
+  } else if (!localStorage.getItem(DB_KEYS.USERS)) {
+    shouldReseed = true;
+  }
+
+  if (shouldReseed) {
     console.log("⚡ Seeding LocalStorage with Mock Data...");
 
     const users = generateUsers(20);
@@ -335,12 +428,9 @@ export const initializeMockDB = () => {
     localStorage.setItem(DB_KEYS.LISTING_MEDIA, JSON.stringify(listingMedia));
 
     // Initialize empty tables for others
-    if (!localStorage.getItem(DB_KEYS.BOOKINGS))
-      localStorage.setItem(DB_KEYS.BOOKINGS, JSON.stringify([]));
-    if (!localStorage.getItem(DB_KEYS.BOOKING_ITEMS))
-      localStorage.setItem(DB_KEYS.BOOKING_ITEMS, JSON.stringify([]));
-    if (!localStorage.getItem(DB_KEYS.TESTIMONIALS))
-      localStorage.setItem(DB_KEYS.TESTIMONIALS, JSON.stringify([]));
+    localStorage.setItem(DB_KEYS.BOOKINGS, JSON.stringify([]));
+    localStorage.setItem(DB_KEYS.BOOKING_ITEMS, JSON.stringify([]));
+    localStorage.setItem(DB_KEYS.TESTIMONIALS, JSON.stringify([]));
 
     console.log("✅ LocalStorage seeded successfully!");
   } else {

@@ -4,7 +4,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Banknote } from "lucide-react";
 
 export function CurrencySwitcher() {
@@ -12,10 +13,10 @@ export function CurrencySwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Button variant="ghost" size="sm" className="gap-2">
+        <span className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "gap-2 cursor-pointer")}>
           <Banknote className="h-4 w-4" />
           <span className="text-xs">USD</span>
-        </Button>
+        </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {["USD", "EUR", "RWF", "GBP"].map((code) => (

@@ -209,6 +209,13 @@ const mockApiClient = {
       const user = userStr ? JSON.parse(userStr) : null;
       return mockHandlers.vendors.register(data, user?.id) as Promise<T>;
     }
+    if (endpoint.includes("/api/admin/vendors/") && endpoint.includes("/approve")) {
+      // Extract ID from URL: /api/admin/vendors/123/approve
+      const parts = endpoint.split("/");
+      // parts = ["", "api", "admin", "vendors", "123", "approve"]
+      const id = parseInt(parts[4] || "0");
+      return mockHandlers.admin.approveVendor(id, data.approved) as Promise<T>;
+    }
 
     throw new Error(`Mock endpoint not implemented: ${endpoint}`);
   },

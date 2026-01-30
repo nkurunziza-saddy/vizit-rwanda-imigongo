@@ -6,6 +6,8 @@ export const DestinationsSection = () => {
 	const destinations = [
 		{
 			name: "Kigali",
+			image:
+				"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80",
 			count: 156,
 			href: "/listings",
 			search: {
@@ -23,6 +25,8 @@ export const DestinationsSection = () => {
 		},
 		{
 			name: "Lake Kivu",
+			image:
+				"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
 			count: 89,
 			href: "/listings",
 			search: {
@@ -40,6 +44,8 @@ export const DestinationsSection = () => {
 		},
 		{
 			name: "Volcanoes National Park",
+			image:
+				"https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80",
 			count: 45,
 			href: "/listings",
 			search: {
@@ -92,13 +98,19 @@ export const DestinationsSection = () => {
 						key={destination.name}
 						to={destination.href}
 						search={destination.search}
-						className="group block focus:outline-none"
+						className="group relative block focus:outline-none overflow-hidden rounded-lg aspect-[4/3] sm:aspect-[3/4] lg:aspect-[4/3]"
 					>
-						<div className="p-3 rounded-lg transition-all border border-border bg-card">
-							<h3 className="font-medium text-base mb-0.5">
+						<img
+							src={destination.image}
+							alt={destination.name}
+							className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+						/>
+						<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+						<div className="absolute bottom-0 left-0 p-4 w-full">
+							<h3 className="font-bold text-lg text-white mb-1">
 								{destination.name}
 							</h3>
-							<p className="text-xs text-muted-foreground">
+							<p className="text-xs font-medium text-white/80">
 								{destination.count} Listings
 							</p>
 						</div>

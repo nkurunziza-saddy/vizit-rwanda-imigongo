@@ -94,9 +94,8 @@ const FilterContent = ({
   hasActiveFilters,
 }: FilterContentProps) => (
   <div className="space-y-6">
-    {/* Search */}
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-foreground">Search</h3>
+      <h3 className="text-sm font-medium">Search</h3>
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
@@ -108,9 +107,8 @@ const FilterContent = ({
       </div>
     </div>
 
-    {/* Categories */}
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-foreground">Categories</h3>
+      <h3 className="text-sm font-medium">Categories</h3>
       <div className="flex flex-wrap gap-2">
         {categories.map((cat) => (
           <Button
@@ -132,7 +130,7 @@ const FilterContent = ({
     </div>
 
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-foreground">Quick Filters</h3>
+      <h3 className="text-sm font-medium">Quick Filters</h3>
       <div className="grid grid-cols-3 gap-2">
         {priceRanges.map((preset) => (
           <button
@@ -154,7 +152,7 @@ const FilterContent = ({
     </div>
 
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-foreground">Price Range</h3>
+      <h3 className="text-sm font-medium">Price Range</h3>
       <div className="pt-2 pb-4">
         <Slider
           defaultValue={[0, 1000]}
@@ -287,7 +285,7 @@ function Listings() {
           <aside className="hidden lg:block w-72 flex-none sticky top-24">
             <div className="bg-card rounded-lg p-4 border shadow-sm">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold">Filters</h2>
+                <h2 className="text-base font-medium">Filters</h2>
                 {hasActiveFilters && (
                   <Badge variant="secondary" className="text-xs">
                     Active
@@ -307,13 +305,11 @@ function Listings() {
             </div>
           </aside>
 
-          {/* Main Content */}
           <main className="flex-1 w-full space-y-6">
-            {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
-                  Explore Rwanda
+                <h1 className="text-lg font-semibold tracking-tight mb-2">
+                  Explore Our Vendors
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   {filteredListings.length}{" "}
@@ -322,7 +318,6 @@ function Listings() {
               </div>
 
               <div className="flex items-center gap-2 w-full sm:w-auto">
-                {/* Mobile Filter */}
                 <div className="lg:hidden flex-1 sm:flex-initial">
                   <Sheet>
                     <SheetTrigger
@@ -436,6 +431,7 @@ function Listings() {
                     rating={4.8}
                     reviewCount={12}
                     image={
+                      listing.image_url ||
                       "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
                     }
                     category={

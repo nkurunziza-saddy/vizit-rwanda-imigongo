@@ -146,6 +146,7 @@ const footerLinkGroups: FooterLinkGroup[] = [
 			{ title: "Partners", href: "/partners" },
 			{ title: "Press", href: "/press" },
 			{ title: "Blog", href: "/blog" },
+			{ title: "Become a Vendor", href: "/become-vendor" },
 		],
 	},
 ];
