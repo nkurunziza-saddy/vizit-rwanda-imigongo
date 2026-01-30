@@ -2,7 +2,7 @@
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { cn } from "@/lib/utils";
-import { useInView } from "framer-motion";
+import { useInView } from "motion/react";
 import React from "react";
 
 type LazyImageProps = {
@@ -44,7 +44,6 @@ export function LazyImage({
 		setIsLoading(false);
 	}, []);
 
-	// Load image only when inView
 	React.useEffect(() => {
 		if (inView && isInView && !imgSrc) {
 			setImgSrc(src);

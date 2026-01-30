@@ -58,33 +58,23 @@ export function CircularJourney() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Total rotation: one full circle over the scroll distance?
-      // Or just enough to visit all items.
-      // 4 items spaced 90 deg apart. Total 270 deg needed to get last item to start position?
-      // Let's do 360 for good measure.
-
       const totalRotation = 360;
 
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: "top top",
-        end: "+=400%", // Longer scroll for better control
+        end: "+=300%",
         pin: true,
         scrub: 1,
+        anticipatePin: 1,
         onUpdate: (self) => {
           const progress = self.progress;
           const currentRotation = progress * totalRotation;
 
-          // Rotate the wheel Counter-Clockwise
           gsap.set(wheelRef.current, { rotation: -currentRotation });
 
-          // Counter-rotate the items Clockwise to keep them upright
-          // We target a class shared by all items
           gsap.set(".wheel-counter-rotate", { rotation: currentRotation });
 
-          // Determine active item
-          // We can map progress to index [0..3]
-          // Simple clamping
           const index = Math.min(
             Math.floor(progress * regions.length),
             regions.length - 1,
@@ -103,7 +93,6 @@ export function CircularJourney() {
       className="relative h-screen w-full overflow-hidden bg-[#0F1512] text-white flex items-center"
     >
       <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center h-full">
-        {/* Left Side: Content */}
         <div className="order-2 md:order-1 relative z-10 pl-8 md:pl-0">
           <div className="relative h-[60vh]">
             <p className="text-[#E8B44A] tracking-widest uppercase text-xs font-bold mb-4">
@@ -137,23 +126,13 @@ export function CircularJourney() {
           </div>
         </div>
 
-        {/* Right Side: Visual Wheel */}
         <div className="order-1 md:order-2 relative h-full flex items-center justify-center">
-          {/* The Wheel Container */}
           <div
             ref={wheelRef}
             className="relative w-[80vh] h-[80vh] rounded-full border border-white/5"
             style={{ right: "-20%" }}
           >
             {regions.map((region, i) => {
-              // Position items around the circle
-              // 0 deg = 3 o'clock (Right)
-              // We want spacing of 90 deg
-              // i=0 -> 0 deg
-              // i=1 -> 90 deg (Bottom)
-              // i=2 -> 180 deg (Left)
-              // i=3 -> 270 deg (Top)
-
               const angle = i * 90;
 
               return (
@@ -164,7 +143,6 @@ export function CircularJourney() {
                     transform: `rotate(${angle}deg) translate(38vh) rotate(-${angle}deg)`,
                   }}
                 >
-                  {/* Inner Counter-Rotating Container */}
                   <div className="wheel-counter-rotate w-64 h-80 -ml-32 -mt-40">
                     <div
                       className={`relative w-full h-full rounded-2xl overflow-hidden border border-white/10 transition-all duration-500 group cursor-pointer ${
@@ -181,7 +159,6 @@ export function CircularJourney() {
                       />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
 
-                      {/* Icon Badge */}
                       <div
                         className={`absolute top-4 right-4 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 text-white transition-colors duration-500 ${
                           i === activeRegion
@@ -198,7 +175,6 @@ export function CircularJourney() {
             })}
           </div>
 
-          {/* Center Decoration */}
           <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border border-[#E8B44A]/30 flex items-center justify-center animate-pulse-slow pointer-events-none"
             style={{ right: "-20%" }}

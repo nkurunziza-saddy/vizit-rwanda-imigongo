@@ -13,14 +13,6 @@ import { useAuth } from "@/context/auth-context";
 
 export const Route = createFileRoute("/_app/dashboard")({
 	component: DashboardLayout,
-	beforeLoad: () => {
-		// We can't easily access auth context inside beforeLoad without a more complex setup
-		// or passing it via router context. For now, we'll handle redirect in component
-		// or rely on the fact that the component checks it.
-		// However, strictly speaking, we should check here.
-		// Since we are using a client-side auth context, we'll do the check in the component for simplicity
-		// or assume the Router Context has it if we wired it up.
-	},
 });
 
 function DashboardLayout() {

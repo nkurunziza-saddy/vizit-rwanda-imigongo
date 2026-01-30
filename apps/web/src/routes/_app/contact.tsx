@@ -2,10 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageWrapper } from "@/components/layouts/page-wrapper";
 import { cn } from "@/lib/utils";
 import { type LucideIcon, Mail, MapPin, Phone } from "lucide-react";
+import { InstagramIcon } from "@hugeicons/core-free-icons";
 
-const APP_EMAIL = "mail@example.com";
-const APP_PHONE = "+92 300 1234567";
-const APP_PHONE_2 = "+92 321 9876543";
+const APP_EMAIL = "email";
+const APP_PHONE = "+250 788 303 030";
+const APP_PHONE_2 = "+250 788 303 031";
 
 type ContactBox = React.ComponentProps<"div"> & {
 	icon: LucideIcon;
@@ -20,13 +21,13 @@ export const Route = createFileRoute("/_app/contact")({
 function ContactPage() {
 	const socialLinks = [
 		{
-			icon: GithubIcon,
-			href: "#",
+			icon: InstagramIcon,
+			href: "https://github.com/vizit-africa",
 			label: "GitHub",
 		},
 		{
 			icon: XIcon,
-			href: "#",
+			href: "https://twitter.com/vizitafrica",
 			label: "Twitter",
 		},
 	];

@@ -1,11 +1,5 @@
 import { z } from "zod";
 
-/**
- * Notification Schema
- *
- * Handles user notifications for various events
- */
-
 export const notificationTypeSchema = z.enum([
   "booking_confirmed",
   "booking_cancelled",
@@ -23,13 +17,12 @@ export const notificationSchema = z.object({
   type: notificationTypeSchema,
   title: z.string(),
   message: z.string(),
-  data: z.record(z.string(), z.any()).optional(), // Additional data like bookingId, etc.
+  data: z.record(z.string(), z.any()).optional(),
   isRead: z.boolean().default(false),
   createdAt: z.string(),
   readAt: z.string().optional(),
 });
 
-// Schema for creating a notification
 export const createNotificationSchema = z.object({
   userId: z.string(),
   type: notificationTypeSchema,
@@ -38,7 +31,6 @@ export const createNotificationSchema = z.object({
   data: z.record(z.string(), z.any()).optional(),
 });
 
-// Schema for notification filters
 export const notificationFiltersSchema = z.object({
   isRead: z.boolean().optional(),
   type: notificationTypeSchema.optional(),

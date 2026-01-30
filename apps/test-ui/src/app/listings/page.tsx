@@ -48,7 +48,6 @@ function ListingsContent() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(true);
 
-  // Read initial filter from URL
   useEffect(() => {
     const typeParam = searchParams.get("type");
     if (typeParam && typeParam in serviceTypeLabels) {
@@ -56,7 +55,6 @@ function ListingsContent() {
     }
   }, [searchParams]);
 
-  // Animate listings on load
   useEffect(() => {
     gsap.from(".listing-card", {
       y: 40,
@@ -70,18 +68,14 @@ function ListingsContent() {
   const filteredListings = useMemo(() => {
     let result = [...listings];
 
-    // Filter by type
     if (selectedType !== "all") {
       result = result.filter((listing) => listing.type === selectedType);
     }
-
-    // Filter by price range
     result = result.filter(
       (listing) =>
         listing.price >= priceRange[0] && listing.price <= priceRange[1],
     );
 
-    // Filter by search query
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
@@ -92,7 +86,6 @@ function ListingsContent() {
       );
     }
 
-    // Sort
     switch (sortBy) {
       case "price-low":
         result.sort((a, b) => a.price - b.price);
@@ -142,7 +135,6 @@ function ListingsContent() {
     <main className="bg-background min-h-screen">
       <Navigation />
 
-      {/* Hero Section */}
       <section className="pt-32 pb-16 px-6 bg-secondary">
         <div className="max-w-7xl mx-auto">
           <p className="text-accent uppercase tracking-[0.15em] text-xs font-semibold mb-4">
@@ -158,9 +150,7 @@ function ListingsContent() {
         </div>
       </section>
 
-      {/* Main Content */}
       <div className="flex flex-col lg:flex-row gap-8 px-6 py-12 max-w-7xl mx-auto">
-        {/* Sidebar Filters */}
         <div
           className={`${
             showFilters ? "block" : "hidden"
@@ -179,7 +169,6 @@ function ListingsContent() {
               </button>
             </div>
 
-            {/* Search in Sidebar */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
@@ -190,7 +179,6 @@ function ListingsContent() {
               />
             </div>
 
-            {/* Service Type Filter */}
             <div>
               <label className="block text-sm font-semibold text-foreground mb-3">
                 Service Type
@@ -210,7 +198,6 @@ function ListingsContent() {
               </Select>
             </div>
 
-            {/* Price Range Filter */}
             <div>
               <label className="block text-sm font-semibold text-foreground mb-3">
                 Price Range
@@ -248,7 +235,6 @@ function ListingsContent() {
               </div>
             </div>
 
-            {/* Sort */}
             <div>
               <label className="block text-sm font-semibold text-foreground mb-3">
                 Sort By
@@ -269,7 +255,6 @@ function ListingsContent() {
               </Select>
             </div>
 
-            {/* Clear Filters */}
             {hasActiveFilters && (
               <Button
                 variant="outline"
@@ -283,9 +268,7 @@ function ListingsContent() {
           </div>
         </div>
 
-        {/* Listings Content */}
         <div className="flex-1">
-          {/* Top Bar */}
           <div className="flex items-center justify-between gap-4 mb-8">
             <div className="flex items-center gap-2 lg:hidden">
               <Button
@@ -324,7 +307,6 @@ function ListingsContent() {
             </div>
           </div>
 
-          {/* Listings Grid/List */}
           {filteredListings.length > 0 ? (
             <div
               className={`grid gap-6 ${

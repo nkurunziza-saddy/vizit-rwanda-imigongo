@@ -36,8 +36,8 @@ export const paymentIntentResponseSchema = z.object({
 
 export const confirmPaymentResponseSchema = z.object({
   success: z.boolean(),
-  booking: z.any().optional(), // Will be properly typed
-  ticket: z.any().optional(), // Will be properly typed
+  booking: z.any().optional(),
+  ticket: z.any().optional(),
 });
 
 export type PaymentStatus = z.infer<typeof paymentStatusSchema>;

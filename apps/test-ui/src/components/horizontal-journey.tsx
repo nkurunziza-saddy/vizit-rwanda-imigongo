@@ -41,36 +41,19 @@ export function HorizontalJourney() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const scrollTween = gsap.to(trackRef.current, {
+      const panels = gsap.utils.toArray(".scene-panel");
+      
+      gsap.to(panels, {
         xPercent: -100 * (scenes.length - 1),
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
           pin: true,
           scrub: 1,
+          anticipatePin: 1,
           start: "top top",
-          end: `+=${scenes.length * 100}%`, // Scroll distance proportional to width
+          end: () => "+=" + (window.innerWidth * (scenes.length - 1)),
         },
-      });
-
-      // Optional: Parallax text inside each panel for extra depth
-      scenes.forEach((scene, i) => {
-        gsap.fromTo(
-          `.scene-text-${i}`,
-          { x: 100, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            scrollTrigger: {
-              trigger: trackRef.current,
-              containerAnimation: scrollTween,
-              start: `${i * 100}% center`, // Trigger when this panel is center?
-              // Actually easier to just bake animations into the timeline if needed
-              // or use simple css transitions
-              toggleActions: "play reverse play reverse",
-            },
-          },
-        );
       });
     }, containerRef);
 
@@ -84,14 +67,14 @@ export function HorizontalJourney() {
     >
       <div
         ref={trackRef}
-        className="flex h-full w-[400%]" // 400% for 4 scenes
+        className="flex h-full"
+        style={{ width: `${scenes.length * 100}vw` }}
       >
         {scenes.map((scene, i) => (
           <div
             key={scene.id}
-            className="relative w-screen h-full flex-shrink-0 flex items-center justify-center overflow-hidden"
+            className="scene-panel relative w-screen h-full flex-shrink-0 flex items-center justify-center overflow-hidden"
           >
-            {/* Background Image */}
             <div className="absolute inset-0">
               <Image
                 src={scene.image}
@@ -102,10 +85,7 @@ export function HorizontalJourney() {
               <div className="absolute inset-0 bg-black/40" />
             </div>
 
-            {/* Content */}
-            <div
-              className={`scene-text-${i} relative z-10 max-w-4xl px-6 text-center text-white`}
-            >
+            <div className="relative z-10 max-w-4xl px-6 text-center text-white">
               <div className="mb-4 inline-block px-4 py-1 border border-[#E8B44A] rounded-full text-[#E8B44A] text-xs uppercase tracking-widest bg-black/30 backdrop-blur-md">
                 Chapter {String(i + 1).padStart(2, "0")}
               </div>

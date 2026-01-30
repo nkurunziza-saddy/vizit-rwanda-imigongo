@@ -34,7 +34,6 @@ export function StackedCardsSection({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Create stacking animation
     const cards = cardsRef.current;
     const container = containerRef.current;
 
@@ -66,7 +65,6 @@ export function StackedCardsSection({
         }
       );
 
-      // Stack effect as cards come in
       gsap.to(card, {
         y: -index * 20,
         z: index * 10,
@@ -88,14 +86,12 @@ export function StackedCardsSection({
 
   return (
     <section className="relative py-20 px-4 md:px-8" ref={containerRef}>
-      {/* Background forest elements */}
       <div className="absolute inset-0 pointer-events-none opacity-5">
         <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-forest blur-3xl" />
         <div className="absolute bottom-20 right-10 w-48 h-48 rounded-full bg-terracotta blur-3xl" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Section header */}
         <div className="mb-20 text-center max-w-2xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-forest mb-6 text-balance">
             {title}
@@ -105,7 +101,6 @@ export function StackedCardsSection({
           </p>
         </div>
 
-        {/* Stacked cards container */}
         <div className="relative h-[600px] md:h-[800px] perspective">
           {cards.map((card, index) => (
             <div
@@ -119,7 +114,6 @@ export function StackedCardsSection({
               } as React.CSSProperties}
             >
               <div className="absolute inset-0 flex flex-col md:flex-row h-full">
-                {/* Image side */}
                 <div className="w-full md:w-1/2 relative overflow-hidden">
                   <Image
                     src={card.image || "/placeholder.svg"}
@@ -130,7 +124,6 @@ export function StackedCardsSection({
                   <div className="absolute inset-0 bg-gradient-to-r from-forest/30 to-transparent" />
                 </div>
 
-                {/* Content side */}
                 <div className={`w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-gradient-to-br from-cream via-cream to-cream/90`}>
                   <div className="inline-block w-fit mb-4">
                     <span className="text-sm font-semibold text-terracotta uppercase tracking-wider px-3 py-1 rounded-full bg-terracotta/10">
@@ -162,7 +155,6 @@ export function StackedCardsSection({
           ))}
         </div>
 
-        {/* Visual guide */}
         <div className="mt-20 text-center">
           <p className="text-sm text-forest/50 font-medium tracking-widest uppercase">
             ↓ Scroll to discover more
@@ -173,7 +165,6 @@ export function StackedCardsSection({
   );
 }
 
-// Simpler card variant for listings
 export function DiscoveryCard({
   card,
   index,

@@ -17,8 +17,6 @@ export default function Page() {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    // Lenis or simple scroll handling could be added here for smooth scroll
-    // For now, we rely on native scroll + GSAP scrub
     const handleScroll = () => {
       const winScroll = document.documentElement.scrollTop;
       const height =
@@ -29,7 +27,15 @@ export default function Page() {
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timer);
+    };
   }, []);
 
   const scrollToTop = () => {
@@ -37,8 +43,7 @@ export default function Page() {
   };
 
   return (
-    <main className="bg-[#0A0E0D] min-h-screen text-white overflow-x-hidden selection:bg-[#C85A3A] selection:text-white">
-      {/* Global Progress Bar */}
+    <main className="bg-[#0A0E0D] min-h-screen text-white selection:bg-[#C85A3A] selection:text-white">
       <div className="fixed top-0 left-0 right-0 h-1 z-[100] bg-[#1A2420]">
         <div
           className="h-full bg-[#E8B44A] transition-all duration-100 ease-out"
@@ -48,11 +53,9 @@ export default function Page() {
 
       <Navigation />
 
-      {/* 1. The Opening: Immersive Hero */}
       <ImmersiveHero />
 
-      {/* 2. The Context: stats or intro text could go here, but let's flow into the journey */}
-      <section className="py-24 px-6 text-center max-w-4xl mx-auto">
+      <section className="py-24 px-6 text-center max-w-4xl mx-auto relative z-10 bg-[#0A0E0D]">
         <p className="text-[#E8B44A] uppercase tracking-widest text-sm mb-6">
           Discovery
         </p>
@@ -63,29 +66,28 @@ export default function Page() {
         <p className="text-white/60 italic">- National Geographic</p>
       </section>
 
-      {/* 3. The Exploration: Circular Navigation of Regions */}
       <CircularJourney />
 
-      {/* 4. The Depth: Forest Parallax */}
       <ForestParallax />
 
-      {/* 5. The Timeline: Horizontal Journey */}
       <HorizontalJourney />
 
-      {/* 6. The Conclusion: Call to Action */}
-      <section className="py-32 bg-gradient-to-b from-[#0A0E0D] to-[#0F1512] text-center">
+      <section className="py-32 bg-gradient-to-b from-[#0A0E0D] to-[#0F1512] text-center relative z-10">
         <h2 className="font-serif text-5xl md:text-7xl mb-10">
           Ready to Begin?
         </h2>
-        <button className="bg-[#C85A3A] text-white px-12 py-6 uppercase tracking-widest hover:bg-[#A04A2E] transition-all hover:scale-105 duration-300 shadow-xl">
+        <button 
+          type="button" 
+          className="bg-[#C85A3A] text-white px-12 py-6 uppercase tracking-widest hover:bg-[#A04A2E] transition-all hover:scale-105 duration-300 shadow-xl"
+        >
           Book Your Trip
         </button>
       </section>
 
       <Footer />
 
-      {/* Scroll to top */}
       <button
+        type="button"
         onClick={scrollToTop}
         className={`fixed bottom-8 right-8 w-12 h-12 rounded-full border border-white/20 bg-black/40 backdrop-blur-md flex items-center justify-center transition-all duration-500 hover:border-[#E8B44A] hover:text-[#E8B44A] z-50 ${
           scrollProgress > 10

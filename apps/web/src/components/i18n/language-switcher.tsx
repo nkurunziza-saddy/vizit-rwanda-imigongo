@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,9 +14,6 @@ const languages = [
 ];
 
 export function LanguageSwitcher() {
-  const { i18n } = useTranslation();
-  const currentLang =
-    languages.find((l) => l.code === i18n.language) || languages[0];
 
   return (
     <DropdownMenu>
@@ -25,21 +21,16 @@ export function LanguageSwitcher() {
         render={<Button variant="ghost" size="sm" className="gap-2" />}
       >
         <Globe className="h-4 w-4" />
-        <span className="hidden sm:inline">{currentLang.flag}</span>
-        <span className="text-xs uppercase">{currentLang.code}</span>
+        <span className="text-xs uppercase">USA</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
-            onClick={() => i18n.changeLanguage(lang.code)}
             className="gap-2 cursor-pointer"
           >
             <span>{lang.flag}</span>
             <span>{lang.name}</span>
-            {i18n.language === lang.code && (
-              <span className="ml-auto text-xs text-primary">✓</span>
-            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

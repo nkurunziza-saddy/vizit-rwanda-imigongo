@@ -21,7 +21,6 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
@@ -47,10 +46,8 @@ export function Navigation() {
       >
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo */}
             <Link href="/" className="group flex items-center gap-3">
               <div className="relative w-10 h-10 flex items-center justify-center">
-                {/* Animated compass ring */}
                 <motion.div
                   className="absolute inset-0 border-2 border-[#E8B44A] rounded-full"
                   animate={{ rotate: 360 }}
@@ -72,7 +69,6 @@ export function Navigation() {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
@@ -91,7 +87,6 @@ export function Navigation() {
                     >
                       {link.label}
                     </span>
-                    {/* Underline animation */}
                     <motion.div
                       className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#E8B44A]"
                       initial={false}
@@ -107,7 +102,6 @@ export function Navigation() {
               })}
             </div>
 
-            {/* CTA Button */}
             <div className="hidden md:block">
               <Link href="/listings">
                 <Button
@@ -130,7 +124,6 @@ export function Navigation() {
               </Link>
             </div>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden p-2 text-white hover:text-[#E8B44A] transition-colors"
@@ -146,11 +139,9 @@ export function Navigation() {
         </div>
       </motion.nav>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -159,7 +150,6 @@ export function Navigation() {
               className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 md:hidden"
             />
 
-            {/* Menu Panel */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -168,7 +158,6 @@ export function Navigation() {
               className="fixed top-0 right-0 bottom-0 w-full max-w-sm bg-[#0F1512] border-l border-white/10 z-40 md:hidden overflow-y-auto"
             >
               <div className="p-6">
-                {/* Close button */}
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="absolute top-6 right-6 p-2 text-white/60 hover:text-white transition-colors"
@@ -177,7 +166,6 @@ export function Navigation() {
                   <X className="w-6 h-6" />
                 </button>
 
-                {/* Logo */}
                 <div className="mb-12 pt-4">
                   <h2 className="font-serif text-3xl font-bold text-white mb-1">
                     Rwanda
@@ -187,8 +175,7 @@ export function Navigation() {
                   </p>
                 </div>
 
-                {/* Navigation Links */}
-                <nav className="space-y-6 mb-12">
+\                <nav className="space-y-6 mb-12">
                   {navLinks.map((link, index) => {
                     const isActive = pathname === link.href;
                     const Icon = link.icon;
@@ -225,7 +212,6 @@ export function Navigation() {
                   })}
                 </nav>
 
-                {/* CTA */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -241,7 +227,6 @@ export function Navigation() {
                   </Link>
                 </motion.div>
 
-                {/* Footer Info */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -266,9 +251,6 @@ export function Navigation() {
   );
 }
 
-/**
- * Minimal version for use on listing pages (stays small)
- */
 export function MinimalNavigation() {
   const pathname = usePathname();
 

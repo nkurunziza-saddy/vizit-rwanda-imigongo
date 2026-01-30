@@ -3,16 +3,11 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-/**
- * Cinematic page loader with Rwanda-inspired animation
- * Shows on initial page load or route transitions
- */
 export function CinematicLoader() {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Simulate loading progress
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -35,14 +30,11 @@ export function CinematicLoader() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: [0.43, 0.13, 0.23, 0.96] }}
         >
-          {/* Grain texture */}
           <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay animate-grain">
             <div className="w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')]" />
           </div>
 
-          {/* Content */}
           <div className="relative z-10 text-center px-6">
-            {/* Logo / Title */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -56,7 +48,6 @@ export function CinematicLoader() {
               </p>
             </motion.div>
 
-            {/* Progress bar */}
             <motion.div
               className="w-64 md:w-96 mx-auto"
               initial={{ opacity: 0 }}
@@ -76,7 +67,6 @@ export function CinematicLoader() {
               </p>
             </motion.div>
 
-            {/* Animated mountain illustration */}
             <motion.svg
               className="w-32 h-32 mx-auto mt-12 opacity-20"
               viewBox="0 0 100 100"
@@ -110,9 +100,7 @@ export function CinematicLoader() {
   );
 }
 
-/**
- * Minimal loading spinner for in-page loading states
- */
+
 export function LoadingSpinner({
   size = "md",
   color = "gold",
@@ -139,9 +127,7 @@ export function LoadingSpinner({
   );
 }
 
-/**
- * Skeleton loader for content placeholders
- */
+
 export function SkeletonCard() {
   return (
     <div className="relative h-96 bg-white/5 overflow-hidden">

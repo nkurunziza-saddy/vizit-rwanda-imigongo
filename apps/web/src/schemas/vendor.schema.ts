@@ -1,12 +1,5 @@
 import { z } from "zod";
 
-/**
- * Vendor Schema
- *
- * Based on db-structure.md vendors table
- * Handles vendor registration, approval workflow, and management
- */
-
 export const vendorTypeSchema = z.enum([
   "hotel",
   "bnb",
@@ -16,11 +9,11 @@ export const vendorTypeSchema = z.enum([
 ]);
 
 export const vendorStatusSchema = z.enum([
-  "pending", // Application submitted, awaiting review
-  "under_review", // Admin is reviewing documents
-  "approved", // Approved and can list
-  "rejected", // Rejected with reason
-  "suspended", // Temporarily suspended
+  "pending",
+  "under_review",
+  "approved",
+  "rejected",
+  "suspended",
 ]);
 
 export const vendorDocumentSchema = z.object({
@@ -55,31 +48,25 @@ export const vendorSchema = z.object({
   website: z.string().url().optional(),
   logoUrl: z.string().optional(),
 
-  // Status and approval
   status: vendorStatusSchema.default("pending"),
   isApproved: z.boolean().default(false),
   approvedBy: z.string().optional(),
   approvedAt: z.string().optional(),
   rejectionReason: z.string().optional(),
 
-  // Documents
   documents: z.array(vendorDocumentSchema).default([]),
 
-  // Banking info for payouts
   bankAccountName: z.string().optional(),
   bankAccountNumber: z.string().optional(),
   bankName: z.string().optional(),
   bankSwiftCode: z.string().optional(),
 
-  // Commission rate (set by admin)
   commissionRate: z.number().min(0).max(100).default(10),
 
-  // Timestamps
   createdAt: z.string(),
   updatedAt: z.string(),
 });
 
-// Schema for vendor registration
 export const vendorRegistrationSchema = z.object({
   businessName: z
     .string()
@@ -92,7 +79,6 @@ export const vendorRegistrationSchema = z.object({
   website: z.string().url().optional(),
 });
 
-// Schema for vendor approval/rejection
 export const vendorApprovalSchema = z.object({
   vendorId: z.string(),
   action: z.enum(["approve", "reject"]),
@@ -100,14 +86,12 @@ export const vendorApprovalSchema = z.object({
   commissionRate: z.number().min(0).max(100).optional(),
 });
 
-// Schema for vendor document upload
 export const vendorDocumentUploadSchema = z.object({
   vendorId: z.string(),
   documentType: vendorDocumentSchema.shape.documentType,
   file: z.instanceof(File),
 });
 
-// Schema for vendor bank details
 export const vendorBankDetailsSchema = z.object({
   vendorId: z.string(),
   bankAccountName: z.string().min(2),
@@ -116,7 +100,6 @@ export const vendorBankDetailsSchema = z.object({
   bankSwiftCode: z.string().optional(),
 });
 
-// Schema for vendor filters (admin)
 export const vendorFiltersSchema = z.object({
   status: vendorStatusSchema.optional(),
   vendorType: vendorTypeSchema.optional(),

@@ -38,7 +38,6 @@ export default function GalleryPage() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Hero parallax
       gsap.to('.hero-bg', {
         yPercent: 40,
         ease: 'none',
@@ -50,7 +49,6 @@ export default function GalleryPage() {
         },
       });
 
-      // Gallery items stagger
       gsap.from('.gallery-item', {
         y: 100,
         opacity: 0,
@@ -63,7 +61,6 @@ export default function GalleryPage() {
         },
       });
 
-      // Scale animation on hover prep
       gsap.utils.toArray<HTMLElement>('.gallery-item').forEach((item) => {
         const img = item.querySelector('img');
         if (img) {
@@ -102,7 +99,6 @@ export default function GalleryPage() {
     <main className="bg-background min-h-screen">
       <Navigation />
 
-      {/* Hero Section */}
       <section ref={heroRef} className="relative pt-32 pb-0 h-[600px] md:h-[700px] flex items-end overflow-hidden">
         <div className="hero-bg absolute inset-0 z-0">
           <Image
@@ -115,7 +111,6 @@ export default function GalleryPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background" />
         </div>
 
-        {/* Hero Content */}
         <div className="relative z-10 max-w-6xl mx-auto px-6 pb-16 w-full">
           <h1 className="font-display text-6xl md:text-7xl text-background mb-4 leading-tight">
             Rwanda Through the Lens
@@ -127,7 +122,6 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* Category Filter */}
       <section className="sticky top-20 z-40 bg-background/95 backdrop-blur-md border-b border-border py-4 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
@@ -149,7 +143,6 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* Gallery Grid */}
       <section ref={galleryRef} className="py-16 px-6 bg-background">
         <div className="max-w-6xl mx-auto">
           {filteredImages.length > 0 ? (
@@ -200,10 +193,8 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* Lightbox */}
       {selectedImage && (
         <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4">
-          {/* Close Button */}
           <button
             onClick={() => setSelectedImage(null)}
             className="absolute top-6 right-6 z-10 bg-background/80 hover:bg-background p-2 rounded-sm transition-colors"
@@ -212,7 +203,6 @@ export default function GalleryPage() {
             <X className="w-6 h-6 text-foreground" />
           </button>
 
-          {/* Main Image */}
           <div className="relative w-full h-full max-w-5xl max-h-[90vh] flex items-center justify-center">
             <Image
               src={selectedImage.image || "/placeholder.svg"}
@@ -222,7 +212,6 @@ export default function GalleryPage() {
               priority
             />
 
-            {/* Navigation Buttons */}
             <button
               onClick={handlePrevImage}
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background p-3 rounded-sm transition-colors"
@@ -238,7 +227,6 @@ export default function GalleryPage() {
               <ChevronRight className="w-6 h-6 text-foreground" />
             </button>
 
-            {/* Image Info */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
               <h2 className="font-serif text-3xl text-background font-semibold mb-2">
                 {selectedImage.title}
@@ -257,7 +245,6 @@ export default function GalleryPage() {
         </div>
       )}
 
-      {/* About Section */}
       <section className="py-20 px-6 bg-secondary text-primary-foreground">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="font-display text-4xl md:text-5xl mb-8">

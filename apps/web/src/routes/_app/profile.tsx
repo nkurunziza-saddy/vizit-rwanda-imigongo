@@ -179,7 +179,7 @@ function ProfilePage() {
                       {user.full_name.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
-                  <button className="absolute bottom-0 right-0 p-1.5 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+                  <button type="button" className="absolute bottom-0 right-0 p-1.5 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
                     <Camera className="h-4 w-4" />
                   </button>
                 </div>

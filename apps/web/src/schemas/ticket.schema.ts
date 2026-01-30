@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-/**
- * Ticket schema for digital ticket generation
- * Based on db-structure.md tickets table
- */
 
 export const ticketSchema = z.object({
   id: z.string(),
@@ -15,14 +11,14 @@ export const ticketSchema = z.object({
   listingTitle: z.string(),
   listingType: z.enum(["hotel_room", "bnb", "car", "tour", "guide"]),
   vendorName: z.string(),
-  startDate: z.string(), // ISO date string
-  endDate: z.string(), // ISO date string
+  startDate: z.string(),
+  endDate: z.string(),
   quantity: z.number().int().min(1),
   unitPrice: z.number().positive(),
   totalAmount: z.number().positive(),
   currency: z.string().default("USD"),
   qrCodeData: z.string(),
-  qrCodeImage: z.string(), // Base64 encoded QR image
+  qrCodeImage: z.string(),
   issuedAt: z.string(),
   expiresAt: z.string(),
   status: z.enum(["active", "used", "expired", "cancelled"]).default("active"),
@@ -31,7 +27,6 @@ export const ticketSchema = z.object({
 
 export type Ticket = z.infer<typeof ticketSchema>;
 
-// Schema for generating a new ticket
 export const generateTicketInputSchema = z.object({
   bookingId: z.string(),
   userId: z.string(),
@@ -39,7 +34,6 @@ export const generateTicketInputSchema = z.object({
 
 export type GenerateTicketInput = z.infer<typeof generateTicketInputSchema>;
 
-// Schema for ticket validation (for QR code scanning)
 export const validateTicketInputSchema = z.object({
   ticketId: z.string(),
   validationHash: z.string(),
@@ -47,7 +41,6 @@ export const validateTicketInputSchema = z.object({
 
 export type ValidateTicketInput = z.infer<typeof validateTicketInputSchema>;
 
-// Schema for ticket validation response
 export const ticketValidationResponseSchema = z.object({
   valid: z.boolean(),
   ticket: ticketSchema.optional(),

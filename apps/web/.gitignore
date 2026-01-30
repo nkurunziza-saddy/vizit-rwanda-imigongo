@@ -11,3 +11,14 @@ count.txt
 .output
 .vinxi
 todos.json
+
+# Ignored AI and IDE configs
+.agent/skills
+.agents/
+.claude/
+.cursor/
+.gemini/
+.github/
+.kilocode/
+.kiro/
+skills/

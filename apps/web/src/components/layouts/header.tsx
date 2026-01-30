@@ -24,7 +24,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import type { Notification } from "@/schemas/notification.schema";
 
-// Mock notifications for demonstration
 const mockNotifications: Notification[] = [
   {
     id: "1",

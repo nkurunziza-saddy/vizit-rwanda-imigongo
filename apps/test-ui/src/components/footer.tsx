@@ -6,10 +6,8 @@ export function Footer() {
 
   return (
     <footer className="bg-secondary text-primary-foreground">
-      {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Brand */}
           <div className="lg:col-span-2">
             <h3 className="font-display text-3xl mb-4">VIZIT AFRICA</h3>
             <p className="text-primary-foreground/80 max-w-md leading-relaxed mb-6">
@@ -33,7 +31,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Services */}
           <div>
             <h4 className="font-heading text-accent mb-6">Services</h4>
             <ul className="space-y-3 text-primary-foreground/80">

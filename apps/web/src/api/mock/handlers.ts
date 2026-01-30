@@ -140,7 +140,7 @@ export const mockHandlers = {
       if (filters) {
         if (filters.category && filters.category !== "all") {
           listings = listings.filter((l) =>
-            l.listingType.includes(filters.category!),
+            l.listing_type.includes(filters.category!),
           );
         }
 
@@ -154,16 +154,16 @@ export const mockHandlers = {
         }
 
         if (filters.priceMin !== undefined) {
-          listings = listings.filter((l) => l.basePrice >= filters.priceMin!);
+          listings = listings.filter((l) => l.base_price >= filters.priceMin!);
         }
 
         if (filters.priceMax !== undefined) {
-          listings = listings.filter((l) => l.basePrice <= filters.priceMax!);
+          listings = listings.filter((l) => l.base_price <= filters.priceMax!);
         }
 
         if (filters.locationId) {
           listings = listings.filter(
-            (l) => l.locationId === filters.locationId,
+            (l) => l.location_id === filters.locationId,
           );
         }
       }
@@ -182,7 +182,7 @@ export const mockHandlers = {
       if (!listing) return null;
 
       const media = getFromStorage<any>(DB_KEYS.LISTING_MEDIA).filter(
-        (m) => m.listingId === id,
+        (m) => m.listing_id === id,
       );
 
       return { listing, media };
@@ -199,16 +199,17 @@ export const mockHandlers = {
       const newListing: Listing = {
         id:
           listings.length > 0 ? Math.max(...listings.map((l) => l.id)) + 1 : 1,
-        vendorId,
-        locationId: data.locationId,
+        vendor_id: vendorId,
+        location_id: data.locationId,
         title: data.title,
-        listingType: data.listingType,
+        listing_type: data.listingType,
         description: data.description,
-        basePrice: data.basePrice,
+        base_price: data.basePrice,
         currency: data.currency,
         capacity: data.capacity,
         status: "active",
-        createdAt: new Date().toISOString(),
+        image_url: undefined, // Add image_url property to match schema
+        created_at: new Date().toISOString(),
         addons: [],
       };
 
@@ -228,7 +229,7 @@ export const mockHandlers = {
         (l) =>
           l.title.toLowerCase().includes(searchLower) ||
           l.description.toLowerCase().includes(searchLower) ||
-          l.listingType.toLowerCase().includes(searchLower),
+          l.listing_type.toLowerCase().includes(searchLower),
       );
     },
   },
@@ -271,7 +272,7 @@ export const mockHandlers = {
         const listing = listings.find((l) => l.id === item.listingId);
         if (!listing) throw new Error("Listing not found");
 
-        const itemTotal = listing.basePrice * item.quantity;
+        const itemTotal = listing.base_price * item.quantity;
         totalAmount += itemTotal;
 
         return {
@@ -279,11 +280,11 @@ export const mockHandlers = {
           bookingId: newBookingId,
           listingId: item.listingId,
           listingTitle: listing.title,
-          listingType: listing.listingType,
+          listingType: listing.listing_type,
           startDate: item.startDate,
           endDate: item.endDate,
           quantity: item.quantity,
-          unitPrice: listing.basePrice,
+          unitPrice: listing.base_price,
           subtotal: itemTotal,
           selectedAddons: item.selectedAddons.map((addon) => ({
             ...addon,

@@ -13,6 +13,8 @@ import type {
   RegisterInput,
   CreateListingInput,
   CreateBookingInput,
+  Listing,
+  ListingMedia,
 } from "@/schemas";
 
 const API_BASE_URL = env.VITE_API_URL || "";
@@ -269,28 +271,31 @@ export const api = {
 
   // Listings
   getListings: (filters?: ListingFilters) =>
-    apiClient.get(API_ENDPOINTS.LISTINGS.BASE, filters),
-  getListing: (id: number) => apiClient.get(API_ENDPOINTS.LISTINGS.BY_ID(id)),
+    apiClient.get<Listing[]>(API_ENDPOINTS.LISTINGS.BASE, filters),
+  getListing: (id: number) =>
+    apiClient.get<{ listing: Listing; media: ListingMedia[] }>(
+      API_ENDPOINTS.LISTINGS.BY_ID(id),
+    ),
   searchListings: (query: string) =>
-    apiClient.get(API_ENDPOINTS.LISTINGS.SEARCH, { q: query }),
+    apiClient.get<Listing[]>(API_ENDPOINTS.LISTINGS.SEARCH, { q: query }),
   createListing: (data: CreateListingInput) =>
     apiClient.post(API_ENDPOINTS.LISTINGS.BASE, data),
 
   // Bookings
   getMyBookings: (filters?: BookingFilters) =>
-    apiClient.get(API_ENDPOINTS.BOOKINGS.MY_BOOKINGS, filters),
+    apiClient.get<any[]>(API_ENDPOINTS.BOOKINGS.MY_BOOKINGS, filters),
   createBooking: (data: CreateBookingInput) =>
     apiClient.post(API_ENDPOINTS.BOOKINGS.BASE, data),
   cancelBooking: (id: number) =>
     apiClient.post(API_ENDPOINTS.BOOKINGS.CANCEL(id), {}),
 
   // Locations
-  getLocations: () => apiClient.get(API_ENDPOINTS.LOCATIONS.BASE),
-  getLocation: (id: number) => apiClient.get(API_ENDPOINTS.LOCATIONS.BY_ID(id)),
+  getLocations: () => apiClient.get<any[]>(API_ENDPOINTS.LOCATIONS.BASE),
+  getLocation: (id: number) => apiClient.get<any>(API_ENDPOINTS.LOCATIONS.BY_ID(id)),
 
   // Vendors
-  getVendors: () => apiClient.get(API_ENDPOINTS.VENDORS.BASE),
-  getMyVendor: () => apiClient.get(API_ENDPOINTS.VENDORS.MY_VENDOR),
+  getVendors: () => apiClient.get<any[]>(API_ENDPOINTS.VENDORS.BASE),
+  getMyVendor: () => apiClient.get<any>(API_ENDPOINTS.VENDORS.MY_VENDOR),
   registerVendor: (data: {
     businessName: string;
     vendorType: string;

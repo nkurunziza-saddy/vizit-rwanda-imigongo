@@ -58,8 +58,8 @@ function SavedPage() {
 							title={listing.title}
 							location={`Location ${listing.location_id}`}
 							price={listing.base_price}
-							rating={4.8} // Mock
-							reviewCount={12} // Mock
+							rating={4.8}
+							reviewCount={12}
 							image={
 								"https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
 							}

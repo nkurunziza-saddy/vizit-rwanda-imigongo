@@ -6,7 +6,7 @@ import {
 	TwitterIcon,
 	YoutubeIcon,
 } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "motion/react";
 import { Logo } from "@/components/logo";
 import { Link } from "@tanstack/react-router";
 

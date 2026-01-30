@@ -15,30 +15,30 @@ export const addonSchema = z.object({
   name: z.string(),
   description: z.string(),
   price: z.number(),
-  priceType: z.enum(["per_person", "per_stay", "per_night"]),
+  price_type: z.enum(["per_person", "per_stay", "per_night"]),
 });
 
 export const listingMediaSchema = z.object({
   id: z.number(),
-  listingId: z.number(),
-  mediaUrl: z.string().url(),
-  mediaType: z.enum(["image", "video"]),
-  sortOrder: z.number(),
+  listing_id: z.number(),
+  media_url: z.string().url(),
+  media_type: z.enum(["image", "video"]),
+  sort_order: z.number(),
 });
 
 export const listingSchema = z.object({
   id: z.number(),
-  vendorId: z.number(),
-  locationId: z.number(),
+  vendor_id: z.number(),
+  location_id: z.number(),
   title: z.string(),
-  listingType: listingTypeSchema,
+  listing_type: listingTypeSchema,
   description: z.string(),
-  basePrice: z.number(),
+  base_price: z.number(),
   currency: z.string(),
   capacity: z.number(),
   status: listingStatusSchema,
-  imageUrl: z.string().url().optional(),
-  createdAt: z.string().datetime(),
+  image_url: z.string().url().optional(),
+  created_at: z.string().datetime(),
   addons: z.array(addonSchema).default([]),
 });
 

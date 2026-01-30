@@ -11,63 +11,37 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function ImmersiveHero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Use class selectors for more robust targeting
-      const heroText = ".hero-text-container";
-      const heroImage = ".hero-image-container";
-      const heroOverlay = ".hero-overlay";
-
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=150%", // Slightly shorter to feel more responsive
+          end: "+=100%",
           pin: true,
           scrub: 1,
+          anticipatePin: 1,
         },
       });
 
-      // Animation Order:
-      // 1. Text scales up drastically and fades out (zoom through)
-      // 2. Image scales down (or up) to fill screen - let's go with expanding width/height
+      tl.to(".hero-text-container", {
+        scale: 10,
+        opacity: 0,
+        filter: "blur(20px)",
+        ease: "power2.in",
+        duration: 1,
+      }, 0)
+      .to(".hero-image-container", {
+        scale: 1.5,
+        ease: "power2.inOut",
+        duration: 1,
+      }, 0)
+      .to(".hero-overlay", {
+        opacity: 0,
+        duration: 0.5,
+      }, 0.1);
 
-      tl.to(
-        heroText,
-        {
-          scale: 10, // Massive scale to fly through
-          opacity: 0,
-          filter: "blur(20px)",
-          ease: "power2.in",
-          duration: 1,
-        },
-        0,
-      )
-        .to(
-          heroImage,
-          {
-            width: "100vw",
-            height: "100vh",
-            borderRadius: "0px",
-            ease: "power2.inOut",
-            duration: 1,
-          },
-          0,
-        )
-        .to(
-          heroOverlay,
-          {
-            opacity: 0,
-            duration: 0.5,
-          },
-          0.1,
-        );
-
-      // Hero Entry Animation
       const entryTl = gsap.timeline({ delay: 0.5 });
       entryTl
         .from(".hero-char", {
@@ -77,15 +51,11 @@ export function ImmersiveHero() {
           duration: 1,
           ease: "power4.out",
         })
-        .from(
-          ".hero-sub",
-          {
-            y: 20,
-            opacity: 0,
-            duration: 1,
-          },
-          "-=0.5",
-        );
+        .from(".hero-sub", {
+          y: 20,
+          opacity: 0,
+          duration: 1,
+        }, "-=0.5");
     }, containerRef);
 
     return () => ctx.revert();
@@ -96,12 +66,7 @@ export function ImmersiveHero() {
       ref={containerRef}
       className="relative h-screen w-full overflow-hidden bg-[#0A0E0D] flex items-center justify-center"
     >
-      {/* Background/Portal Image */}
-      <div
-        ref={imageRef}
-        className="hero-image-container absolute z-0 w-[40vw] h-[60vh] rounded-2xl overflow-hidden shadow-2xl origin-center"
-        style={{ transformOrigin: "center center" }}
-      >
+      <div className="hero-image-container absolute z-0 w-[40vw] h-[60vh] rounded-2xl overflow-hidden shadow-2xl origin-center">
         <Image
           src={unsplashImages.hero}
           alt="Rwanda Landscape"
@@ -109,18 +74,10 @@ export function ImmersiveHero() {
           className="object-cover"
           priority
         />
-        {/* Dark overlay that fades out */}
-        <div
-          ref={overlayRef}
-          className="hero-overlay absolute inset-0 bg-black/40 z-10"
-        />
+        <div className="hero-overlay absolute inset-0 bg-black/40 z-10" />
       </div>
 
-      {/* Hero Content */}
-      <div
-        ref={textRef}
-        className="hero-text-container relative z-20 text-center px-4 mix-blend-difference text-white"
-      >
+      <div className="hero-text-container relative z-20 text-center px-4 mix-blend-difference text-white">
         <p className="hero-sub text-[#E8B44A] tracking-[0.3em] uppercase text-sm md:text-base mb-6 font-medium">
           The Heart of Africa
         </p>
@@ -141,8 +98,7 @@ export function ImmersiveHero() {
         </div>
       </div>
 
-      {/* Grain Overlay */}
-      <div className="absolute inset-0 pointer-events-none opacity-5 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay z-50"></div>
+      <div className="absolute inset-0 pointer-events-none opacity-5 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay z-50" />
     </section>
   );
 }

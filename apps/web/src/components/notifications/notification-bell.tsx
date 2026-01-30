@@ -24,13 +24,6 @@ import type {
   NotificationType,
 } from "@/schemas/notification.schema";
 
-/**
- * Notification Bell Component
- *
- * Displays a bell icon with unread count badge.
- * Clicking opens a dropdown with recent notifications.
- */
-
 interface NotificationBellProps {
   notifications: Notification[];
   onMarkAsRead: (id: string) => void;

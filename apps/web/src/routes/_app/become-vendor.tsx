@@ -35,7 +35,6 @@ function BecomeVendorPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Redirect if not authenticated
   if (!isAuthenticated) {
     return (
       <div className="container max-w-2xl mx-auto py-12 px-4">
@@ -64,8 +63,6 @@ function BecomeVendorPage() {
     setError(null);
 
     try {
-      // TODO: Call API to submit vendor application
-      // For now, simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       console.log("Vendor registration:", {
@@ -134,7 +131,7 @@ function BecomeVendorPage() {
         isLoading={isSubmitting}
       />
 
-      {/* Benefits Section */}
+      {/* sections */}
       <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <CardHeader>

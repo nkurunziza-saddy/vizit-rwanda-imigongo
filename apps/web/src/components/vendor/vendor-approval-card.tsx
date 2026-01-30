@@ -15,7 +15,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Building2,
   Mail,
   Phone,
   MapPin,
@@ -26,13 +25,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import type { Vendor, VendorStatus } from "@/schemas/vendor.schema";
-
-/**
- * Vendor Approval Card
- *
- * Admin component for reviewing and approving vendor applications.
- * Shows vendor details, documents, and approval actions.
- */
 
 interface VendorApprovalCardProps {
   vendor: Vendor;
@@ -103,7 +95,6 @@ export function VendorApprovalCard({
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {/* Contact Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-center gap-2 text-sm">
             <Mail className="h-4 w-4 text-muted-foreground" />
@@ -123,7 +114,6 @@ export function VendorApprovalCard({
 
         <Separator />
 
-        {/* Business Description */}
         {vendor.bio && (
           <div>
             <h4 className="text-sm font-medium mb-2">About</h4>
@@ -131,7 +121,6 @@ export function VendorApprovalCard({
           </div>
         )}
 
-        {/* Documents */}
         <div>
           <h4 className="text-sm font-medium mb-2">
             Documents ({vendor.documents.length})
@@ -171,7 +160,6 @@ export function VendorApprovalCard({
           )}
         </div>
 
-        {/* Bank Details (if available) */}
         {vendor.bankAccountName && (
           <>
             <Separator />
@@ -195,7 +183,6 @@ export function VendorApprovalCard({
           </>
         )}
 
-        {/* Approval Actions */}
         {vendor.status === "pending" || vendor.status === "under_review" ? (
           <div className="flex gap-3 pt-4">
             <Dialog

@@ -547,7 +547,7 @@ function ListingCard({ listing }) {
   return (
     <Card>
       <CardTitle>{listing.title}</CardTitle>
-      <p>{t('perNight', { price: listing.base_price })}</p>
+      <p>{t('perNight', { price: listing.basePrice })}</p>
       <Button>{t('bookNow')}</Button>
     </Card>
   )

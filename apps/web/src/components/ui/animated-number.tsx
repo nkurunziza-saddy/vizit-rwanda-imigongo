@@ -7,7 +7,7 @@ import {
 	useSpring,
 	useTransform,
 	type SpringOptions,
-} from "framer-motion";
+} from "motion/react";
 
 export type AnimatedNumberProps = {
 	value: number;
