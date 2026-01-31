@@ -1,7 +1,21 @@
 import { useState, useMemo, useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { Clock, Users, CheckCircle, XCircle, Check, X } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Clock,
+  Users,
+  CheckCircle,
+  XCircle,
+  Check,
+  X,
+  MoreHorizontal,
+} from "lucide-react";
 import type { Vendor } from "@/schemas/vendor.schema";
 import { DataTable } from "@/components/data-table/data-table";
 import { approvalColumns } from "@/components/dashboard/tables/approvals-columns";
@@ -159,28 +173,30 @@ function ApprovalsPage() {
             return null;
           }
           return (
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200"
-                onClick={() => handleApprove(vendor.id, 10)}
-                title="Approve"
-              >
-                <Check className="h-4 w-4" />
-                <span className="sr-only">Approve</span>
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-                onClick={() => handleReject(vendor.id, "Manually rejected")}
-                title="Reject"
-              >
-                <X className="h-4 w-4" />
-                <span className="sr-only">Reject</span>
-              </Button>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button
+                  variant="ghost"
+                  className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[160px]">
+                <DropdownMenuItem onClick={() => handleApprove(vendor.id, 10)}>
+                  <Check className="mr-2 h-4 w-4" />
+                  Approve
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleReject(vendor.id, "Manually rejected")}
+                  variant="destructive"
+                >
+                  <X className="mr-2 h-4 w-4" />
+                  Reject
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           );
         },
       },

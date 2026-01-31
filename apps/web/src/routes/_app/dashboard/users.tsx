@@ -18,7 +18,6 @@ function UsersPage() {
       try {
         setIsLoading(true);
         const data = await api.getAdminUsers();
-        // Ensure data is array, depending on API response structure
         const usersList = Array.isArray(data) ? data : [];
         setUsers(usersList as User[]);
       } catch (error) {
@@ -43,8 +42,27 @@ function UsersPage() {
       </div>
       <div className="hidden h-full flex-1 flex-col space-y-8 md:flex">
         {isLoading ? (
-          <div className="flex items-center justify-center p-8">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+          <div className="space-y-4">
+            <div className="flex gap-4">
+              <div className="h-10 w-64 bg-muted rounded animate-pulse" />
+              <div className="h-10 w-32 bg-muted rounded animate-pulse ml-auto" />
+            </div>
+            <div className="border rounded-lg">
+              <div className="h-12 bg-muted/50 border-b" />
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-16 border-b last:border-0 flex items-center px-4 gap-4"
+                >
+                  <div className="h-4 w-4 bg-muted rounded animate-pulse" />
+                  <div className="h-4 w-32 bg-muted rounded animate-pulse" />
+                  <div className="h-4 w-48 bg-muted rounded animate-pulse" />
+                  <div className="h-4 w-20 bg-muted rounded animate-pulse" />
+                  <div className="h-4 w-16 bg-muted rounded animate-pulse" />
+                  <div className="h-8 w-8 bg-muted rounded animate-pulse ml-auto" />
+                </div>
+              ))}
+            </div>
           </div>
         ) : (
           <DataTable

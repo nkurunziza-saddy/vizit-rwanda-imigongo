@@ -399,8 +399,25 @@ import { approvalColumns } from "@/components/dashboard/tables/approvals-columns
 import { VendorApplicationDetails } from "@/components/dashboard/tables/vendor-application-details";
 import { ColumnDef } from "@tanstack/react-table";
 import { Vendor } from "@/schemas/vendor.schema";
-import { ChevronDown, ChevronRight, Check, X } from "lucide-react";
-// ... existing imports ...
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  ChevronDown,
+  ChevronRight,
+  Check,
+  X,
+  MoreHorizontal,
+} from "lucide-react";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/components/ui/empty";
 
 function AdminDashboard() {
   const [pendingVendors, setPendingVendors] = useState<Vendor[]>([]);
@@ -474,28 +491,29 @@ function AdminDashboard() {
         cell: ({ row }) => {
           const vendor = row.original;
           return (
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200"
-                onClick={() => handleApprove(vendor.id, 10)}
-                title="Approve"
-              >
-                <Check className="h-4 w-4" />
-                <span className="sr-only">Approve</span>
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
-                onClick={() => handleReject(vendor.id, "Manually rejected")}
-                title="Reject"
-              >
-                <X className="h-4 w-4" />
-                <span className="sr-only">Reject</span>
-              </Button>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button
+                  variant="ghost"
+                  className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[160px]">
+                <DropdownMenuItem onClick={() => handleApprove(vendor.id, 10)}>
+                  <Check className="mr-2 h-4 w-4" />
+                  Approve
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleReject(vendor.id, "Manually rejected")}
+                >
+                  <X className="mr-2 h-4 w-4" />
+                  Reject
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           );
         },
       },
@@ -543,15 +561,37 @@ function AdminDashboard() {
           Pending Applications
         </h2>
         {isLoading ? (
-          <div className="flex items-center justify-center p-8">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+          <div className="space-y-4">
+            <div className="flex gap-4">
+              <div className="h-10 w-64 bg-muted rounded animate-pulse" />
+              <div className="h-10 w-32 bg-muted rounded animate-pulse ml-auto" />
+            </div>
+            <div className="border rounded-lg">
+              <div className="h-12 bg-muted/50 border-b" />
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-16 border-b last:border-0 flex items-center px-4 gap-4"
+                >
+                  <div className="h-4 w-4 bg-muted rounded animate-pulse" />
+                  <div className="h-4 w-32 bg-muted rounded animate-pulse" />
+                  <div className="h-4 w-48 bg-muted rounded animate-pulse" />
+                  <div className="h-4 w-20 bg-muted rounded animate-pulse" />
+                  <div className="h-4 w-16 bg-muted rounded animate-pulse" />
+                  <div className="h-8 w-8 bg-muted rounded animate-pulse ml-auto" />
+                </div>
+              ))}
+            </div>
           </div>
         ) : pendingVendors.length === 0 ? (
-          <div className="text-center py-12 border rounded-lg bg-muted/20">
-            <p className="text-muted-foreground">
-              No pending vendor applications.
-            </p>
-          </div>
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>No vendors</EmptyTitle>
+              <EmptyDescription>
+                No vendors applications are pending.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
           <DataTable
             columns={columns}
