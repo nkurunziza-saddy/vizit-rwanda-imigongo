@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ImigongoRouteImport } from './routes/imigongo'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppSavedRouteImport } from './routes/_app/saved'
@@ -36,6 +37,11 @@ import { Route as AppCartCheckoutRouteImport } from './routes/_app/cart/checkout
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImigongoRoute = ImigongoRouteImport.update({
+  id: '/imigongo',
+  path: '/imigongo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -151,6 +157,7 @@ const AppCartCheckoutRoute = AppCartCheckoutRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
+  '/imigongo': typeof ImigongoRoute
   '/login': typeof LoginRoute
   '/about': typeof AppAboutRoute
   '/become-vendor': typeof AppBecomeVendorRoute
@@ -174,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/listings/': typeof AppListingsIndexRoute
 }
 export interface FileRoutesByTo {
+  '/imigongo': typeof ImigongoRoute
   '/login': typeof LoginRoute
   '/about': typeof AppAboutRoute
   '/become-vendor': typeof AppBecomeVendorRoute
@@ -199,6 +207,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
+  '/imigongo': typeof ImigongoRoute
   '/login': typeof LoginRoute
   '/_app/about': typeof AppAboutRoute
   '/_app/become-vendor': typeof AppBecomeVendorRoute
@@ -226,6 +235,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/imigongo'
     | '/login'
     | '/about'
     | '/become-vendor'
@@ -249,6 +259,7 @@ export interface FileRouteTypes {
     | '/listings/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/imigongo'
     | '/login'
     | '/about'
     | '/become-vendor'
@@ -273,6 +284,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_app'
+    | '/imigongo'
     | '/login'
     | '/_app/about'
     | '/_app/become-vendor'
@@ -299,6 +311,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
+  ImigongoRoute: typeof ImigongoRoute
   LoginRoute: typeof LoginRoute
 }
 
@@ -309,6 +322,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/imigongo': {
+      id: '/imigongo'
+      path: '/imigongo'
+      fullPath: '/imigongo'
+      preLoaderRoute: typeof ImigongoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -530,6 +550,7 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
+  ImigongoRoute: ImigongoRoute,
   LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
