@@ -22,39 +22,18 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
-import {
-  Building2,
-  User,
-  FileText,
-  Banknote,
-  CheckCircle,
-  AlertCircle,
-  Upload,
-} from "lucide-react";
+import { Building2, Banknote, CheckCircle, AlertCircle } from "lucide-react";
 import {
   vendorRegistrationSchema,
-  vendorDocumentUploadSchema,
   vendorBankDetailsSchema,
   type VendorRegistrationInput,
-  type VendorDocumentUploadInput,
   type VendorBankDetailsInput,
   type VendorType,
 } from "@/schemas/vendor.schema";
 
-/**
- * Vendor Registration Form
- *
- * Multi-step form for vendor onboarding:
- * 1. Business Information
- * 2. Document Upload
- * 3. Bank Details
- * 4. Review & Submit
- */
-
 interface VendorRegistrationFormProps {
   onSubmit: (data: {
     registration: VendorRegistrationInput;
-    documents: File[];
     bankDetails: VendorBankDetailsInput;
   }) => void;
   isLoading?: boolean;
@@ -62,9 +41,8 @@ interface VendorRegistrationFormProps {
 
 const steps = [
   { id: 1, label: "Business Info", icon: Building2 },
-  { id: 2, label: "Documents", icon: FileText },
-  { id: 3, label: "Bank Details", icon: Banknote },
-  { id: 4, label: "Review", icon: CheckCircle },
+  { id: 2, label: "Bank Details", icon: Banknote },
+  { id: 3, label: "Review", icon: CheckCircle },
 ];
 
 const vendorTypes: { value: VendorType; label: string }[] = [
@@ -80,10 +58,8 @@ export function VendorRegistrationForm({
   isLoading,
 }: VendorRegistrationFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
-  const [documents, setDocuments] = useState<File[]>([]);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Form for business information
   const registrationForm = useForm<VendorRegistrationInput>({
     resolver: zodResolver(vendorRegistrationSchema),
     defaultValues: {
@@ -96,7 +72,6 @@ export function VendorRegistrationForm({
     },
   });
 
-  // Form for bank details
   const bankDetailsSchema = vendorBankDetailsSchema.omit({ vendorId: true });
   const bankForm = useForm<z.infer<typeof bankDetailsSchema>>({
     resolver: zodResolver(bankDetailsSchema),
@@ -118,12 +93,7 @@ export function VendorRegistrationForm({
       if (!valid) return;
     }
 
-    if (currentStep === 2 && documents.length === 0) {
-      setSubmitError("Please upload at least one document");
-      return;
-    }
-
-    if (currentStep === 3) {
+    if (currentStep === 2) {
       const valid = await bankForm.trigger();
       if (!valid) return;
     }
@@ -139,25 +109,15 @@ export function VendorRegistrationForm({
     }
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    setDocuments((prev) => [...prev, ...files]);
-  };
-
-  const removeDocument = (index: number) => {
-    setDocuments((prev) => prev.filter((_, i) => i !== index));
-  };
-
   const handleFinalSubmit = () => {
     const registrationData = registrationForm.getValues();
     const bankData = bankForm.getValues();
 
     onSubmit({
       registration: registrationData,
-      documents,
       bankDetails: {
         ...bankData,
-        vendorId: "", // Will be set by backend
+        vendorId: "",
       },
     });
   };
@@ -172,7 +132,6 @@ export function VendorRegistrationForm({
       </CardHeader>
 
       <CardContent>
-        {/* Progress */}
         <div className="mb-8">
           <Progress value={progress} className="h-2" />
           <div className="flex justify-between mt-2">
@@ -192,7 +151,6 @@ export function VendorRegistrationForm({
           </div>
         </div>
 
-        {/* Error Alert */}
         {submitError && (
           <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-4 w-4" />
@@ -200,7 +158,6 @@ export function VendorRegistrationForm({
           </Alert>
         )}
 
-        {/* Step 1: Business Information */}
         {currentStep === 1 && (
           <div className="space-y-4">
             <div>
@@ -304,70 +261,7 @@ export function VendorRegistrationForm({
           </div>
         )}
 
-        {/* Step 2: Document Upload */}
         {currentStep === 2 && (
-          <div className="space-y-6">
-            <Alert>
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                Please upload the following documents: Business Registration,
-                Tax Certificate, and ID Proof.
-              </AlertDescription>
-            </Alert>
-
-            <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
-              <Upload className="h-8 w-8 mx-auto mb-4 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground mb-2">
-                Drag and drop files here, or click to browse
-              </p>
-              <Input
-                type="file"
-                multiple
-                accept=".pdf,.jpg,.jpeg,.png"
-                onChange={handleFileUpload}
-                className="hidden"
-                id="file-upload"
-              />
-              <Label htmlFor="file-upload" className="cursor-pointer">
-                <span className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                  Select Files
-                </span>
-              </Label>
-            </div>
-
-            {documents.length > 0 && (
-              <div className="space-y-2">
-                <h4 className="font-medium">Uploaded Documents</h4>
-                {documents.map((file, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-3 bg-muted rounded-lg"
-                  >
-                    <div className="flex items-center gap-3">
-                      <FileText className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">{file.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {(file.size / 1024 / 1024).toFixed(2)} MB
-                        </p>
-                      </div>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeDocument(index)}
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Step 3: Bank Details */}
-        {currentStep === 3 && (
           <div className="space-y-4">
             <Alert>
               <AlertCircle className="h-4 w-4" />
@@ -429,8 +323,7 @@ export function VendorRegistrationForm({
           </div>
         )}
 
-        {/* Step 4: Review */}
-        {currentStep === 4 && (
+        {currentStep === 3 && (
           <div className="space-y-6">
             <div>
               <h3 className="font-semibold mb-2">Business Information</h3>
@@ -453,15 +346,6 @@ export function VendorRegistrationForm({
                 </p>
                 <p>
                   <strong>Phone:</strong> {registrationForm.getValues("phone")}
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-2">Documents</h3>
-              <div className="bg-muted p-4 rounded-lg">
-                <p className="text-sm">
-                  {documents.length} document(s) uploaded
                 </p>
               </div>
             </div>
@@ -493,7 +377,6 @@ export function VendorRegistrationForm({
           </div>
         )}
 
-        {/* Navigation Buttons */}
         <div className="flex justify-between mt-8">
           <Button
             variant="outline"

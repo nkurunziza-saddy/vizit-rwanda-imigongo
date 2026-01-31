@@ -1,465 +1,349 @@
-// Mock API Handlers
-// These simulate Django backend responses using localStorage
-// When VITE_API_URL is set, the real API will be used instead
-
-import { DB_KEYS, initializeMockDB } from "@/utils/mock-db";
+import {
+  DB_KEYS,
+  type User as DBUser,
+  type Vendor as DBVendor,
+  type Listing as DBListing,
+  type Location as DBLocation,
+  type Booking as DBBooking,
+  type ListingMedia as DBListingMedia,
+} from "@/utils/mock-db";
 import type {
-  Listing,
-  Booking,
   User,
+  Vendor,
+  Listing,
   ListingFilters,
   BookingFilters,
   LoginInput,
   RegisterInput,
   CreateListingInput,
   CreateBookingInput,
-} from "@/schemas";
-import type { Location, Vendor } from "@/utils/mock-db";
-// Ensure mock DB is initialized
-initializeMockDB();
+} from "@/types";
 
-// Helper to simulate network delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// Helper to get data from localStorage
 const getFromStorage = <T>(key: string): T[] => {
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : [];
+  if (typeof window === "undefined") return [];
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : [];
 };
 
-// Helper to save data to localStorage
-const saveToStorage = <T>(key: string, data: T[]) => {
-  localStorage.setItem(key, JSON.stringify(data));
-};
+const mapVendorToSchema = (v: DBVendor): Vendor => ({
+  id: String(v.id),
+  userId: String(v.user_id),
+  businessName: v.business_name,
+  vendorType: v.vendor_type,
+  bio: v.bio || "",
+  status: v.is_approved
+    ? "approved"
+    : (v as any).status || (v.is_approved === false ? "pending" : "pending"),
+  isApproved: v.is_approved,
+  approvedBy: v.approved_by ? String(v.approved_by) : undefined,
+  approvedAt: v.approved_at,
+  email: "vendor@example.com",
+  phone: "+250 788 000 000",
+  address: "Kigali, Rwanda",
+  commissionRate: 10,
+  createdAt: (v as any).created_at || new Date().toISOString(),
+  updatedAt: (v as any).updated_at || new Date().toISOString(),
+  bankAccountName: (v as any).bank_account_name,
+  bankAccountNumber: (v as any).bank_account_number,
+  bankName: (v as any).bank_name,
+  bankSwiftCode: (v as any).bank_swift_code,
+});
+
+const mapListingToSchema = (l: DBListing): Listing => ({
+  id: l.id,
+  vendorId: l.vendor_id,
+  locationId: l.location_id,
+  title: l.title,
+  listingType: l.listing_type,
+  description: l.description,
+  basePrice: l.base_price,
+  currency: l.currency,
+  capacity: l.capacity,
+  status: l.status,
+  imageUrl: l.image_url,
+  createdAt: l.created_at,
+  updatedAt: (l as any).updated_at || new Date().toISOString(),
+  addons: l.addons || [],
+});
+
+const mapUserToSchema = (u: DBUser): User => ({
+  id: u.id,
+  fullName: u.full_name,
+  email: u.email,
+  phone: u.phone,
+  role: u.role,
+  preferredCurrency: u.preferred_currency,
+  isActive: true,
+  createdAt: u.created_at,
+});
 
 export const mockHandlers = {
-  // Auth handlers
   auth: {
-    login: async (data: LoginInput): Promise<{ user: User; token: string }> => {
-      await delay(800);
-
-      const users = getFromStorage<User>(DB_KEYS.USERS);
-      const user = users.find((u) => u.email === data.email);
+    login: async (data: LoginInput) => {
+      await delay(500);
+      const users = getFromStorage<DBUser>(DB_KEYS.USERS);
+      const user = users.find(
+        (u) => u.email === data.email && u.password_hash === data.password,
+      );
 
       if (!user) {
         throw new Error("Invalid credentials");
       }
 
-      // In real app, password would be hashed
-      // For mock, we accept any password with "masterpassword" override
-      if (data.password !== "masterpassword") {
-        // Check stored password (in real app this would be hashed)
-        const storedPassword = localStorage.getItem(`pwd_${user.id}`);
-        if (storedPassword && storedPassword !== data.password) {
-          throw new Error("Invalid credentials");
-        }
-      }
-
       const token = `mock_token_${user.id}_${Date.now()}`;
       localStorage.setItem("vizit_auth_token", token);
+      localStorage.setItem(
+        "vizit_current_user",
+        JSON.stringify(mapUserToSchema(user)),
+      );
 
-      return {
-        user: {
-          id: user.id,
-          fullName: user.fullName,
-          email: user.email,
-          phone: user.phone,
-          role: user.role,
-          preferredCurrency: user.preferredCurrency,
-          isActive: true,
-          createdAt: user.createdAt,
-        },
-        token,
-      };
+      return { user: mapUserToSchema(user), token };
     },
-
-    register: async (
-      data: RegisterInput,
-    ): Promise<{ user: User; token: string }> => {
+    register: async (data: RegisterInput) => {
       await delay(800);
-
-      const users = getFromStorage<User>(DB_KEYS.USERS);
-
+      const users = getFromStorage<DBUser>(DB_KEYS.USERS);
       if (users.find((u) => u.email === data.email)) {
-        throw new Error("Email already registered");
+        throw new Error("Email already exists");
       }
 
-      const newUser: User = {
-        id: users.length > 0 ? Math.max(...users.map((u) => u.id)) + 1 : 1,
-        fullName: data.fullName,
+      const newUser: DBUser = {
+        id: users.length + 1,
+        full_name: data.fullName,
         email: data.email,
-        phone: data.phone,
-        role: data.role || "tourist",
-        preferredCurrency: "USD",
-        isActive: true,
-        createdAt: new Date().toISOString(),
+        password_hash: data.password,
+        phone: "",
+        role: data.role as "tourist" | "vendor" | "admin",
+        preferred_currency: "USD",
+        created_at: new Date().toISOString(),
       };
 
       users.push(newUser);
-      saveToStorage(DB_KEYS.USERS, users);
-
-      // Store password separately (in real app, this would be hashed)
-      localStorage.setItem(`pwd_${newUser.id}`, data.password);
+      localStorage.setItem(DB_KEYS.USERS, JSON.stringify(users));
 
       const token = `mock_token_${newUser.id}_${Date.now()}`;
-      localStorage.setItem("vizit_auth_token", token);
-
-      return {
-        user: newUser,
-        token,
-      };
+      return { user: mapUserToSchema(newUser), token };
     },
-
-    logout: async (): Promise<void> => {
-      await delay(300);
+    logout: async () => {
+      await delay(200);
       localStorage.removeItem("vizit_auth_token");
       localStorage.removeItem("vizit_current_user");
+      return { success: true };
     },
-
-    me: async (): Promise<User | null> => {
+    me: async () => {
       await delay(300);
-      const token = localStorage.getItem("vizit_auth_token");
-      if (!token) return null;
-
-      const storedUser = localStorage.getItem("vizit_current_user");
-      if (storedUser) {
-        return JSON.parse(storedUser);
-      }
-
-      return null;
+      const userStr = localStorage.getItem("vizit_current_user");
+      if (!userStr) throw new Error("Not authenticated");
+      return JSON.parse(userStr);
     },
   },
 
-  // Listing handlers
   listings: {
-    getAll: async (filters?: ListingFilters): Promise<Listing[]> => {
-      await delay(500);
+    getAll: async (filters?: ListingFilters) => {
+      await delay(600);
+      let listings = getFromStorage<DBListing>(DB_KEYS.LISTINGS);
+      // vendors and locations variables removed as they are unused
 
-      let listings = getFromStorage<Listing>(DB_KEYS.LISTINGS);
-
-      if (filters) {
-        if (filters.category && filters.category !== "all") {
-          listings = listings.filter((l) =>
-            l.listing_type.includes(filters.category!),
-          );
-        }
-
-        if (filters.search) {
-          const searchLower = filters.search.toLowerCase();
-          listings = listings.filter(
-            (l) =>
-              l.title.toLowerCase().includes(searchLower) ||
-              l.description.toLowerCase().includes(searchLower),
-          );
-        }
-
-        if (filters.priceMin !== undefined) {
-          listings = listings.filter((l) => l.base_price >= filters.priceMin!);
-        }
-
-        if (filters.priceMax !== undefined) {
-          listings = listings.filter((l) => l.base_price <= filters.priceMax!);
-        }
-
-        if (filters.locationId) {
-          listings = listings.filter(
-            (l) => l.location_id === filters.locationId,
-          );
-        }
+      // Join data manually since we can't mutate DB types easily to generic ANY without casting
+      // Filter first for performance
+      if (filters?.search) {
+        const q = filters.search.toLowerCase();
+        listings = listings.filter(
+          (l) =>
+            l.title.toLowerCase().includes(q) ||
+            l.description.toLowerCase().includes(q),
+        );
       }
 
-      return listings;
-    },
+      if (filters?.category) {
+        listings = listings.filter((l) => l.listing_type === filters.category);
+      }
 
-    getById: async (
-      id: number,
-    ): Promise<{ listing: Listing; media: any[] } | null> => {
+      return listings.map((l) => mapListingToSchema(l));
+    },
+    getById: async (id: number) => {
       await delay(300);
-
-      const listings = getFromStorage<Listing>(DB_KEYS.LISTINGS);
+      const listings = getFromStorage<DBListing>(DB_KEYS.LISTINGS);
       const listing = listings.find((l) => l.id === id);
+      if (!listing) throw new Error("Listing not found");
 
-      if (!listing) return null;
+      const schemaListing = mapListingToSchema(listing);
+      const media = getFromStorage<DBListingMedia>(
+        DB_KEYS.LISTING_MEDIA,
+      ).filter((m) => m.listing_id === id);
 
-      const media = getFromStorage<any>(DB_KEYS.LISTING_MEDIA).filter(
-        (m) => m.listing_id === id,
-      );
+      const mappedMedia = media.map((m) => ({
+        id: m.id,
+        listingId: m.listing_id,
+        mediaUrl: m.media_url,
+        mediaType: m.media_type,
+        sortOrder: m.sort_order,
+      }));
 
-      return { listing, media };
+      return {
+        listing: schemaListing,
+        media: mappedMedia,
+      };
     },
-
-    create: async (
-      data: CreateListingInput,
-      vendorId: number,
-    ): Promise<Listing> => {
+    search: async (query: string) => {
+      await delay(400);
+      const listings = getFromStorage<DBListing>(DB_KEYS.LISTINGS);
+      const q = query.toLowerCase();
+      const matched = listings.filter(
+        (l) =>
+          l.title.toLowerCase().includes(q) ||
+          l.description.toLowerCase().includes(q),
+      );
+      return matched.map(mapListingToSchema);
+    },
+    create: async (data: CreateListingInput, userId: string | number) => {
       await delay(800);
+      const listings = getFromStorage<DBListing>(DB_KEYS.LISTINGS);
+      const vendors = getFromStorage<DBVendor>(DB_KEYS.VENDORS);
+      const vendor =
+        vendors.find((v) => String(v.user_id) === String(userId)) || vendors[0];
 
-      const listings = getFromStorage<Listing>(DB_KEYS.LISTINGS);
+      if (!vendor) throw new Error("Vendor not found for user");
 
-      const newListing: Listing = {
-        id:
-          listings.length > 0 ? Math.max(...listings.map((l) => l.id)) + 1 : 1,
-        vendor_id: vendorId,
-        location_id: data.locationId,
+      const newListing: DBListing = {
+        id: listings.length + 1,
+        vendor_id: vendor.id,
+        location_id: data.locationId ?? 1,
         title: data.title,
-        listing_type: data.listingType,
+        listing_type: data.listingType as any,
         description: data.description,
         base_price: data.basePrice,
         currency: data.currency,
         capacity: data.capacity,
         status: "active",
-        image_url: undefined, // Add image_url property to match schema
+        image_url: "",
         created_at: new Date().toISOString(),
         addons: [],
       };
 
       listings.push(newListing);
-      saveToStorage(DB_KEYS.LISTINGS, listings);
-
-      return newListing;
-    },
-
-    search: async (query: string): Promise<Listing[]> => {
-      await delay(500);
-
-      const listings = getFromStorage<Listing>(DB_KEYS.LISTINGS);
-      const searchLower = query.toLowerCase();
-
-      return listings.filter(
-        (l) =>
-          l.title.toLowerCase().includes(searchLower) ||
-          l.description.toLowerCase().includes(searchLower) ||
-          l.listing_type.toLowerCase().includes(searchLower),
-      );
+      localStorage.setItem(DB_KEYS.LISTINGS, JSON.stringify(listings));
+      return mapListingToSchema(newListing);
     },
   },
 
-  // Booking handlers
   bookings: {
     getMyBookings: async (
-      userId: number,
-      filters?: BookingFilters,
-    ): Promise<Booking[]> => {
+      userId: string | number,
+      _filters?: BookingFilters,
+    ) => {
       await delay(500);
-
-      let bookings = getFromStorage<Booking>(DB_KEYS.BOOKINGS).filter(
-        (b) => b.userId === userId,
+      if (!userId) return [];
+      const bookings = getFromStorage<DBBooking>(DB_KEYS.BOOKINGS);
+      const userBookings = bookings.filter(
+        (b) => String(b.user_id) === String(userId),
       );
 
-      if (filters?.status) {
-        bookings = bookings.filter((b) => b.status === filters.status);
-      }
-
-      return bookings;
+      return userBookings.map((b) => ({
+        id: b.id,
+        totalAmount: b.total_amount,
+        status: b.status,
+        createdAt: b.created_at,
+      }));
     },
-
-    create: async (
-      data: CreateBookingInput,
-      userId: number,
-    ): Promise<Booking> => {
+    create: async (_data: CreateBookingInput, userId: string | number) => {
       await delay(1000);
-
-      const bookings = getFromStorage<Booking>(DB_KEYS.BOOKINGS);
-      const bookingItems = getFromStorage<any>(DB_KEYS.BOOKING_ITEMS);
-
-      const newBookingId =
-        bookings.length > 0 ? Math.max(...bookings.map((b) => b.id)) + 1 : 1;
-
-      // Calculate total
-      let totalAmount = 0;
-      const newItems = data.items.map((item, index) => {
-        const listings = getFromStorage<Listing>(DB_KEYS.LISTINGS);
-        const listing = listings.find((l) => l.id === item.listingId);
-        if (!listing) throw new Error("Listing not found");
-
-        const itemTotal = listing.base_price * item.quantity;
-        totalAmount += itemTotal;
-
-        return {
-          id: bookingItems.length + index + 1,
-          bookingId: newBookingId,
-          listingId: item.listingId,
-          listingTitle: listing.title,
-          listingType: listing.listing_type,
-          startDate: item.startDate,
-          endDate: item.endDate,
-          quantity: item.quantity,
-          unitPrice: listing.base_price,
-          subtotal: itemTotal,
-          selectedAddons: item.selectedAddons.map((addon) => ({
-            ...addon,
-            subtotal: 0, // Calculate addon subtotal if needed
-          })),
-        };
-      });
-
-      // Generate booking reference (e.g., VZ-2024-0001)
-      const bookingReference = `VZ-${new Date().getFullYear()}-${String(newBookingId).padStart(4, "0")}`;
-
-      const newBooking: Booking = {
-        id: newBookingId,
-        userId,
-        bookingReference,
-        totalAmount,
+      const bookings = getFromStorage<DBBooking>(DB_KEYS.BOOKINGS);
+      const newBooking: DBBooking = {
+        id: bookings.length + 1,
+        user_id: Number(userId),
+        total_amount: 100,
         currency: "USD",
         status: "pending",
-        items: newItems,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       };
-
       bookings.push(newBooking);
-      bookingItems.push(...newItems);
-
-      saveToStorage(DB_KEYS.BOOKINGS, bookings);
-      saveToStorage(DB_KEYS.BOOKING_ITEMS, bookingItems);
-
+      localStorage.setItem(DB_KEYS.BOOKINGS, JSON.stringify(bookings));
       return newBooking;
     },
-
-    getById: async (id: number): Promise<Booking | null> => {
-      await delay(300);
-
-      const bookings = getFromStorage<Booking>(DB_KEYS.BOOKINGS);
-      return bookings.find((b) => b.id === id) || null;
-    },
-
-    cancel: async (id: number): Promise<Booking> => {
-      await delay(500);
-
-      const bookings = getFromStorage<Booking>(DB_KEYS.BOOKINGS);
-      const booking = bookings.find((b) => b.id === id);
-
-      if (!booking) throw new Error("Booking not found");
-
-      booking.status = "cancelled";
-      booking.updatedAt = new Date().toISOString();
-
-      saveToStorage(DB_KEYS.BOOKINGS, bookings);
-
-      return booking;
-    },
   },
 
-  // Location handlers
   locations: {
-    getAll: async (): Promise<Location[]> => {
-      await delay(300);
-      return getFromStorage<Location>(DB_KEYS.LOCATIONS);
-    },
-
-    getById: async (id: number): Promise<Location | null> => {
+    getAll: async () => {
       await delay(200);
-      const locations = getFromStorage<Location>(DB_KEYS.LOCATIONS);
-      return locations.find((l: Location) => l.id === id) || null;
+      return getFromStorage<DBLocation>(DB_KEYS.LOCATIONS);
+    },
+    getById: async (id: number) => {
+      await delay(200);
+      const locations = getFromStorage<DBLocation>(DB_KEYS.LOCATIONS);
+      return locations.find((p) => p.id === id);
     },
   },
 
-  // Vendor handlers
   vendors: {
-    getAll: async (): Promise<Vendor[]> => {
-      await delay(500);
-      return getFromStorage<Vendor>(DB_KEYS.VENDORS);
+    getAll: async () => {
+      await delay(400);
+      const vendors = getFromStorage<DBVendor>(DB_KEYS.VENDORS);
+      return vendors.map(mapVendorToSchema);
     },
-
-    getById: async (id: number): Promise<Vendor | null> => {
+    getByUserId: async (userId: string | number) => {
       await delay(300);
-      const vendors = getFromStorage<Vendor>(DB_KEYS.VENDORS);
-      return vendors.find((v: Vendor) => v.id === id) || null;
+      const vendors = getFromStorage<DBVendor>(DB_KEYS.VENDORS);
+      const vendor = vendors.find((v) => String(v.user_id) === String(userId));
+      if (!vendor) return null;
+      return mapVendorToSchema(vendor);
     },
-
-    getByUserId: async (userId: number): Promise<Vendor | null> => {
-      await delay(300);
-      const vendors = getFromStorage<Vendor>(DB_KEYS.VENDORS);
-      return vendors.find((v: Vendor) => v.user_id === userId) || null;
-    },
-
-    register: async (
-      data: { businessName: string; vendorType: string; bio: string },
-      userId: number,
-    ): Promise<Vendor> => {
-      await delay(800);
-
-      const vendors = getFromStorage<Vendor>(DB_KEYS.VENDORS);
-
-      const newVendor: Vendor = {
-        id: vendors.length > 0 ? Math.max(...vendors.map((v) => v.id)) + 1 : 1,
-        user_id: userId,
+    register: async (data: any, userId: string | number) => {
+      await delay(1000);
+      const vendors = getFromStorage<DBVendor>(DB_KEYS.VENDORS);
+      const newVendor: DBVendor = {
+        id: vendors.length + 1,
+        user_id: Number(userId),
         business_name: data.businessName,
-        vendor_type: data.vendorType as any,
+        vendor_type: data.vendorType,
         bio: data.bio,
         is_approved: false,
+        approved_by: undefined,
+        approved_at: undefined,
       };
-
       vendors.push(newVendor);
-      saveToStorage(DB_KEYS.VENDORS, vendors);
-
-      return newVendor;
+      localStorage.setItem(DB_KEYS.VENDORS, JSON.stringify(vendors));
+      return mapVendorToSchema(newVendor);
     },
   },
 
-  // Admin handlers
   admin: {
-    getPendingVendors: async (): Promise<any[]> => {
-      await delay(500);
-      const vendors = getFromStorage<Vendor>(DB_KEYS.VENDORS);
-      const users = getFromStorage<User>(DB_KEYS.USERS);
-      
-      return vendors
-        .filter((v) => !v.is_approved)
-        .map(v => {
-          const user = users.find(u => u.id === v.user_id);
-          return {
-            ...v,
-            email: user?.email || "",
-            phone: user?.phone || "",
-            documents: []
-          };
-        });
+    getPendingVendors: async () => {
+      await delay(600);
+      const vendors = getFromStorage<DBVendor>(DB_KEYS.VENDORS);
+      const pending = vendors.filter((v) => v.is_approved === false);
+      return pending.map(mapVendorToSchema);
     },
-
-    approveVendor: async (
-      vendorId: number,
-      approved: boolean,
-    ): Promise<Vendor> => {
+    approveVendor: async (id: number, approved: boolean) => {
       await delay(500);
+      const vendors = getFromStorage<DBVendor>(DB_KEYS.VENDORS);
+      const index = vendors.findIndex((v) => v.id === id);
+      if (index === -1) throw new Error("Vendor not found");
 
-      const vendors = getFromStorage<Vendor>(DB_KEYS.VENDORS);
-      const vendor = vendors.find((v) => v.id === vendorId);
+      vendors[index].is_approved = approved;
+      if (approved) {
+        vendors[index].approved_at = new Date().toISOString();
+        vendors[index].approved_by = 1;
+      }
 
-      if (!vendor) throw new Error("Vendor not found");
-
-      vendor.is_approved = approved;
-      vendor.approved_at = new Date().toISOString();
-
-      saveToStorage(DB_KEYS.VENDORS, vendors);
-
-      return vendor;
+      localStorage.setItem(DB_KEYS.VENDORS, JSON.stringify(vendors));
+      return mapVendorToSchema(vendors[index]);
     },
-
-    getAllUsers: async (): Promise<User[]> => {
-      await delay(500);
-      return getFromStorage<User>(DB_KEYS.USERS);
-    },
-
-    getDashboardStats: async (): Promise<{
-      totalUsers: number;
-      totalVendors: number;
-      totalBookings: number;
-      pendingVendors: number;
-    }> => {
-      await delay(500);
-
-      const users = getFromStorage<User>(DB_KEYS.USERS);
-      const vendors = getFromStorage<Vendor>(DB_KEYS.VENDORS);
-      const bookings = getFromStorage<Booking>(DB_KEYS.BOOKINGS);
-
+    getDashboardStats: async () => {
+      await delay(400);
       return {
-        totalUsers: users.length,
-        totalVendors: vendors.length,
-        totalBookings: bookings.length,
-        pendingVendors: vendors.filter((v) => !v.is_approved).length,
+        totalRevenue: 15400,
+        activeBookings: 24,
+        pendingApprovals: 5,
+        totalUsers: 142,
       };
+    },
+    getAllUsers: async () => {
+      await delay(500);
+      const users = getFromStorage<DBUser>(DB_KEYS.USERS);
+      return users.map(mapUserToSchema);
     },
   },
 };

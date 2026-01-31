@@ -92,17 +92,12 @@ export const validateTicketFn = createServerFn({
   }
 });
 
-/**
- * Generate ticket PDF blob
- * Returns PDF as base64 string for download/email
- */
 export const generateTicketPdfFn = createServerFn({
   method: "POST",
 }).handler(async (ctx: any) => {
   const body = (await ctx.request.json()) as Ticket;
 
   try {
-    // Dynamic import to avoid bundling @react-pdf/renderer on client
     const { renderToBuffer } = await import("@react-pdf/renderer");
     const { TicketPDF } = await import("@/components/ticket/ticket-pdf");
 

@@ -1,26 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { VendorApprovalCard } from "@/components/vendor";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import {
-  Search,
-  Filter,
-  Users,
-  Clock,
-  CheckCircle,
-  XCircle,
-} from "lucide-react";
-import type { Vendor, VendorStatus } from "@/schemas/vendor.schema";
+import { Clock, Users, CheckCircle, XCircle, Check, X } from "lucide-react";
+import type { Vendor } from "@/schemas/vendor.schema";
+import { DataTable } from "@/components/data-table/data-table";
+import { approvalColumns } from "@/components/dashboard/tables/approvals-columns";
+import type { ColumnDef } from "@tanstack/react-table";
 
 /**
  * Admin Approvals Dashboard
@@ -46,26 +31,6 @@ const mockVendors: Vendor[] = [
     address: "KN 3 Rd, Kigali",
     status: "pending",
     isApproved: false,
-    documents: [
-      {
-        id: "d-1",
-        vendorId: "v-1",
-        documentType: "business_registration",
-        fileName: "business_reg.pdf",
-        fileUrl: "/docs/business_reg.pdf",
-        uploadedAt: new Date().toISOString(),
-        status: "pending",
-      },
-      {
-        id: "d-2",
-        vendorId: "v-1",
-        documentType: "tax_certificate",
-        fileName: "tax_cert.pdf",
-        fileUrl: "/docs/tax_cert.pdf",
-        uploadedAt: new Date().toISOString(),
-        status: "pending",
-      },
-    ],
     bankAccountName: "Kigali Heights Ltd",
     bankAccountNumber: "1234567890",
     bankName: "Bank of Kigali",
@@ -84,26 +49,6 @@ const mockVendors: Vendor[] = [
     address: "Airport Road, Kigali",
     status: "under_review",
     isApproved: false,
-    documents: [
-      {
-        id: "d-3",
-        vendorId: "v-2",
-        documentType: "business_registration",
-        fileName: "reg.pdf",
-        fileUrl: "/docs/reg.pdf",
-        uploadedAt: new Date().toISOString(),
-        status: "approved",
-      },
-      {
-        id: "d-4",
-        vendorId: "v-2",
-        documentType: "insurance",
-        fileName: "insurance.pdf",
-        fileUrl: "/docs/insurance.pdf",
-        uploadedAt: new Date().toISOString(),
-        status: "pending",
-      },
-    ],
     bankAccountName: "Rwanda Car Rentals Ltd",
     bankAccountNumber: "0987654321",
     bankName: "Equity Bank",
@@ -124,7 +69,6 @@ const mockVendors: Vendor[] = [
     isApproved: true,
     approvedBy: "u-1",
     approvedAt: new Date().toISOString(),
-    documents: [],
     bankAccountName: "Volcanoes Tours Ltd",
     bankAccountNumber: "555566667777",
     bankName: "GT Bank",
@@ -136,22 +80,6 @@ const mockVendors: Vendor[] = [
 
 function ApprovalsPage() {
   const [vendors, setVendors] = useState<Vendor[]>(mockVendors);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<VendorStatus | "all">("all");
-  const [typeFilter, setTypeFilter] = useState<string>("all");
-
-  // Filter vendors
-  const filteredVendors = vendors.filter((vendor) => {
-    const matchesSearch =
-      vendor.businessName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      vendor.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus =
-      statusFilter === "all" || vendor.status === statusFilter;
-    const matchesType =
-      typeFilter === "all" || vendor.vendorType === typeFilter;
-
-    return matchesSearch && matchesStatus && matchesType;
-  });
 
   // Count by status
   const counts = {
@@ -161,24 +89,27 @@ function ApprovalsPage() {
     rejected: vendors.filter((v) => v.status === "rejected").length,
   };
 
-  const handleApprove = (vendorId: string, commissionRate: number) => {
-    setVendors((prev) =>
-      prev.map((v) =>
-        v.id === vendorId
-          ? {
-              ...v,
-              status: "approved",
-              isApproved: true,
-              approvedAt: new Date().toISOString(),
-              approvedBy: "admin",
-              commissionRate,
-            }
-          : v,
-      ),
-    );
-  };
+  const handleApprove = useCallback(
+    (vendorId: string, commissionRate: number) => {
+      setVendors((prev) =>
+        prev.map((v) =>
+          v.id === vendorId
+            ? {
+                ...v,
+                status: "approved",
+                isApproved: true,
+                approvedAt: new Date().toISOString(),
+                approvedBy: "admin",
+                commissionRate,
+              }
+            : v,
+        ),
+      );
+    },
+    [],
+  );
 
-  const handleReject = (vendorId: string, reason: string) => {
+  const handleReject = useCallback((vendorId: string, reason: string) => {
     setVendors((prev) =>
       prev.map((v) =>
         v.id === vendorId
@@ -190,16 +121,81 @@ function ApprovalsPage() {
           : v,
       ),
     );
-  };
+  }, []);
+
+  const filters = [
+    {
+      columnKey: "status",
+      title: "Status",
+      options: [
+        { label: "Pending", value: "pending" },
+        { label: "Under Review", value: "under_review" },
+        { label: "Approved", value: "approved" },
+        { label: "Rejected", value: "rejected" },
+      ],
+    },
+    {
+      columnKey: "vendorType",
+      title: "Type",
+      options: [
+        { label: "Hotel", value: "hotel" },
+        { label: "BnB", value: "bnb" },
+        { label: "Car Rental", value: "car_rental" },
+        { label: "Tour Operator", value: "tour_operator" },
+        { label: "Guide", value: "guide" },
+      ],
+    },
+  ];
+
+  const columns = useMemo<ColumnDef<Vendor>[]>(
+    () => [
+      ...approvalColumns,
+      {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => {
+          const vendor = row.original;
+          if (vendor.status === "approved" || vendor.status === "rejected") {
+            return null;
+          }
+          return (
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200"
+                onClick={() => handleApprove(vendor.id, 10)}
+                title="Approve"
+              >
+                <Check className="h-4 w-4" />
+                <span className="sr-only">Approve</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                onClick={() => handleReject(vendor.id, "Manually rejected")}
+                title="Reject"
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">Reject</span>
+              </Button>
+            </div>
+          );
+        },
+      },
+    ],
+    [],
+  );
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Approvals</h1>
+          <h2 className="text-2xl font-bold tracking-tight">Approvals</h2>
           <p className="text-muted-foreground">
-            Manage vendor applications and approvals
+            Manage vendor applications and approvals.
           </p>
         </div>
       </div>
@@ -241,108 +237,14 @@ function ApprovalsPage() {
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search vendors..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-
-        <Select
-          value={statusFilter}
-          onValueChange={(value) =>
-            setStatusFilter(value as VendorStatus | "all")
-          }
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filter by status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="under_review">Under Review</SelectItem>
-            <SelectItem value="approved">Approved</SelectItem>
-            <SelectItem value="rejected">Rejected</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <Select
-          value={typeFilter}
-          onValueChange={(value) => setTypeFilter(value || "all")}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filter by type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value="hotel">Hotel</SelectItem>
-            <SelectItem value="bnb">B&B</SelectItem>
-            <SelectItem value="car_rental">Car Rental</SelectItem>
-            <SelectItem value="guide">Tour Guide</SelectItem>
-            <SelectItem value="tour_operator">Tour Operator</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Tabs */}
-      <Tabs defaultValue="vendors" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="vendors">
-            Vendors
-            {counts.pending + counts.under_review > 0 && (
-              <Badge variant="secondary" className="ml-2">
-                {counts.pending + counts.under_review}
-              </Badge>
-            )}
-          </TabsTrigger>
-          <TabsTrigger value="listings">Listings</TabsTrigger>
-          <TabsTrigger value="reviews">Reviews</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="vendors" className="space-y-4">
-          {filteredVendors.length === 0 ? (
-            <div className="text-center py-12">
-              <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-medium">No vendors found</h3>
-              <p className="text-muted-foreground">
-                Try adjusting your filters
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {filteredVendors.map((vendor) => (
-                <VendorApprovalCard
-                  key={vendor.id}
-                  vendor={vendor}
-                  onApprove={handleApprove}
-                  onReject={handleReject}
-                />
-              ))}
-            </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="listings">
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">
-              Listing approvals coming soon
-            </p>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="reviews">
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">
-              Review moderation coming soon
-            </p>
-          </div>
-        </TabsContent>
-      </Tabs>
+      <DataTable
+        columns={columns}
+        data={vendors}
+        searchKey="businessName"
+        searchPlaceholder="Filter vendors..."
+        filters={filters}
+        rowSize="md"
+      />
     </div>
   );
 }

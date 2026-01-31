@@ -16,33 +16,13 @@ export const vendorStatusSchema = z.enum([
   "suspended",
 ]);
 
-export const vendorDocumentSchema = z.object({
-  id: z.string(),
-  vendorId: z.string(),
-  documentType: z.enum([
-    "business_registration",
-    "tax_certificate",
-    "identity_proof",
-    "insurance",
-    "license",
-    "other",
-  ]),
-  fileName: z.string(),
-  fileUrl: z.string(),
-  uploadedAt: z.string(),
-  status: z.enum(["pending", "approved", "rejected"]).default("pending"),
-  reviewedBy: z.string().optional(),
-  reviewedAt: z.string().optional(),
-  rejectionReason: z.string().optional(),
-});
-
 export const vendorSchema = z.object({
   id: z.string(),
   userId: z.string(),
   businessName: z.string().min(2, "Business name is required"),
   vendorType: vendorTypeSchema,
   bio: z.string().optional(),
-  email: z.string().email(),
+  email: z.email(),
   phone: z.string(),
   address: z.string().optional(),
   website: z.string().url().optional(),
@@ -53,8 +33,6 @@ export const vendorSchema = z.object({
   approvedBy: z.string().optional(),
   approvedAt: z.string().optional(),
   rejectionReason: z.string().optional(),
-
-  documents: z.array(vendorDocumentSchema).default([]),
 
   bankAccountName: z.string().optional(),
   bankAccountNumber: z.string().optional(),
@@ -73,10 +51,10 @@ export const vendorRegistrationSchema = z.object({
     .min(2, "Business name must be at least 2 characters"),
   vendorType: vendorTypeSchema,
   bio: z.string().max(500, "Bio must be less than 500 characters").optional(),
-  email: z.string().email("Valid email is required"),
+  email: z.email("Valid email is required"),
   phone: z.string().min(10, "Phone number is required"),
   address: z.string().optional(),
-  website: z.string().url().optional(),
+  website: z.url().optional(),
 });
 
 export const vendorApprovalSchema = z.object({
@@ -84,12 +62,6 @@ export const vendorApprovalSchema = z.object({
   action: z.enum(["approve", "reject"]),
   reason: z.string().optional(),
   commissionRate: z.number().min(0).max(100).optional(),
-});
-
-export const vendorDocumentUploadSchema = z.object({
-  vendorId: z.string(),
-  documentType: vendorDocumentSchema.shape.documentType,
-  file: z.instanceof(File),
 });
 
 export const vendorBankDetailsSchema = z.object({
@@ -111,11 +83,7 @@ export const vendorFiltersSchema = z.object({
 export type Vendor = z.infer<typeof vendorSchema>;
 export type VendorType = z.infer<typeof vendorTypeSchema>;
 export type VendorStatus = z.infer<typeof vendorStatusSchema>;
-export type VendorDocument = z.infer<typeof vendorDocumentSchema>;
 export type VendorRegistrationInput = z.infer<typeof vendorRegistrationSchema>;
 export type VendorApprovalInput = z.infer<typeof vendorApprovalSchema>;
-export type VendorDocumentUploadInput = z.infer<
-  typeof vendorDocumentUploadSchema
->;
 export type VendorBankDetailsInput = z.infer<typeof vendorBankDetailsSchema>;
 export type VendorFilters = z.infer<typeof vendorFiltersSchema>;

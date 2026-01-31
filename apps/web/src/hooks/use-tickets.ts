@@ -1,10 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  generateTicketFn,
-  generateTicketPdfFn,
-} from "@/server-functions/tickets";
-import type { Ticket, TicketValidationResponse } from "@/schemas/ticket.schema";
-import type { Booking } from "@/schemas/booking.schema";
+import type { Ticket, TicketValidationResponse, Booking } from "@/types";
 
 /**
  * Ticket Hooks

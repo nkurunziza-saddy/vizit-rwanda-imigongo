@@ -10,6 +10,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { PageWrapper } from "@/components/layouts/page-wrapper";
 import { useListing } from "@/hooks/use-listings";
 import { toast } from "sonner";
@@ -33,13 +34,46 @@ function ListingDetail() {
     to: addDays(new Date(), 3),
   });
 
-  // Let's implement local addons state to pass to cart
   const [selectedAddons, setSelectedAddons] = useState<
     { addon: any; quantity: number }[]
   >([]);
 
   if (isListingLoading || !data) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <PageWrapper className="flex-1 py-8">
+          <Skeleton className="h-4 w-32 mb-8" />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div className="lg:col-span-8 space-y-8">
+              <div className="space-y-4">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-8 w-3/4" />
+              </div>
+              <Skeleton className="h-px w-full" />
+              <div className="space-y-4">
+                <Skeleton className="h-6 w-32" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+                <Skeleton className="h-4 w-4/6" />
+              </div>
+              <Skeleton className="h-px w-full" />
+              <div className="space-y-4">
+                <Skeleton className="h-6 w-32" />
+                <div className="flex flex-wrap gap-2">
+                  <Skeleton className="h-8 w-20" />
+                  <Skeleton className="h-8 w-24" />
+                  <Skeleton className="h-8 w-16" />
+                  <Skeleton className="h-8 w-28" />
+                </div>
+              </div>
+            </div>
+            <div className="lg:col-span-4">
+              <Skeleton className="h-96 w-full rounded-lg" />
+            </div>
+          </div>
+        </PageWrapper>
+      </div>
+    );
   }
 
   const { listing } = data;
@@ -49,7 +83,7 @@ function ListingDetail() {
 
   const estimatedTotal = (() => {
     if (nights < 1) return 0;
-    const baseTotal = listing.base_price * nights;
+    const baseTotal = listing.basePrice * nights;
     const addonsTotal = selectedAddons.reduce((acc, curr) => {
       const multiplier = curr.addon.price_type === "per_night" ? nights : 1;
       return acc + curr.addon.price * curr.quantity * multiplier;
@@ -80,7 +114,7 @@ function ListingDetail() {
     addToCart({
       listing,
       image:
-        listing.image_url ||
+        listing.imageUrl ||
         "https://placehold.co/600x400/f1f5f9/cbd5e1?text=Image+Unavailable",
       dateRange: date,
       guests: 1,
@@ -105,7 +139,7 @@ function ListingDetail() {
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1.5">
-                    <MapPin className="h-3 w-3" /> {listing.location_id}
+                    <MapPin className="h-3 w-3" /> {listing.locationId}
                   </span>
                   <span>•</span>
                   <div className="flex items-center gap-1">
@@ -179,7 +213,7 @@ function ListingDetail() {
                 <CardHeader className="pb-4 pt-6 px-6">
                   <CardTitle className="flex justify-between items-baseline">
                     <span className="text-xl font-bold">
-                      ${listing.base_price}{" "}
+                      ${listing.basePrice}{" "}
                       <span className="text-sm font-normal text-muted-foreground">
                         / night
                       </span>
@@ -240,9 +274,9 @@ function ListingDetail() {
                     <div className="space-y-3 py-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground underline decoration-dashed">
-                          ${listing.base_price} x {nights} nights
+                          ${listing.basePrice} x {nights} nights
                         </span>
-                        <span>${listing.base_price * nights}</span>
+                        <span>${listing.basePrice * nights}</span>
                       </div>
                       {selectedAddons.length > 0 && (
                         <div className="flex justify-between text-sm">

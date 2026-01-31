@@ -18,19 +18,12 @@ import type {
 } from "@/schemas/vendor.schema";
 import { api } from "@/api/client";
 
-/**
- * Become a Vendor Page
- *
- * Public page for users to register as vendors.
- * Requires authentication.
- */
-
 export const Route = createFileRoute("/_app/become-vendor")({
   component: BecomeVendorPage,
 });
 
 function BecomeVendorPage() {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -57,27 +50,22 @@ function BecomeVendorPage() {
 
   const handleSubmit = async (data: {
     registration: VendorRegistrationInput;
-    documents: File[];
     bankDetails: VendorBankDetailsInput;
   }) => {
     setIsSubmitting(true);
     setError(null);
 
     try {
-      // Register vendor using the API
       await api.registerVendor({
         businessName: data.registration.businessName,
         vendorType: data.registration.vendorType,
         bio: data.registration.bio || "",
       });
-
-      // In a real app we would upload documents and save bank details here too
-      // await uploadDocuments(data.documents);
-      // await saveBankDetails(data.bankDetails);
-
       setIsSuccess(true);
     } catch (err: any) {
-      setError(err.message || "Failed to submit application. Please try again.");
+      setError(
+        err.message || "Failed to submit application. Please try again.",
+      );
     } finally {
       setIsSubmitting(false);
     }

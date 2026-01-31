@@ -121,45 +121,6 @@ export function VendorApprovalCard({
           </div>
         )}
 
-        <div>
-          <h4 className="text-sm font-medium mb-2">
-            Documents ({vendor.documents.length})
-          </h4>
-          {vendor.documents.length > 0 ? (
-            <div className="space-y-2">
-              {vendor.documents.map((doc) => (
-                <div
-                  key={doc.id}
-                  className="flex items-center justify-between p-2 bg-muted rounded text-sm"
-                >
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-muted-foreground" />
-                    <span className="capitalize">
-                      {doc.documentType.replace("_", " ")}
-                    </span>
-                  </div>
-                  <Badge
-                    variant={
-                      doc.status === "approved"
-                        ? "default"
-                        : doc.status === "rejected"
-                          ? "destructive"
-                          : "secondary"
-                    }
-                    className="text-xs"
-                  >
-                    {doc.status}
-                  </Badge>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              No documents uploaded
-            </p>
-          )}
-        </div>
-
         {vendor.bankAccountName && (
           <>
             <Separator />

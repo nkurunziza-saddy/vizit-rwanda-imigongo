@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { MapPin, Calendar as CalendarIcon, Users } from "lucide-react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { addDays, format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -14,7 +14,6 @@ import { TicketSelectionModal } from "@/components/booking/ticket-modal";
 import { toast } from "sonner";
 
 export default function Hero() {
-  const navigate = useNavigate();
   const [locationFrom, setLocationFrom] = useState("");
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(),
@@ -26,11 +25,6 @@ export default function Hero() {
   const handleSearch = () => {
     if (!locationFrom.trim()) {
       setShowTicketModal(false);
-      // You might want to import toast if not already imported or available
-      // Assuming toast is available from sonner or similar based on previous file context
-      // But looking at imports, toast is NOT imported. I need to add import toast from sonner.
-      // Wait, I can't add imports in this block cleanly without checking imports first.
-      // Let me check imports first.
       toast.error("Please enter a departure city");
       return;
     }

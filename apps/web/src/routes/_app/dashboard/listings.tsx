@@ -18,7 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/motion/dialog";
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,7 +31,8 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { toast } from "sonner";
-import { type Listing, DB_KEYS } from "@/utils/mock-db";
+import type { Listing } from "@/schemas";
+import { DB_KEYS, type Listing as DBListing } from "@/utils/mock-db";
 
 export const Route = createFileRoute("/_app/dashboard/listings")({
   component: VendorListings,
@@ -41,7 +42,7 @@ function VendorListings() {
   const { user } = useAuth();
   const { data: allListings } = useListings();
 
-  const myListings = allListings?.filter((l) => l.vendor_id === user?.id) || [];
+  const myListings = allListings?.filter((l) => l.vendorId === user?.id) || [];
   const displayListings =
     myListings.length > 0 ? myListings : allListings?.slice(0, 4) || [];
 
@@ -50,7 +51,7 @@ function VendorListings() {
       const stored = localStorage.getItem(DB_KEYS.LISTINGS);
       if (stored) {
         const listings = JSON.parse(stored);
-        const updated = listings.filter((l: Listing) => l.id !== id);
+        const updated = listings.filter((l: DBListing) => l.id !== id);
         localStorage.setItem(DB_KEYS.LISTINGS, JSON.stringify(updated));
         toast.success("Listing deleted");
         window.location.reload();
@@ -62,11 +63,12 @@ function VendorListings() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-muted-foreground uppercase text-sm">
+          <h2 className="text-2xl font-bold tracking-tight">Listings</h2>
+          <p className="text-muted-foreground">
             Manage your properties and services.
           </p>
         </div>
-        <AddListingDialog vendorId={user?.id || 1} />
+        <AddListingDialog vendorId={Number(user?.id) || 1} />
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {displayListings.map((listing) => (
@@ -78,8 +80,12 @@ function VendorListings() {
         ))}
       </div>
       {myListings.length === 0 && (
-        <div className="text-center text-xs text-muted-foreground mt-4 p-4 border rounded bg-muted/20">
-          (Displaying demo listings. Add a listing to see your own.)
+        <div className="text-center text-sm text-muted-foreground mt-8 p-12 border border-dashed rounded-lg bg-muted/20">
+          <p>No listings found.</p>
+          <p className="text-xs mt-1">
+            (Displaying demo listings if available. Add a listing to see your
+            own.)
+          </p>
         </div>
       )}
     </div>
@@ -98,14 +104,14 @@ function ListingItem({
       <div className="aspect-video w-full bg-muted relative overflow-hidden rounded-t-lg">
         <img
           src={
-            listing.image_url ||
+            listing.imageUrl ||
             "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
           }
           alt={listing.title}
-          className="object-cover w-full h-full"
+          className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
         />
         <Badge className="absolute top-2 right-2 uppercase" variant="secondary">
-          {listing.listing_type}
+          {listing.listingType?.replace("_", " ")}
         </Badge>
       </div>
       <CardHeader className="p-4 pb-2">
@@ -115,14 +121,14 @@ function ListingItem({
           </CardTitle>
         </div>
         <CardDescription className="flex items-center gap-1 text-xs">
-          <MapPin className="h-3 w-3" /> Location {listing.location_id}
+          <MapPin className="h-3 w-3" /> Location {listing.locationId}
         </CardDescription>
       </CardHeader>
       <CardContent className="p-4 pt-2 space-y-4">
         <div className="flex justify-between items-center text-sm">
           <span className="font-semibold flex items-center gap-1">
             <DollarSign className="h-3 w-3" />
-            {listing.base_price}{" "}
+            {listing.basePrice}{" "}
             <span className="font-normal text-muted-foreground">/ night</span>
           </span>
           <Badge variant={listing.status === "active" ? "default" : "outline"}>
@@ -137,7 +143,7 @@ function ListingItem({
           <Button
             variant="outline"
             size="sm"
-            className="text-destructive hover:text-destructive"
+            className="text-destructive hover:text-destructive hover:bg-destructive/10"
             onClick={onDelete}
           >
             <Trash2 className="h-4 w-4" />
@@ -157,19 +163,27 @@ function AddListingDialog({ vendorId }: { vendorId: number }) {
     setIsLoading(true);
     const formData = new FormData(e.currentTarget);
 
-    const newListing: Partial<Listing> = {
+    // Create new listing object. Note: Mock DB expects snake_case keys.
+    const newListing: DBListing = {
       id: Date.now(),
       vendor_id: vendorId,
+      location_id: 1, // Defaulting for mock
       title: formData.get("title") as string,
+      listing_type: formData.get("type") as
+        | "hotel_room"
+        | "bnb"
+        | "car"
+        | "tour"
+        | "guide"
+        | "ticket",
       description: formData.get("description") as string,
       base_price: Number(formData.get("price")),
-      listing_type: formData.get("type") as any,
-      location_id: 1, // Defaulting for mock
-      status: "active",
       currency: "USD",
+      capacity: 2,
+      status: "active",
+      image_url: "",
       created_at: new Date().toISOString(),
       addons: [],
-      capacity: 2,
     };
 
     // Simulate API call
@@ -187,10 +201,8 @@ function AddListingDialog({ vendorId }: { vendorId: number }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" /> Add New Listing
-        </Button>
+      <DialogTrigger render={<Button />}>
+        <Plus /> Add New Listing
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -226,6 +238,7 @@ function AddListingDialog({ vendorId }: { vendorId: number }) {
                   <SelectItem value="bnb">BnB</SelectItem>
                   <SelectItem value="car">Car Rental</SelectItem>
                   <SelectItem value="tour">Tour</SelectItem>
+                  <SelectItem value="guide">Guide</SelectItem>
                 </SelectContent>
               </Select>
             </div>

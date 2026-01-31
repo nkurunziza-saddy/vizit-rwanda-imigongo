@@ -1,6 +1,7 @@
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { Search, Filter, X, MapPin, Sparkles } from "lucide-react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Pagination,
@@ -34,6 +35,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 
 import ListingCard from "@/components/listing-card";
@@ -42,20 +44,22 @@ import { useListings } from "@/hooks/use-listings";
 import { useDebounce } from "@/hooks/use-debounce";
 import { cn } from "@/lib/utils";
 
+const searchSchema = z.object({
+  category: z.string().optional(),
+  search: z.string().optional(),
+  sortBy: z.string().optional(),
+  priceRange: z.array(z.number()).optional(),
+  amenities: z.array(z.string()).optional(),
+  from: z.string().optional(),
+  checkIn: z.string().optional(),
+  checkOut: z.string().optional(),
+  guests: z.number().optional(),
+  page: z.number().optional(),
+});
+
 export const Route = createFileRoute("/_app/listings/")({
   component: Listings,
-  validateSearch: (search: Record<string, unknown>) => ({
-    category: search.category as string | undefined,
-    search: search.search as string | undefined,
-    sortBy: search.sortBy as string | undefined,
-    priceRange: search.priceRange as number[] | undefined,
-    amenities: search.amenities as string[] | undefined,
-    from: search.from as string | undefined,
-    checkIn: search.checkIn as string | undefined,
-    checkOut: search.checkOut as string | undefined,
-    guests: search.guests as number | undefined,
-    page: search.page as number | undefined,
-  }),
+  validateSearch: (search) => searchSchema.parse(search),
 });
 
 const categories = [
@@ -231,9 +235,6 @@ function Listings() {
     navigate({
       search: (prev) => ({
         ...prev,
-        category: undefined,
-        search: undefined,
-        priceRange: undefined,
         page: 1,
       }),
     });
@@ -243,8 +244,56 @@ function Listings() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      <div className="min-h-screen bg-background pb-20">
+        <PageWrapper>
+          <div className="flex flex-col lg:flex-row gap-8 items-start pt-8">
+            <aside className="hidden lg:block w-72 flex-none sticky top-24">
+              <div className="bg-card rounded-lg p-4 border shadow-sm space-y-6">
+                <Skeleton className="h-6 w-20" />
+                <div className="space-y-3">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-11 w-full" />
+                </div>
+                <div className="space-y-3">
+                  <Skeleton className="h-4 w-20" />
+                  <div className="flex flex-wrap gap-2">
+                    <Skeleton className="h-9 w-16" />
+                    <Skeleton className="h-9 w-20" />
+                    <Skeleton className="h-9 w-24" />
+                    <Skeleton className="h-9 w-14" />
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-full" />
+                  <div className="flex justify-between">
+                    <Skeleton className="h-9 w-16" />
+                    <Skeleton className="h-9 w-16" />
+                  </div>
+                </div>
+              </div>
+            </aside>
+            <main className="flex-1 w-full space-y-6">
+              <div className="flex justify-between items-center">
+                <div className="space-y-2">
+                  <Skeleton className="h-6 w-48" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
+                <Skeleton className="h-10 w-32" />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="space-y-3">
+                    <Skeleton className="h-48 w-full rounded-lg" />
+                    <Skeleton className="h-5 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                    <Skeleton className="h-6 w-24" />
+                  </div>
+                ))}
+              </div>
+            </main>
+          </div>
+        </PageWrapper>
       </div>
     );
   }
@@ -255,7 +304,7 @@ function Listings() {
     listings?.filter((listing) => {
       const matchesCategory =
         selectedCategory === "all" ||
-        listing.listing_type.includes(
+        listing.listingType.includes(
           selectedCategory === "hotel" ? "hotel" : selectedCategory,
         );
 
@@ -264,8 +313,8 @@ function Listings() {
         "location".toLowerCase().includes(activeSearchQuery);
 
       const matchesPrice =
-        listing.base_price >= priceRange[0] &&
-        listing.base_price <= priceRange[1];
+        listing.basePrice >= priceRange[0] &&
+        listing.basePrice <= priceRange[1];
 
       return matchesCategory && matchesSearch && matchesPrice;
     }) || [];
@@ -426,18 +475,18 @@ function Listings() {
                     key={listing.id}
                     id={listing.id.toString()}
                     title={listing.title}
-                    location={`Location ${listing.location_id}`}
-                    price={listing.base_price}
+                    location={`Location ${listing.locationId}`}
+                    price={listing.basePrice}
                     rating={4.8}
                     reviewCount={12}
                     image={
-                      listing.image_url ||
+                      listing.imageUrl ||
                       "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
                     }
                     category={
-                      listing.listing_type.includes("hotel")
+                      listing.listingType.includes("hotel")
                         ? "hotel"
-                        : listing.listing_type.includes("car")
+                        : listing.listingType.includes("car")
                           ? "car"
                           : "tour"
                     }

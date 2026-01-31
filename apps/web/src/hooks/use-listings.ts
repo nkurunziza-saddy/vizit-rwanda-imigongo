@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
-import type { ListingFilters, CreateListingInput } from "@/schemas";
+import type { ListingFilters, CreateListingInput } from "@/types";
 
 // Query keys for listings
 export const listingKeys = {

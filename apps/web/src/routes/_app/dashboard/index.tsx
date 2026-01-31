@@ -15,13 +15,14 @@ import QRCode from "react-qr-code";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/motion/dialog";
+} from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/context/auth-context";
 import { useMyBookings } from "@/hooks/use-bookings";
@@ -53,15 +54,25 @@ function DashboardIndex() {
 
 function TouristDashboard() {
   const { user } = useAuth();
-  const { data: bookings, isLoading } = useMyBookings(user?.id);
+  const { data: bookings, isLoading } = useMyBookings(
+    user?.id ? { page: 1, perPage: 10 } : undefined,
+  );
 
   if (isLoading)
     return (
-      <div className="flex flex-col items-center justify-center py-20 gap-4">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-        <p className="text-muted-foreground animate-pulse">
-          Loading your adventures...
-        </p>
+      <div className="space-y-6">
+        <Skeleton className="h-4 w-64" />
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Skeleton className="h-32 rounded-lg" />
+          <Skeleton className="h-32 rounded-lg" />
+          <Skeleton className="h-32 rounded-lg" />
+          <Skeleton className="h-32 rounded-lg" />
+        </div>
+        <Skeleton className="h-10 w-64" />
+        <div className="space-y-4">
+          <Skeleton className="h-40 rounded-lg" />
+          <Skeleton className="h-40 rounded-lg" />
+        </div>
       </div>
     );
 
@@ -100,21 +111,7 @@ function TouristDashboard() {
               Ready for your next adventure in Rwanda? Explore our top-rated
               stays and tours.
             </p>
-            <Link
-              to="/listings"
-              search={{
-                category: undefined,
-                search: undefined,
-                sortBy: undefined,
-                priceRange: undefined,
-                amenities: undefined,
-                from: undefined,
-                checkIn: undefined,
-                checkOut: undefined,
-                guests: undefined,
-                page: undefined,
-              }}
-            >
+            <Link to="/listings">
               <Button size="lg" className="px-8 shadow-md">
                 Explore Destinations
               </Button>
@@ -395,21 +392,25 @@ function VendorDashboard() {
   );
 }
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { api } from "@/api/client";
-import { VendorApprovalCard } from "@/components/vendor/vendor-approval-card";
-
+import { DataTable } from "@/components/data-table/data-table";
+import { approvalColumns } from "@/components/dashboard/tables/approvals-columns";
+import { VendorApplicationDetails } from "@/components/dashboard/tables/vendor-application-details";
+import { ColumnDef } from "@tanstack/react-table";
+import { Vendor } from "@/schemas/vendor.schema";
+import { ChevronDown, ChevronRight, Check, X } from "lucide-react";
 // ... existing imports ...
 
 function AdminDashboard() {
-  const [pendingVendors, setPendingVendors] = useState<any[]>([]);
+  const [pendingVendors, setPendingVendors] = useState<Vendor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchPendingVendors = async () => {
     try {
       setIsLoading(true);
       const vendors = await api.getPendingVendors();
-      setPendingVendors(vendors);
+      setPendingVendors(vendors as Vendor[]);
     } catch (error) {
       console.error("Failed to fetch pending vendors:", error);
     } finally {
@@ -421,26 +422,86 @@ function AdminDashboard() {
     fetchPendingVendors();
   }, []);
 
-  const handleApprove = async (vendorId: string, commissionRate: number) => {
-     try {
-        await api.approveVendor(Number(vendorId), true);
-        // Refresh list
-        fetchPendingVendors();
-     } catch (e) {
-        console.error("Failed to approve vendor", e);
-     }
+  const handleApprove = async (vendorId: string, _commissionRate: number) => {
+    try {
+      await api.approveVendor(Number(vendorId), true);
+      // Refresh list
+      fetchPendingVendors();
+    } catch (e) {
+      console.error("Failed to approve vendor", e);
+    }
   };
 
-  const handleReject = async (vendorId: string, reason: string) => {
-     try {
-        // For now, mapping reject to approve(false)
-        await api.approveVendor(Number(vendorId), false);
-        // Refresh list
-        fetchPendingVendors();
-     } catch (e) {
-        console.error("Failed to reject vendor", e);
-     }
+  const handleReject = async (vendorId: string, _reason: string) => {
+    try {
+      // For now, mapping reject to approve(false)
+      await api.approveVendor(Number(vendorId), false);
+      // Refresh list
+      fetchPendingVendors();
+    } catch (e) {
+      console.error("Failed to reject vendor", e);
+    }
   };
+
+  const columns = useMemo<ColumnDef<Vendor>[]>(
+    () => [
+      {
+        accessorKey: "expander",
+        header: () => null,
+        cell: ({ row }) => {
+          return row.getCanExpand() ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="p-0 w-6 h-6"
+              onClick={row.getToggleExpandedHandler()}
+            >
+              {row.getIsExpanded() ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </Button>
+          ) : null;
+        },
+        enableSorting: false,
+        enableHiding: false,
+      },
+      ...approvalColumns,
+      {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => {
+          const vendor = row.original;
+          return (
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200"
+                onClick={() => handleApprove(vendor.id, 10)}
+                title="Approve"
+              >
+                <Check className="h-4 w-4" />
+                <span className="sr-only">Approve</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                onClick={() => handleReject(vendor.id, "Manually rejected")}
+                title="Reject"
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">Reject</span>
+              </Button>
+            </div>
+          );
+        },
+      },
+    ],
+    [],
+  );
 
   return (
     <div className="space-y-8">
@@ -482,39 +543,26 @@ function AdminDashboard() {
           Pending Applications
         </h2>
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             {[1,2].map(i => (
-                 <div key={i} className="h-[200px] w-full bg-muted animate-pulse rounded-xl" />
-             ))}
+          <div className="flex items-center justify-center p-8">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
           </div>
         ) : pendingVendors.length === 0 ? (
           <div className="text-center py-12 border rounded-lg bg-muted/20">
-            <p className="text-muted-foreground">No pending vendor applications.</p>
+            <p className="text-muted-foreground">
+              No pending vendor applications.
+            </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            {pendingVendors.map((vendor) => (
-              <VendorApprovalCard
-                key={vendor.id}
-                vendor={{
-                    ...vendor,
-                    id: String(vendor.id),
-                    // Ensure compatibility with schema expected by Card
-                    status: vendor.is_approved ? 'approved' : 'pending',
-                    documents: vendor.documents || [],
-                    bankAccountName: vendor.bank_account_name, // Map snake_case to camelCase if needed, mock db uses snake_case mostly but schema uses camelCase.
-                    // Mock data return currently matches internal DB structure (snake_case) likely.
-                    // But VendorApprovalCard expects camelCase schema.
-                    // I will need to map fields if they differ.
-                    // Let's check mockKeys.
-                    businessName: vendor.business_name,
-                    vendorType: vendor.vendor_type,
-                }}
-                onApprove={handleApprove}
-                onReject={handleReject}
-              />
-            ))}
-          </div>
+          <DataTable
+            columns={columns}
+            data={pendingVendors}
+            searchKey="businessName"
+            rowSize="md"
+            getRowCanExpand={() => true}
+            renderSubComponent={({ row }) => (
+              <VendorApplicationDetails row={row} />
+            )}
+          />
         )}
       </div>
     </div>

@@ -7,16 +7,16 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { 
-  Plane, 
-  Check, 
-  ArrowRight, 
-  Luggage, 
-  Utensils, 
-  Loader2 
+import {
+  Plane,
+  Check,
+  ArrowRight,
+  Luggage,
+  Utensils,
+  Loader2,
 } from "lucide-react";
 import { useCart } from "@/context/cart-context";
-import type { Listing } from "@/utils/mock-db";
+import type { Listing } from "@/types";
 import type { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
 import { useNavigate } from "@tanstack/react-router";
@@ -48,18 +48,18 @@ export function TicketSelectionModal({
 
   const ticketListing: Listing = {
     id: 99999,
-    vendor_id: 1,
-    location_id: 1,
+    vendorId: 1,
+    locationId: 1,
     title: `Round Trip Flight: ${fromLocation} to Kigali`,
-    listing_type: "ticket",
+    listingType: "ticket",
     description: `Economy class round trip ticket from ${fromLocation} to Kigali International Airport (KGL). Includes baggage and meals.`,
-    base_price: 850,
+    basePrice: 850,
     currency: "USD",
     capacity: 100,
     status: "active",
-    image_url:
+    imageUrl:
       "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000&auto=format&fit=crop",
-    created_at: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
     addons: [],
   };
 
@@ -79,7 +79,7 @@ export function TicketSelectionModal({
 
     addToCart({
       listing: ticketListing,
-      image: ticketListing.image_url!,
+      image: ticketListing.imageUrl!,
       dateRange,
       guests,
       selectedAddons: [],
@@ -126,21 +126,25 @@ export function TicketSelectionModal({
           {step === "search" && (
             <div className="flex flex-col items-center justify-center space-y-8 py-8 animate-in fade-in zoom-in-95 duration-500">
               <div className="relative">
-                <div className={cn(
-                  "h-24 w-24 bg-primary/10 rounded-full flex items-center justify-center transition-all duration-500",
-                  isSearching ? "scale-110 bg-primary/20" : ""
-                )}>
+                <div
+                  className={cn(
+                    "h-24 w-24 bg-primary/10 rounded-full flex items-center justify-center transition-all duration-500",
+                    isSearching ? "scale-110 bg-primary/20" : "",
+                  )}
+                >
                   {isSearching ? (
-                     <Loader2 className="h-10 w-10 text-primary animate-spin" />
+                    <Loader2 className="h-10 w-10 text-primary animate-spin" />
                   ) : (
                     <Plane className="h-10 w-10 text-primary" />
                   )}
                 </div>
               </div>
-              
+
               <div className="text-center space-y-2 max-w-sm">
                 <h3 className="font-semibold text-lg text-foreground">
-                  {isSearching ? "Finding best connections..." : "Start your journey"}
+                  {isSearching
+                    ? "Finding best connections..."
+                    : "Start your journey"}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {isSearching
@@ -163,7 +167,7 @@ export function TicketSelectionModal({
 
           {step === "results" && (
             <div className="space-y-4 animate-in slide-in-from-bottom-4 duration-500">
-              <Card 
+              <Card
                 className="group relative overflow-hidden border-2 border-border hover:border-primary/20 transition-colors cursor-pointer"
                 onClick={handleSelectTicket}
                 role="button"
@@ -171,16 +175,21 @@ export function TicketSelectionModal({
                 onKeyDown={(e) => e.key === "Enter" && handleSelectTicket()}
               >
                 <div className="absolute top-0 right-0 p-4">
-                  <Badge variant="secondary" className="bg-emerald-500/15 text-emerald-700 hover:bg-emerald-500/25 border-emerald-200">
+                  <Badge
+                    variant="secondary"
+                    className="bg-emerald-500/15 text-emerald-700 hover:bg-emerald-500/25 border-emerald-200"
+                  >
                     Best Value
                   </Badge>
                 </div>
-                
+
                 <CardContent className="p-6">
                   <div className="flex flex-col gap-6">
                     <div className="flex items-center gap-4 sm:w-48 shrink-0">
                       <div className="h-12 w-12 bg-muted rounded-full flex items-center justify-center shrink-0 border">
-                        <span className="font-bold text-xs text-muted-foreground">WB</span>
+                        <span className="font-bold text-xs text-muted-foreground">
+                          WB
+                        </span>
                       </div>
                       <div>
                         <h4 className="font-semibold text-base">RwandAir</h4>
@@ -192,16 +201,21 @@ export function TicketSelectionModal({
                       </div>
                     </div>
 
-             
                     <div className="flex-1 flex flex-col justify-center min-w-0">
                       <div className="flex items-end justify-between mb-2">
                         <div className="text-left">
-                          <div className="text-2xl font-bold leading-none">08:00</div>
-                          <div className="text-[10px] font-semibold text-muted-foreground uppercase pt-1">{fromLocation}</div>
+                          <div className="text-2xl font-bold leading-none">
+                            08:00
+                          </div>
+                          <div className="text-[10px] font-semibold text-muted-foreground uppercase pt-1">
+                            {fromLocation}
+                          </div>
                         </div>
-                        
+
                         <div className="flex-1 px-4 pb-1.5 flex flex-col items-center">
-                          <div className="text-[10px] text-muted-foreground mb-1 font-medium">8h 30m</div>
+                          <div className="text-[10px] text-muted-foreground mb-1 font-medium">
+                            8h 30m
+                          </div>
                           <div className="relative w-full flex items-center">
                             <Separator className="bg-border" />
                             <Plane className="h-3 w-3 text-muted-foreground absolute left-1/2 -translate-x-1/2 bg-card px-0.5" />
@@ -209,11 +223,15 @@ export function TicketSelectionModal({
                         </div>
 
                         <div className="text-right">
-                          <div className="text-2xl font-bold leading-none">16:30</div>
-                          <div className="text-[10px] font-semibold text-muted-foreground uppercase pt-1">KGL</div>
+                          <div className="text-2xl font-bold leading-none">
+                            16:30
+                          </div>
+                          <div className="text-[10px] font-semibold text-muted-foreground uppercase pt-1">
+                            KGL
+                          </div>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center gap-4 text-xs text-muted-foreground mt-2">
                         <div className="flex items-center gap-1.5 bg-muted/50 px-2 py-1 rounded-md">
                           <Luggage className="h-3 w-3" />
@@ -226,11 +244,10 @@ export function TicketSelectionModal({
                       </div>
                     </div>
 
-              
                     <div className="sm:border-l sm:pl-6 flex flex-row sm:flex-col gap-2 shrink-0 pt-4 sm:pt-0 border-t sm:border-t-0">
                       <div className="text-right sm:text-left">
                         <span className="text-2xl font-bold text-foreground block">
-                          ${ticketListing.base_price}
+                          ${ticketListing.basePrice}
                         </span>
                         <span className="text-[10px] text-muted-foreground">
                           per person
@@ -252,11 +269,11 @@ export function TicketSelectionModal({
               <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
                 <Check className="h-10 w-10 text-green-600" />
               </div>
-              
+
               <div className="text-center space-y-2">
                 <h3 className="font-bold text-2xl">Flight Added!</h3>
                 <p className="text-muted-foreground text-sm max-w-[300px] mx-auto">
-                  Your flight to Kigali has been added to your cart. 
+                  Your flight to Kigali has been added to your cart.
                 </p>
               </div>
 
@@ -268,10 +285,7 @@ export function TicketSelectionModal({
                 >
                   Browse Hotels
                 </Button>
-                <Button
-                  onClick={handleCheckout}
-                  className="h-11 gap-2"
-                >
+                <Button onClick={handleCheckout} className="h-11 gap-2">
                   Go to Cart <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>

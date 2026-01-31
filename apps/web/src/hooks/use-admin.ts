@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
-import type { Vendor, User } from "@/utils/mock-db";
+import type { Vendor, User } from "@/types";
 
 // Query keys for admin
 export const adminKeys = {

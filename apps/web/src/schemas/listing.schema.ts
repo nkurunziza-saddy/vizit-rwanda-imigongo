@@ -6,6 +6,7 @@ export const listingTypeSchema = z.enum([
   "car",
   "tour",
   "guide",
+  "ticket",
 ]);
 
 export const listingStatusSchema = z.enum(["draft", "active", "paused"]);
@@ -20,25 +21,26 @@ export const addonSchema = z.object({
 
 export const listingMediaSchema = z.object({
   id: z.number(),
-  listing_id: z.number(),
-  media_url: z.string().url(),
-  media_type: z.enum(["image", "video"]),
-  sort_order: z.number(),
+  listingId: z.number(),
+  mediaUrl: z.string().url(),
+  mediaType: z.enum(["image", "video"]),
+  sortOrder: z.number(),
 });
 
 export const listingSchema = z.object({
   id: z.number(),
-  vendor_id: z.number(),
-  location_id: z.number(),
+  vendorId: z.number(),
+  locationId: z.number(),
   title: z.string(),
-  listing_type: listingTypeSchema,
+  listingType: listingTypeSchema,
   description: z.string(),
-  base_price: z.number(),
+  basePrice: z.number(),
   currency: z.string(),
   capacity: z.number(),
   status: listingStatusSchema,
-  image_url: z.string().url().optional(),
-  created_at: z.string().datetime(),
+  imageUrl: z.string().url().optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime().optional(),
   addons: z.array(addonSchema).default([]),
 });
 

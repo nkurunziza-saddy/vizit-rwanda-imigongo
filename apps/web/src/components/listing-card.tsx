@@ -3,7 +3,7 @@ import { Star, Plus, Check, AlertCircle, Heart } from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "@/context/cart-context";
 import { useWishlist } from "@/context/wishlist-context";
-import type { Listing } from "@/utils/mock-db";
+import type { Listing } from "@/types";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { addDays } from "date-fns";
@@ -29,9 +29,9 @@ export default function ListingCard({
   title,
   location,
   price,
-  currency = "USD",
+  currency: _currency = "USD",
   rating,
-  reviewCount,
+  reviewCount: _reviewCount,
   image,
   listing,
 }: ListingCardProps) {
@@ -51,7 +51,7 @@ export default function ListingCard({
 
   const hasSameCategory = cart.some(
     (item) =>
-      item.listing.listing_type === listing.listing_type &&
+      item.listing.listingType === listing.listingType &&
       item.listing.id !== listing.id,
   );
 
@@ -81,7 +81,7 @@ export default function ListingCard({
 
     if (hasSameCategory && !pendingConfirm) {
       setPendingConfirm(true);
-      const typeLabel = listing.listing_type.replace("_", " ");
+      const typeLabel = listing.listingType.replace("_", " ");
       toast.info(`You already have a ${typeLabel} in your cart.`, {
         description: "Click again to add this one as well.",
         duration: 5000,

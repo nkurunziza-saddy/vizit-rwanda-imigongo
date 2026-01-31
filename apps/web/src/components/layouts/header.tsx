@@ -131,10 +131,12 @@ export function Header() {
                     <Avatar className="h-8 w-8">
                       <AvatarImage
                         src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.email}`}
-                        alt={user.full_name}
+                        alt={user.fullName}
                       />
                       <AvatarFallback>
-                        {user.full_name.charAt(0)}
+                        {user.fullName?.charAt(0) ||
+                          user.email?.charAt(0) ||
+                          "U"}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
@@ -144,7 +146,7 @@ export function Header() {
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
                         <p className="text-sm font-medium leading-none">
-                          {user.full_name}
+                          {user.fullName}
                         </p>
                         <p className="text-xs leading-none text-muted-foreground">
                           {user.email}

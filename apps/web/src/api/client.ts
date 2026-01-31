@@ -15,7 +15,7 @@ import type {
   CreateBookingInput,
   Listing,
   ListingMedia,
-} from "@/schemas";
+} from "@/types";
 
 const API_BASE_URL = env.VITE_API_URL || "";
 
@@ -209,7 +209,10 @@ const mockApiClient = {
       const user = userStr ? JSON.parse(userStr) : null;
       return mockHandlers.vendors.register(data, user?.id) as Promise<T>;
     }
-    if (endpoint.includes("/api/admin/vendors/") && endpoint.includes("/approve")) {
+    if (
+      endpoint.includes("/api/admin/vendors/") &&
+      endpoint.includes("/approve")
+    ) {
       // Extract ID from URL: /api/admin/vendors/123/approve
       const parts = endpoint.split("/");
       // parts = ["", "api", "admin", "vendors", "123", "approve"]
@@ -298,7 +301,8 @@ export const api = {
 
   // Locations
   getLocations: () => apiClient.get<any[]>(API_ENDPOINTS.LOCATIONS.BASE),
-  getLocation: (id: number) => apiClient.get<any>(API_ENDPOINTS.LOCATIONS.BY_ID(id)),
+  getLocation: (id: number) =>
+    apiClient.get<any>(API_ENDPOINTS.LOCATIONS.BY_ID(id)),
 
   // Vendors
   getVendors: () => apiClient.get<any[]>(API_ENDPOINTS.VENDORS.BASE),

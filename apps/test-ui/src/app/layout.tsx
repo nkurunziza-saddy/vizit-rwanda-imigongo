@@ -20,7 +20,6 @@ export const metadata: Metadata = {
     "Discover and book flights, hotels, BnBs, car rentals, and unforgettable experiences in Rwanda. Your home away from home in the Land of a Thousand Hills.",
   keywords:
     "Rwanda travel, booking, hotels, flights, car rentals, tourism, experiences",
-  generator: "v0.app",
   openGraph: {
     title: "Vizit Africa - Book Your Rwanda Experience",
     description:

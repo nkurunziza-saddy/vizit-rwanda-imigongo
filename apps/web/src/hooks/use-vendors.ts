@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
-import type { Vendor } from "@/utils/mock-db";
+import type { Vendor } from "@/types";
 
 // Query keys for vendors
 export const vendorKeys = {

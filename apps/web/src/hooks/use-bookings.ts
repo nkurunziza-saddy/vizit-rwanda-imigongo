@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
-import type { BookingFilters, CreateBookingInput } from "@/schemas";
+import type { BookingFilters, CreateBookingInput } from "@/types";
 
 // Query keys for bookings
 export const bookingKeys = {

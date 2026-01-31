@@ -18,28 +18,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import {
-  User,
-  Mail,
-  Phone,
-  Shield,
-  Camera,
-  CheckCircle,
-  AlertCircle,
-} from "lucide-react";
+import { User, Shield, Camera, CheckCircle, AlertCircle } from "lucide-react";
 import {
   updateProfileSchema,
   changePasswordSchema,
 } from "@/schemas/user.schema";
 import type { z } from "zod";
-import type { User as UserType } from "@/utils/mock-db";
-
-/**
- * User Profile Page
- *
- * Allows users to view and edit their profile information,
- * change password, and manage preferences.
- */
 
 export const Route = createFileRoute("/_app/profile")({
   component: ProfilePage,
@@ -57,10 +41,10 @@ function ProfilePage() {
   const profileForm = useForm<ProfileFormData>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
-      fullName: user?.full_name || "",
+      fullName: user?.fullName || "",
       email: user?.email || "",
       phone: user?.phone || "",
-      preferredCurrency: user?.preferred_currency || "USD",
+      preferredCurrency: user?.preferredCurrency || "USD",
     },
   });
 
@@ -90,7 +74,7 @@ function ProfilePage() {
           "vizit_current_user",
           JSON.stringify({
             ...currentUser,
-            full_name: data.fullName,
+            fullName: data.fullName,
             email: data.email,
             phone: data.phone,
             preferred_currency: data.preferredCurrency,
@@ -106,7 +90,7 @@ function ProfilePage() {
     }
   };
 
-  const handlePasswordChange = async (data: PasswordFormData) => {
+  const handlePasswordChange = async (_data: PasswordFormData) => {
     setIsUpdating(true);
     setUpdateSuccess(false);
     setUpdateError(null);
@@ -165,7 +149,6 @@ function ProfilePage() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Left Sidebar - Profile Summary */}
         <div className="md:col-span-1">
           <Card>
             <CardContent className="pt-6">
@@ -176,15 +159,18 @@ function ProfilePage() {
                       src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.email}`}
                     />
                     <AvatarFallback className="text-2xl">
-                      {user.full_name.charAt(0)}
+                      {user.fullName.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
-                  <button type="button" className="absolute bottom-0 right-0 p-1.5 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+                  <button
+                    type="button"
+                    className="absolute bottom-0 right-0 p-1.5 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+                  >
                     <Camera className="h-4 w-4" />
                   </button>
                 </div>
 
-                <h2 className="mt-4 text-xl font-semibold">{user.full_name}</h2>
+                <h2 className="mt-4 text-xl font-semibold">{user.fullName}</h2>
                 <p className="text-sm text-muted-foreground">{user.email}</p>
 
                 <Badge className="mt-2" variant="secondary">
@@ -197,7 +183,7 @@ function ProfilePage() {
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <User className="h-4 w-4" />
                     <span>
-                      Member since {new Date(user.created_at).getFullYear()}
+                      Member since {new Date(user.createdAt).getFullYear()}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
@@ -210,7 +196,6 @@ function ProfilePage() {
           </Card>
         </div>
 
-        {/* Right Content */}
         <div className="md:col-span-2">
           <Tabs defaultValue="profile" className="space-y-6">
             <TabsList className="grid w-full grid-cols-3">
@@ -219,7 +204,6 @@ function ProfilePage() {
               <TabsTrigger value="preferences">Preferences</TabsTrigger>
             </TabsList>
 
-            {/* Profile Tab */}
             <TabsContent value="profile">
               <Card>
                 <CardHeader>
@@ -294,7 +278,6 @@ function ProfilePage() {
               </Card>
             </TabsContent>
 
-            {/* Password Tab */}
             <TabsContent value="password">
               <Card>
                 <CardHeader>
@@ -366,7 +349,6 @@ function ProfilePage() {
               </Card>
             </TabsContent>
 
-            {/* Preferences Tab */}
             <TabsContent value="preferences">
               <Card>
                 <CardHeader>

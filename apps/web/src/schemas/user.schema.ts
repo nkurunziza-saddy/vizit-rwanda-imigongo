@@ -26,6 +26,7 @@ export const registerSchema = z
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
     role: userRoleSchema.default("tourist"),
+    preferredCurrency: z.string().default("USD"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

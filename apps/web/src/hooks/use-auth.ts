@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/api";
-import type { LoginInput, RegisterInput, User } from "@/schemas";
+import type { LoginInput, RegisterInput, User } from "@/types";
 
 // Query keys for auth
 export const authKeys = {
