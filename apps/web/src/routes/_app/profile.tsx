@@ -75,10 +75,9 @@ function ProfilePage() {
     setUpdateError(null);
 
     try {
-      // TODO: Call API to update profile
+
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Update local storage
       const storedUser = localStorage.getItem("vizit_current_user");
       if (storedUser) {
         const currentUser = JSON.parse(storedUser);
@@ -95,7 +94,7 @@ function ProfilePage() {
       }
 
       setUpdateSuccess(true);
-      setTimeout(() => setUpdateSuccess(false), 3000); // clear after 3s
+      setTimeout(() => setUpdateSuccess(false), 3000);
     } catch (error) {
       setUpdateError("Failed to update profile. Please try again.");
     } finally {
@@ -109,7 +108,6 @@ function ProfilePage() {
     setUpdateError(null);
 
     try {
-      // TODO: Call API to change password
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       setUpdateSuccess(true);
@@ -146,7 +144,6 @@ function ProfilePage() {
         </p>
       </div>
 
-      {/* Alerts */}
       {updateSuccess && (
         <Alert className="mb-6 bg-green-500/10 border-green-500/20 text-green-700 dark:text-green-300">
           <CheckCircle className="h-4 w-4" />
@@ -594,6 +591,7 @@ function ChevronDownIcon(props: any) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
+      <title>Down Arrow</title>
       <path d="m6 9 6 6 6-6" />
     </svg>
   );

@@ -30,7 +30,6 @@ function ContactPage() {
 
   return (
     <div className="bg-background min-h-screen relative">
-      {/* Hero Section */}
       <section
         ref={heroRef}
         className="relative h-[60vh] min-h-[500px] flex items-end justify-start bg-foreground overflow-hidden"
@@ -66,11 +65,9 @@ function ContactPage() {
         </div>
       </section>
 
-      {/* Contact Grid */}
       <section className="py-24 relative -mt-20 z-30">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-            {/* Left Column: Direct Contact & Map */}
             <div className="space-y-12 pt-20 lg:pt-0">
               <Reveal>
                 <p className="text-xl font-serif text-muted-foreground leading-relaxed max-w-md">
@@ -81,7 +78,6 @@ function ContactPage() {
               </Reveal>
 
               <div className="grid gap-6">
-                {/* WhatsApp */}
                 <Reveal delay={0.1}>
                   <a
                     href="https://wa.me/250788123456"
@@ -108,7 +104,6 @@ function ContactPage() {
                   </a>
                 </Reveal>
 
-                {/* Email */}
                 <Reveal delay={0.2}>
                   <a href="mailto:hello@vizit.africa" className="block group">
                     <div className="bg-foreground text-white p-6 flex items-center justify-between transition-all duration-300 shadow-sm hover:shadow-lg group-hover:bg-primary">
@@ -131,7 +126,6 @@ function ContactPage() {
                 </Reveal>
               </div>
 
-              {/* Enhanced Map Section */}
               <div className="relative group overflow-hidden border border-foreground/10 bg-muted/20 h-80">
                 <img
                   src="https://images.unsplash.com/photo-1577934415446-2401bb266205?q=80&w=2074&auto=format&fit=crop"
@@ -160,7 +154,6 @@ function ContactPage() {
               </div>
             </div>
 
-            {/* Right Column: Form */}
             <div className="relative">
               <div className="absolute -top-4 -right-4 w-full h-full border-2 border-foreground/5 z-0 lg:block hidden" />
               <div className="bg-background border border-foreground/10 p-8 md:p-12 relative z-10 shadow-2xl">
@@ -252,12 +245,9 @@ function ContactPage() {
         </div>
       </section>
 
-      {/* Pattern Divider */}
       <div className="h-24 bg-foreground flex items-center justify-center overflow-hidden relative">
         <PatternZigZag className="text-white/5 w-[120%] h-full absolute top-0" />
       </div>
-
-      {/* FAQ Section */}
       <section className="py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">

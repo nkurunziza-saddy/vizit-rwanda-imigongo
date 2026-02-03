@@ -31,20 +31,20 @@ function IndexPage() {
     <div className="relative bg-background min-h-screen">
       <PageNavigator />
 
-      {/* Prologue: Hero & Marquee */}
+      {/* Prologue: hero & marquee list */}
       <div id="prologue" className="relative">
         <Hero />
         <ImageMarquee />
       </div>
 
-      {/* Chapter I: The Concierge */}
+      {/* Chapter I: the cconcierge */}
       <div id="concierge" className="py-24 bg-background">
         <ChapterHeader number="01" title="The Concierge" />
         <Affiliations />
         <BentoGrid />
       </div>
 
-      {/* Chapter II: The Land */}
+      {/* Chapter II: the land */}
       <div id="land" className="bg-foreground text-white">
         <div className="pt-24">
           <ChapterHeader number="02" title="The Land" theme="dark" />
@@ -52,7 +52,7 @@ function IndexPage() {
         <DestinationAccordion />
       </div>
 
-      {/* Chapter III: The Sanctuary */}
+      {/* Chapter III: the sanctuary */}
       <div id="sanctuary" className="bg-background">
         <div className="pt-24">
           <ChapterHeader number="03" title="The Sanctuary" />
@@ -60,7 +60,7 @@ function IndexPage() {
         <FeaturedStays />
       </div>
 
-      {/* Chapter IV: The Community & Experience */}
+      {/* Chapter IV: the community & experience */}
       <div id="community" className="bg-background relative">
         <ChapterDivider text="The Community" theme="light" />
 

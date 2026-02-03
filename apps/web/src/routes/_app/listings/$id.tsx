@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PageWrapper } from "@/components/layouts/page-wrapper";
 import { useListing } from "@/hooks/use-listings";
 import { toast } from "sonner";
 import { addDays, differenceInDays } from "date-fns";
@@ -120,7 +119,6 @@ function ListingDetail() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col pb-32">
-      {/* Full Bleed Hero */}
       <div className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
         <img
           src={imageUrl}
@@ -160,9 +158,7 @@ function ListingDetail() {
       <div className="container mx-auto px-4 -mt-32 relative z-10">
         <Reveal>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            {/* Main Content */}
             <div className="lg:col-span-8 space-y-12">
-              {/* Title Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-primary font-mono text-xs uppercase tracking-widest bg-primary/10 w-fit px-3 py-1 rounded-full border border-primary/20">
                   <PatternDiamond className="w-2 h-2" />
@@ -185,10 +181,8 @@ function ListingDetail() {
                 </div>
               </div>
 
-              {/* Divider */}
               <div className="h-px w-full bg-border/40" />
 
-              {/* Description */}
               <div className="prose prose-lg prose-gray max-w-none">
                 <h3 className="font-serif text-2xl italic text-foreground mb-6">
                   The Experience
@@ -196,11 +190,9 @@ function ListingDetail() {
                 <p className="text-muted-foreground leading-relaxed text-lg">
                   {listing.description}
                   {listing.description}{" "}
-                  {/* Doubling for visual length if short */}
                 </p>
               </div>
 
-              {/* Amenities */}
               <div>
                 <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6">
                   Amenities
@@ -226,7 +218,6 @@ function ListingDetail() {
                 </div>
               </div>
 
-              {/* Addons Section */}
               {listing.addons && listing.addons.length > 0 && (
                 <div className="bg-muted/10 p-8 border border-border/50 rounded-sm">
                   <h3 className="text-xl font-bold uppercase tracking-tight text-foreground mb-6 flex items-center gap-3">
@@ -246,7 +237,6 @@ function ListingDetail() {
               )}
             </div>
 
-            {/* Sticky Sidebar */}
             <div className="lg:col-span-4">
               <div className="sticky top-28 bg-background border border-border shadow-2xl shadow-primary/5 rounded-xl overflow-hidden">
                 <div className="bg-primary/5 p-6 border-b border-border/50">

@@ -159,7 +159,6 @@ function BecomeVendorPage() {
 
   return (
     <div className="min-h-screen bg-background pb-32">
-      {/* Hero Section */}
       <div className="relative h-[50vh] min-h-[400px] flex items-center justify-center bg-foreground overflow-hidden mb-16">
         <div className="absolute inset-0 z-0 opacity-40">
           <img
@@ -197,7 +196,6 @@ function BecomeVendorPage() {
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          {/* Form Column */}
           <div className="lg:col-span-8">
             <div className="bg-card border border-border/50 p-8 rounded-sm shadow-sm">
               <h2 className="text-lg font-bold uppercase tracking-widest text-foreground mb-8 border-b border-border pb-4 flex items-center gap-3">
@@ -211,7 +209,6 @@ function BecomeVendorPage() {
             </div>
           </div>
 
-          {/* Sidebar / Benefits */}
           <div className="lg:col-span-4 space-y-6">
             <div className="sticky top-28">
               <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6">

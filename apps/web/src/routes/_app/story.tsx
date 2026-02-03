@@ -124,10 +124,8 @@ function RwandaStoryPage() {
 
         <CountingStats />
 
-        {/* 1. arrival timeline */}
         <Timeline />
 
-        {/* 2. geography parallax */}
         <StorySection
           category="NATURE"
           imageSrc="https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=2600&auto=format&fit=crop"
@@ -161,13 +159,9 @@ function RwandaStoryPage() {
           note="Visit in June-Sept for trekking"
         />
 
-        {/* 3. gorilla encounter */}
         <CinematicReveal />
 
-        {/* 4. horizontal scroll adventure */}
         <HorizontalScroll />
-
-        {/* 5. pattern decoder */}
         <PatternDecoder />
 
         <DramaticQuote
@@ -176,7 +170,6 @@ function RwandaStoryPage() {
           subAuthor="President of the Republic of Rwanda"
         />
 
-        {/* people & culture section */}
         <StorySection
           category="CULTURE"
           reversed

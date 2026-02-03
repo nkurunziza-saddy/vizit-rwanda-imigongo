@@ -21,18 +21,11 @@ import { DataTable } from "@/components/data-table/data-table";
 import { approvalColumns } from "@/components/dashboard/tables/approvals-columns";
 import type { ColumnDef } from "@tanstack/react-table";
 
-/**
- * Admin Approvals Dashboard
- *
- * Manage vendor applications, user approvals, and content moderation.
- * Accessible only to admin users.
- */
-
 export const Route = createFileRoute("/_app/dashboard/approvals")({
   component: ApprovalsPage,
 });
 
-// Mock data for demonstration
+
 const mockVendors: Vendor[] = [
   {
     id: "v-1",
@@ -95,7 +88,6 @@ const mockVendors: Vendor[] = [
 function ApprovalsPage() {
   const [vendors, setVendors] = useState<Vendor[]>(mockVendors);
 
-  // Count by status
   const counts = {
     pending: vendors.filter((v) => v.status === "pending").length,
     under_review: vendors.filter((v) => v.status === "under_review").length,
@@ -206,7 +198,6 @@ function ApprovalsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Approvals</h2>
@@ -216,7 +207,6 @@ function ApprovalsPage() {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-yellow-50 p-4 rounded border border-yellow-100">
           <div className="flex items-center gap-2 text-yellow-700 mb-1">

@@ -31,6 +31,32 @@ import { useAuth } from "@/context/auth-context";
 import { useMyBookings } from "@/hooks/use-bookings";
 import { Separator } from "@/components/ui/separator";
 import { Reveal } from "@/components/ui/reveal";
+import { useEffect, useState, useMemo } from "react";
+import { api } from "@/api/client";
+import { DataTable } from "@/components/data-table/data-table";
+import { approvalColumns } from "@/components/dashboard/tables/approvals-columns";
+import { VendorApplicationDetails } from "@/components/dashboard/tables/vendor-application-details";
+import { ColumnDef } from "@tanstack/react-table";
+import { Vendor } from "@/schemas/vendor.schema";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  ChevronDown,
+  ChevronRight,
+  Check,
+  X,
+  MoreHorizontal,
+} from "lucide-react";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/components/ui/empty";
 
 export const Route = createFileRoute("/_app/dashboard/")({
   component: DashboardIndex,
@@ -258,14 +284,12 @@ function BookingCard({ booking }: { booking: any }) {
 function BookingDetailsModal({ booking }: { booking: any }) {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button
+      <DialogTrigger render={<Button
           variant="outline"
           size="sm"
           className="flex-1 gap-2 rounded-lg text-xs font-bold uppercase tracking-widest h-9"
-        >
-          <Info className="h-3.5 w-3.5" /> Details
-        </Button>
+        />}>
+        <Info className="h-3.5 w-3.5" /> Details
       </DialogTrigger>
       <DialogContent className="sm:max-w-md p-0 overflow-hidden border-border/50">
         <div className="relative h-32 bg-muted">
@@ -365,6 +389,7 @@ function CreditCardIcon(props: any) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
+      <title>Visa</title>
       <rect width="20" height="14" x="2" y="5" rx="2" />
       <line x1="2" x2="22" y1="10" y2="10" />
     </svg>
@@ -374,14 +399,14 @@ function CreditCardIcon(props: any) {
 function TicketModal({ booking }: { booking: any }) {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button
+      <DialogTrigger render={<Button
           size="sm"
           className="flex-1 gap-2 rounded-lg text-xs font-bold uppercase tracking-widest h-9 border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary hover:text-primary"
           variant="outline"
-        >
+        />}>
+        
           <QrCode className="h-3.5 w-3.5" /> Ticket
-        </Button>
+  
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm p-0 overflow-hidden bg-background">
         <div className="bg-primary p-6 text-primary-foreground text-center relative overflow-hidden">
@@ -485,32 +510,7 @@ function StatsCard({ title, value, change, icon: Icon, color }: any) {
   );
 }
 
-import { useEffect, useState, useMemo } from "react";
-import { api } from "@/api/client";
-import { DataTable } from "@/components/data-table/data-table";
-import { approvalColumns } from "@/components/dashboard/tables/approvals-columns";
-import { VendorApplicationDetails } from "@/components/dashboard/tables/vendor-application-details";
-import { ColumnDef } from "@tanstack/react-table";
-import { Vendor } from "@/schemas/vendor.schema";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  ChevronDown,
-  ChevronRight,
-  Check,
-  X,
-  MoreHorizontal,
-} from "lucide-react";
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyTitle,
-} from "@/components/ui/empty";
+
 
 function AdminDashboard() {
   const [pendingVendors, setPendingVendors] = useState<Vendor[]>([]);
@@ -535,7 +535,6 @@ function AdminDashboard() {
   const handleApprove = async (vendorId: string, _commissionRate: number) => {
     try {
       await api.approveVendor(Number(vendorId), true);
-      // Refresh list
       fetchPendingVendors();
     } catch (e) {
       console.error("Failed to approve vendor", e);
@@ -544,9 +543,7 @@ function AdminDashboard() {
 
   const handleReject = async (vendorId: string, _reason: string) => {
     try {
-      // For now, mapping reject to approve(false)
       await api.approveVendor(Number(vendorId), false);
-      // Refresh list
       fetchPendingVendors();
     } catch (e) {
       console.error("Failed to reject vendor", e);

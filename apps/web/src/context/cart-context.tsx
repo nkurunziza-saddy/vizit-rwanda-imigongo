@@ -55,7 +55,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           }));
           setCart(restoredCart);
         } else if (parsed && parsed.listing) {
-          // Migrate legacy single-item cart
           const legacyItem = {
             ...parsed,
             id: Date.now().toString(),
@@ -155,7 +154,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       } else if (addonItem.addon.price_type === "per_night") {
         itemCost = addonItem.addon.price * nights * addonItem.quantity;
       } else {
-        // per_stay
         itemCost = addonItem.addon.price * addonItem.quantity;
       }
       addonsTotal += itemCost;

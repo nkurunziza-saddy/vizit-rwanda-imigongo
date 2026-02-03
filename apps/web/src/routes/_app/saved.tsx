@@ -90,10 +90,10 @@ function SavedPage() {
               <ListingCard
                 id={listing.id.toString()}
                 title={listing.title}
-                location={`Location ${listing.locationId}`} // Ideally fetch real location name
+                location={`Location ${listing.locationId}`} 
                 price={listing.basePrice}
-                rating={4.9} // Placeholder for rating
-                reviewCount={24} // Placeholder
+                rating={4.9} 
+                reviewCount={24} 
                 image={
                   listing.imageUrl ||
                   "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"

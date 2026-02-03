@@ -21,16 +21,13 @@ export const Route = createFileRoute("/_app/dashboard/vendor-bookings")({
   component: VendorBookingsPage,
 });
 
-// Fetch bookings for listings owned by this vendor
 const getVendorBookings = async (userId: number) => {
-  // 1. Get my vendor ID
   const vendorsStr = localStorage.getItem(DB_KEYS.VENDORS);
   const vendors = vendorsStr ? JSON.parse(vendorsStr) : [];
   const myVendor = vendors.find((v: any) => v.user_id === userId);
 
   if (!myVendor) return [];
 
-  // 2. Get my listings
   const listingsStr = localStorage.getItem(DB_KEYS.LISTINGS);
   const listings = listingsStr ? JSON.parse(listingsStr) : [];
   const myListings = listings.filter(
@@ -38,21 +35,18 @@ const getVendorBookings = async (userId: number) => {
   );
   const myListingIds = myListings.map((l: Listing) => l.id);
 
-  // 3. Get booking items that match my listings
   const bookingItemsStr = localStorage.getItem(DB_KEYS.BOOKING_ITEMS);
   const bookingItems = bookingItemsStr ? JSON.parse(bookingItemsStr) : [];
   const myBookingItems = bookingItems.filter((bi: BookingItem) =>
     myListingIds.includes(bi.listing_id),
   );
 
-  // 4. Get parent bookings and users for context
   const bookingsStr = localStorage.getItem(DB_KEYS.BOOKINGS);
   const allBookings = bookingsStr ? JSON.parse(bookingsStr) : [];
 
   const usersStr = localStorage.getItem(DB_KEYS.USERS);
   const allUsers = usersStr ? JSON.parse(usersStr) : [];
 
-  // Combine data
   return myBookingItems.map((item: BookingItem) => {
     const booking = allBookings.find((b: Booking) => b.id === item.booking_id);
     const listing = myListings.find((l: Listing) => l.id === item.listing_id);

@@ -104,7 +104,7 @@ function DashboardLayout() {
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-background relative">
-      <GrainOverlay opacity={0.3} />
+      <GrainOverlay />
       <section className="py-8 relative z-10 w-full max-w-7xl mx-auto px-4">
         <div className="flex h-14 border-b border-border/40 items-center space-x-1 overflow-x-auto gap-2 mb-8 no-scrollbar">
           {filteredItems.map((item) => (

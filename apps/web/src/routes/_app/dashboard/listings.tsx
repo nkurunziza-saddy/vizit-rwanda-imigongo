@@ -175,11 +175,10 @@ function AddListingDialog({ vendorId }: { vendorId: number }) {
     setIsLoading(true);
     const formData = new FormData(e.currentTarget);
 
-    // Create new listing object. Note: Mock DB expects snake_case keys.
     const newListing: DBListing = {
       id: Date.now(),
       vendor_id: vendorId,
-      location_id: 1, // Defaulting for mock
+      location_id: 1,
       title: formData.get("title") as string,
       listing_type: formData.get("type") as
         | "hotel_room"
@@ -198,7 +197,6 @@ function AddListingDialog({ vendorId }: { vendorId: number }) {
       addons: [],
     };
 
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const stored = localStorage.getItem(DB_KEYS.LISTINGS);

@@ -11,7 +11,6 @@ export const Route = createFileRoute("/_app/about")({
 function AboutPage() {
   return (
     <div className="bg-background min-h-screen relative">
-      {/* Hero Section */}
       <div className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
@@ -68,7 +67,6 @@ function AboutPage() {
         }
       />
 
-      {/* Values Section */}
       <section className="py-24 bg-foreground text-white relative overflow-hidden">
         <div className="absolute right-0 top-0 w-1/3 h-full opacity-5 pointer-events-none">
           <PatternDiamond className="w-full h-full" />

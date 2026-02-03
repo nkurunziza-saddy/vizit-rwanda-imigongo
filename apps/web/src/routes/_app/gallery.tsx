@@ -81,7 +81,6 @@ function GalleryPage() {
   const containerRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState("All");
 
-  // Parallax header effect
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
@@ -132,7 +131,6 @@ function GalleryPage() {
           subtitle="Captured in time, preserved in memory."
         />
 
-        {/* Filter Tabs */}
         <div className="flex flex-wrap justify-center gap-4 mb-16">
           {categories.map((cat) => (
             <button

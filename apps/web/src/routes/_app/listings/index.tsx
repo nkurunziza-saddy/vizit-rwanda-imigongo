@@ -72,12 +72,6 @@ const categories = [
   { value: "tour", label: "Tours", icon: MapPin },
 ];
 
-const priceRanges = [
-  { label: "Budget", range: [0, 100] },
-  { label: "Mid-range", range: [100, 300] },
-  { label: "Luxury", range: [300, 1000] },
-];
-
 interface FilterContentProps {
   searchQuery: string;
   setSearchQuery: (value: string) => void;
@@ -89,7 +83,6 @@ interface FilterContentProps {
   hasActiveFilters: boolean;
 }
 
-// Filter Content Component
 const FilterContent = ({
   searchQuery,
   setSearchQuery,
@@ -123,6 +116,7 @@ const FilterContent = ({
       <div className="flex flex-col gap-1">
         {categories.map((cat) => (
           <button
+            type="button"
             key={cat.value}
             onClick={() => setCategory(cat.value)}
             className={cn(
@@ -287,7 +281,7 @@ function Listings() {
       return matchesCategory && matchesSearch && matchesPrice;
     }) || [];
 
-  const ITEMS_PER_PAGE = 12; // Increased for larger grid
+  const ITEMS_PER_PAGE = 12;
   const totalPages = Math.ceil(filteredListings.length / ITEMS_PER_PAGE);
 
   const paginatedListings = filteredListings.slice(
@@ -297,7 +291,7 @@ function Listings() {
 
   return (
     <div className="min-h-screen bg-background pb-32">
-      {/* Page Hero */}
+   
       <div className="relative h-[40vh] min-h-[400px] flex items-center justify-center bg-foreground overflow-hidden mb-16">
         <div className="absolute inset-0 z-0 opacity-40">
           <img
@@ -329,7 +323,7 @@ function Listings() {
         <div className="flex flex-col lg:flex-row gap-16 items-start">
           <aside className="hidden lg:block w-72 flex-none sticky top-28">
             <div className="bg-background relative">
-              {/* Decorative heading */}
+              {/* decorated heading */}
               <div className="mb-8 flex items-center gap-4">
                 <div className="h-px bg-border flex-1" />
                 <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
@@ -409,7 +403,6 @@ function Listings() {
                   </Sheet>
                 </div>
 
-                {/* Sort */}
                 <Select>
                   <SelectTrigger className="w-full sm:w-[160px] h-10 rounded-none border-foreground/20 hover:border-foreground uppercase tracking-widest text-[10px] font-bold shadow-none transition-colors">
                     <SelectValue placeholder="Sort By" />
@@ -444,7 +437,6 @@ function Listings() {
               </div>
             </div>
 
-            {/* Active Filters Pills */}
             {hasActiveFilters && (
               <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
                 {selectedCategory !== "all" && (
@@ -483,7 +475,6 @@ function Listings() {
               </div>
             )}
 
-            {/* Listings Grid */}
             {paginatedListings.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12">
                 {paginatedListings.map((listing, i) => (
@@ -540,7 +531,6 @@ function Listings() {
               </Empty>
             )}
 
-            {/* Pagination */}
             {filteredListings.length > ITEMS_PER_PAGE && (
               <div className="flex justify-center pt-16 border-t border-border">
                 <Pagination>

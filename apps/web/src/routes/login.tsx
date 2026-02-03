@@ -49,11 +49,9 @@ function LoginPage() {
   return (
     <Lenis>
       <main className="relative min-h-screen bg-foreground font-sans flex items-center justify-center p-4 md:p-8 overflow-hidden">
-        {/* Background Texture */}
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent pointer-events-none" />
 
-        {/* Floating Patterns */}
         <div className="absolute top-0 left-10 h-full opacity-10 pointer-events-none hidden lg:block">
           <PatternVerticalDiamond className="w-24 h-full text-background" />
         </div>
@@ -71,9 +69,7 @@ function LoginPage() {
           </Button>
         </Link>
 
-        {/* Ticket Container */}
         <div className="relative w-full max-w-4xl bg-card shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px] border border-background/10">
-          {/* Left Side: The "Stub" */}
           <div className="relative w-full md:w-1/3 bg-primary p-8 flex flex-col justify-between border-r-2 border-dashed border-foreground/20 text-foreground">
             <div className="absolute -right-3 top-[-10px] w-6 h-6 bg-foreground rounded-full" />
             <div className="absolute -right-3 bottom-[-10px] w-6 h-6 bg-foreground rounded-full" />
@@ -112,9 +108,7 @@ function LoginPage() {
             </div>
           </div>
 
-          {/* Right Side: The Form */}
           <div className="flex-1 bg-background p-8 md:p-12 relative flex flex-col justify-center">
-            {/* Horizontal Pattern Top/Bottom */}
             <div className="absolute top-0 left-0 right-0 h-4 opacity-10">
               <PatternHorizontalDiamonds className="text-foreground w-full h-full" />
             </div>
@@ -177,7 +171,6 @@ function LoginPage() {
                   </Button>
                 </div>
 
-                {/* Simplified Test Logins */}
                 <div className="mt-8 pt-8 border-t border-dashed border-foreground/20">
                   <p className="text-[10px] font-mono text-center text-muted-foreground mb-4 uppercase tracking-widest">
                     Test Access (Will be Removed)

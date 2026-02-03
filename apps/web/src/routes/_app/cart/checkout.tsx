@@ -36,7 +36,6 @@ function CheckoutPage() {
 
     setIsProcessing(true);
     try {
-      // Create a booking in pending state
       const bookingItems = cart.map((item) => {
         return {
           listingId: item.listing.id,
@@ -54,8 +53,6 @@ function CheckoutPage() {
         items: bookingItems,
       })) as Booking;
 
-      // Payment will be handled on the backend
-      // For now, show success and redirect
       toast.success("Booking created successfully!");
       clearCart();
       navigate({
@@ -122,9 +119,7 @@ function CheckoutPage() {
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Column: Order Review & Payment Form */}
           <div className="lg:col-span-8 space-y-8">
-            {/* 1. Review Items */}
             <Card className="rounded border-[3px] border-foreground/10">
               <CardHeader>
                 <CardTitle>Review Your Trip</CardTitle>
@@ -198,7 +193,6 @@ function CheckoutPage() {
               </CardContent>
             </Card>
 
-            {/* 2. Payment Section - UI Only */}
             <Card className="rounded border-[3px] border-foreground/10">
               <CardHeader>
                 <CardTitle>Payment</CardTitle>
@@ -232,7 +226,6 @@ function CheckoutPage() {
             </Card>
           </div>
 
-          {/* Right Column: Order Summary */}
           <div className="lg:col-span-4 space-y-6">
             <Card className="sticky top-24 rounded border-[3px] border-foreground/10">
               <CardHeader>

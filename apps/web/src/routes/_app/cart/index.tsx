@@ -61,10 +61,9 @@ function CartPage() {
         (item.endDate!.getTime() - item.startDate!.getTime()) /
           (1000 * 60 * 60 * 24),
       );
-      itemTotal = item.price * days * item.quantity; // Basic logic, refine as needed
+      itemTotal = item.price * days * item.quantity;
     }
 
-    // Add addons
     if (item.selectedAddons) {
       const addonsTotal = item.selectedAddons.reduce(
         (sum, addon) => sum + addon.price,
@@ -76,7 +75,7 @@ function CartPage() {
     return total + itemTotal;
   }, 0);
 
-  const tax = subtotal * 0.18; // 18% VAT example
+  const tax = subtotal * 0.18;
   const total = subtotal + tax;
 
   const handleUpdateDates = (
@@ -84,8 +83,6 @@ function CartPage() {
     date: Date | undefined,
     isStart: boolean,
   ) => {
-    // Logic to update dates - simplified for UI demo
-    // In a real app, you'd validate the range and update context
     toast.info("Date update logic would trigger here");
   };
 
@@ -96,7 +93,6 @@ function CartPage() {
       return;
     }
     toast.success("Proceeding to payment gateway...");
-    // Redirect to actual checkout or payment flow
   };
 
   if (cart.length === 0) {
