@@ -81,7 +81,6 @@ export function Features() {
                 {f.desc}
               </p>
 
-              {/* Vertical ZigZag Divider for Desktop (except last item) */}
               <div className="hidden lg:block absolute -right-4 top-1/2 -translate-y-1/2 h-32 w-4 opacity-10 group-last:hidden pointer-events-none">
                 <PatternZigZag className="h-full w-full text-foreground rotate-90" />
               </div>

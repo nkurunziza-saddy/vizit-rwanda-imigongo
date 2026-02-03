@@ -61,7 +61,7 @@ export function DestinationAccordion() {
               activeId === region.id ? "flex-[5]" : "flex-[1] hover:flex-[1.5]",
             )}
           >
-            {/* Background Image */}
+            {/* background image */}
             <div className="absolute inset-0">
               <img
                 src={region.image}
@@ -78,7 +78,6 @@ export function DestinationAccordion() {
               />
             </div>
 
-            {/* Vertical Label (Collapsed) */}
             <div
               className={cn(
                 "absolute bottom-8 left-8 origin-bottom-left -rotate-90 whitespace-nowrap z-20 transition-opacity duration-300",
@@ -92,7 +91,6 @@ export function DestinationAccordion() {
               </span>
             </div>
 
-            {/* Expanded Content */}
             <AnimatePresence mode="wait">
               {activeId === region.id && (
                 <motion.div

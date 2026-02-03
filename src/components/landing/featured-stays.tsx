@@ -78,7 +78,6 @@ export function FeaturedStays() {
     >
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-12 lg:gap-24">
-          {/* Sticky Image Side */}
           <div className="md:w-1/2 h-[50vh] md:h-[80vh] sticky top-24 overflow-hidden rounded-sm">
             {stays.map((stay, i) => (
               <div
@@ -107,7 +106,6 @@ export function FeaturedStays() {
             ))}
           </div>
 
-          {/* Scrolling Text Side */}
           <div className="md:w-1/2 flex flex-col gap-24 py-12 md:py-24">
             <div className="mb-12">
               <span className="text-primary text-xs font-mono uppercase tracking-widest border border-primary/20 px-3 py-1 bg-primary/5">

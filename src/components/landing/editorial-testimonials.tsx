@@ -5,7 +5,6 @@ export function EditorialTestimonials() {
   return (
     <section className="py-24 md:py-32 bg-background relative overflow-hidden">
       <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        {/* Visual Side */}
         <div className="relative">
           <div className="aspect-[3/4] md:aspect-square bg-muted relative overflow-hidden">
             <img
@@ -16,14 +15,12 @@ export function EditorialTestimonials() {
             <div className="absolute inset-0 bg-primary/20 mix-blend-multiply" />
           </div>
 
-          {/* Decorative Elements */}
           <div className="absolute -top-6 -right-6 w-24 h-24 bg-foreground z-10 hidden md:flex items-center justify-center">
             <Quote className="text-primary w-10 h-10" />
           </div>
           <div className="absolute -bottom-12 -left-12 w-64 h-64 border border-foreground/10 rounded-full z-0 hidden md:block" />
         </div>
 
-        {/* Text Side */}
         <div className="relative z-10">
           <span className="text-xs font-mono text-primary uppercase tracking-widest border border-primary/50 px-3 py-1 mb-8 inline-block">
             Traveler Journal

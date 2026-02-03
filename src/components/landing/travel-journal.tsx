@@ -60,7 +60,6 @@ export function TravelJournal() {
         </button>
       </div>
 
-      {/* Horizontal Scroll Area */}
       <div
         ref={scrollContainerRef}
         className="flex overflow-x-auto gap-8 px-4 md:px-12 pb-12 snap-x snap-mandatory"
@@ -100,7 +99,6 @@ export function TravelJournal() {
           </div>
         ))}
 
-        {/* Spacer */}
         <div className="flex-none w-12" />
       </div>
     </section>

@@ -2,7 +2,6 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { SectionTitle } from "./section-title";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,7 +32,6 @@ export function CountingStats() {
         },
       });
 
-      // Animate numbers
       items.forEach((item: any, i) => {
         const valueSpan = item.querySelector(".stat-value");
         const targetValue = stats[i].value;
@@ -54,10 +52,9 @@ export function CountingStats() {
               }
             },
           },
-          "<", // Align animations
+          "<", 
         );
 
-        // Also fade in label
         tl.fromTo(
           item.querySelector(".stat-label"),
           { opacity: 0, y: 20 },
@@ -98,7 +95,6 @@ export function CountingStats() {
         </div>
       </div>
 
-      {/* Decorative BG */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-black/20 to-transparent" />
       </div>

@@ -27,7 +27,6 @@ export function DramaticQuote({
       const container = containerRef.current;
       if (!container) return;
 
-      // Pin the section
       ScrollTrigger.create({
         trigger: container,
         start: "top top",
@@ -35,7 +34,6 @@ export function DramaticQuote({
         pin: true,
       });
 
-      // Animate content
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
@@ -45,10 +43,8 @@ export function DramaticQuote({
         },
       });
 
-      // Zoom background
       tl.to(".bg-image", { scale: 1.1, duration: 1 });
 
-      // Reveal text
       tl.fromTo(
         quoteRef.current,
         { opacity: 0, y: 50, scale: 0.9 },
