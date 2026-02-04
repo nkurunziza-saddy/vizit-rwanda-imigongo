@@ -1,13 +1,13 @@
 "use client";
+import {
+	motion,
+	type SpringOptions,
+	useSpring,
+	useTransform,
+} from "motion/react";
 import type React from "react";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
-import {
-	motion,
-	useSpring,
-	useTransform,
-	type SpringOptions,
-} from "motion/react";
 
 export type AnimatedNumberProps = {
 	value: number;

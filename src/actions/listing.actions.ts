@@ -1,8 +1,8 @@
 import {
 	DB_KEYS,
+	delay,
 	type Listing,
 	type ListingMedia,
-	delay,
 } from "../utils/mock-db";
 
 export const getListings = async (): Promise<Listing[]> => {

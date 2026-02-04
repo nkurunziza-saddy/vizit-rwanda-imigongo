@@ -1,14 +1,14 @@
 "use client";
-import * as React from "react";
 import {
 	AnimatePresence,
-	motion,
 	MotionConfig,
-	Transition,
-	Variant,
-	Variants,
+	motion,
+	type Transition,
+	type Variant,
+	type Variants,
 } from "motion/react";
-import { createContext, useContext, useState, useId, useEffect } from "react";
+import * as React from "react";
+import { createContext, useContext, useEffect, useId, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export type DisclosureContextType = {
