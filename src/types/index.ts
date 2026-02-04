@@ -1,9 +1,5 @@
-// Central type exports - Single source of truth for all types
-// All types are derived from Zod schemas to ensure runtime and compile-time safety
-
 export * from "./api.types";
 
-// Re-export all schema types for convenience
 export {
   // Listing types
   type ListingType,

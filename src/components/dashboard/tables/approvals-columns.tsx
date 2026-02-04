@@ -6,16 +6,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Vendor } from "@/schemas/vendor.schema";
 
-// Define a type for the actions handler that we might pass via table meta or closure
-// For now, we will define columns that might need to be created inside the component if we want direct access to handlers,
-// or we can use a custom cell renderer that assumes the parent handles the logic or we pass it down.
-// Given the current structure, let's create a definition factory or just export columns and handle actions loosely.
-
-// We will use a meta interface to type the table options if we were passing functions.
-// But for simplicity in this "mock" setup, let's just create the display columns.
-// The "Actions" column will be defined locally in the Page component or we will create a dedicated component that takes `onApprove` / `onReject` as props if we can.
-// Actually, standard practice with TanStack table for actions that need context is to use a Cell component.
-
 export const approvalColumns: ColumnDef<Vendor>[] = [
   {
     id: "select",

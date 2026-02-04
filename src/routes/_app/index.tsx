@@ -19,10 +19,10 @@ import { ImageMarquee } from "@/components/landing/image-marquee";
 import { DestinationAccordion } from "@/components/landing/destination-accordion";
 import { EditorialTestimonials } from "@/components/landing/editorial-testimonials";
 import { FeaturedStays } from "@/components/landing/featured-stays";
-import { TravelJournal } from "@/components/landing/travel-journal";
 import { PageNavigator } from "@/components/ui/page-navigator";
 import { ChapterHeader } from "@/components/ui/chapter-header";
 import { ChapterDivider } from "@/components/ui/chapter-divider";
+import { TravelJournal } from "@/components/landing/travel-journal";
 export const Route = createFileRoute("/_app/")({
   component: IndexPage,
 });

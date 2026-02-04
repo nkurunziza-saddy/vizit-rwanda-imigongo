@@ -41,7 +41,6 @@ export function TravelJournal() {
 
   return (
     <section className="py-24 bg-foreground border-y border-white/10 relative overflow-hidden">
-      {/* Header */}
       <div className="container mx-auto px-4 mb-16 flex items-end justify-between">
         <div>
           <h2 className="text-4xl md:text-5xl font-black font-serif uppercase tracking-tighter text-white mb-2">

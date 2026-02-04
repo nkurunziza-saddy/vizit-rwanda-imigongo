@@ -56,10 +56,7 @@ export function ListingRowActions<TData>({
           Edit
         </DropdownMenuItem>
         <DropdownMenuSeparator className="bg-foreground/10" />
-        <DropdownMenuItem
-          onClick={handleDelete}
-          className="text-red-600 focus:text-red-600 focus:bg-red-50 rounded cursor-pointer"
-        >
+        <DropdownMenuItem variant="destructive" onClick={handleDelete}>
           <Trash2 className="mr-2 h-3.5 w-3.5" />
           Delete
         </DropdownMenuItem>

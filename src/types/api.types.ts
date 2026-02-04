@@ -1,5 +1,3 @@
-// API Response Types
-
 export interface ApiResponse<T> {
   data: T;
   success: boolean;
@@ -42,7 +40,6 @@ export interface BookingFilters {
   perPage?: number;
 }
 
-// Request Types
 export interface CreateBookingRequest {
   items: {
     listingId: number;

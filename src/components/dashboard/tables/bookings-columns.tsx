@@ -4,7 +4,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { format } from "date-fns";
 
-// We can define the shape of the data here since it's a derived type in the page
 type BookingData = {
   id: number;
   booking_id: number;
@@ -106,9 +105,7 @@ export const bookingColumns: ColumnDef<BookingData>[] = [
         currency: "USD",
       }).format(price);
       return (
-        <div className="font-bold font-mono text-foreground">
-          {formatted}
-        </div>
+        <div className="font-bold font-mono text-foreground">{formatted}</div>
       );
     },
   },

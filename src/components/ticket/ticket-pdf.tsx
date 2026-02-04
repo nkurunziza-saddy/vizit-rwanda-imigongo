@@ -8,13 +8,6 @@ import {
 } from "@react-pdf/renderer";
 import type { Ticket } from "@/schemas/ticket.schema";
 
-/**
- * Ticket PDF Component
- *
- * Generates a professional PDF ticket with QR code for validation.
- * Uses @react-pdf/renderer for server-side PDF generation.
- */
-
 const styles = StyleSheet.create({
   page: {
     padding: 40,
@@ -274,7 +267,6 @@ export function TicketPDF({ ticket }: TicketPDFProps) {
             </View>
           </View>
 
-          {/* Right Column - QR Code */}
           <View style={styles.rightColumn}>
             {ticket.qrCodeImage && (
               <Image src={ticket.qrCodeImage} style={styles.qrCode} />
@@ -283,7 +275,6 @@ export function TicketPDF({ ticket }: TicketPDFProps) {
           </View>
         </View>
 
-        {/* Footer */}
         <View style={styles.footer}>
           <View style={styles.footerLeft}>
             <Text style={styles.reference}>Booking Reference</Text>
@@ -300,7 +291,6 @@ export function TicketPDF({ ticket }: TicketPDFProps) {
           </View>
         </View>
 
-        {/* Terms */}
         <View style={styles.terms}>
           <Text style={styles.termsTitle}>Important Information</Text>
           <Text style={styles.termsText}>
