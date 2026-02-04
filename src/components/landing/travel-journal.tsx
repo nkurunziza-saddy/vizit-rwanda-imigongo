@@ -39,18 +39,17 @@ const articles = [
 export function TravelJournal() {
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-	return (
-		<section className="py-24 bg-foreground border-y border-white/10 relative overflow-hidden">
-			{/* Header */}
-			<div className="container mx-auto px-4 mb-16 flex items-end justify-between">
-				<div>
-					<h2 className="text-4xl md:text-5xl font-black font-serif uppercase tracking-tighter text-white mb-2">
-						The Journal
-					</h2>
-					<p className="text-white/60 font-mono text-sm uppercase tracking-widest">
-						Curated stories from the field
-					</p>
-				</div>
+  return (
+    <section className="py-24 bg-foreground border-y border-white/10 relative overflow-hidden">
+      <div className="container mx-auto px-4 mb-16 flex items-end justify-between">
+        <div>
+          <h2 className="text-4xl md:text-5xl font-black font-serif uppercase tracking-tighter text-white mb-2">
+            The Journal
+          </h2>
+          <p className="text-white/60 font-mono text-sm uppercase tracking-widest">
+            Curated stories from the field
+          </p>
+        </div>
 
 				<button
 					type="button"

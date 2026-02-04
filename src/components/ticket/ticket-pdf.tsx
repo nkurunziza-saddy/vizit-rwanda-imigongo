@@ -8,13 +8,6 @@ import {
 } from "@react-pdf/renderer";
 import type { Ticket } from "@/schemas/ticket.schema";
 
-/**
- * Ticket PDF Component
- *
- * Generates a professional PDF ticket with QR code for validation.
- * Uses @react-pdf/renderer for server-side PDF generation.
- */
-
 const styles = StyleSheet.create({
 	page: {
 		padding: 40,
@@ -274,21 +267,19 @@ export function TicketPDF({ ticket }: TicketPDFProps) {
 						</View>
 					</View>
 
-					{/* Right Column - QR Code */}
-					<View style={styles.rightColumn}>
-						{ticket.qrCodeImage && (
-							<Image src={ticket.qrCodeImage} style={styles.qrCode} />
-						)}
-						<Text style={styles.qrLabel}>Scan to validate</Text>
-					</View>
-				</View>
+          <View style={styles.rightColumn}>
+            {ticket.qrCodeImage && (
+              <Image src={ticket.qrCodeImage} style={styles.qrCode} />
+            )}
+            <Text style={styles.qrLabel}>Scan to validate</Text>
+          </View>
+        </View>
 
-				{/* Footer */}
-				<View style={styles.footer}>
-					<View style={styles.footerLeft}>
-						<Text style={styles.reference}>Booking Reference</Text>
-						<Text style={styles.referenceValue}>{ticket.bookingReference}</Text>
-					</View>
+        <View style={styles.footer}>
+          <View style={styles.footerLeft}>
+            <Text style={styles.reference}>Booking Reference</Text>
+            <Text style={styles.referenceValue}>{ticket.bookingReference}</Text>
+          </View>
 
 					<View style={styles.footerRight}>
 						<View style={styles.totalSection}>
@@ -300,20 +291,19 @@ export function TicketPDF({ ticket }: TicketPDFProps) {
 					</View>
 				</View>
 
-				{/* Terms */}
-				<View style={styles.terms}>
-					<Text style={styles.termsTitle}>Important Information</Text>
-					<Text style={styles.termsText}>
-						This e-ticket is valid only for the named guest and specified dates.
-						Please present this ticket along with a valid ID at check-in. The QR
-						code can be scanned for verification. For assistance, contact
-						support@vizit-africa.com or call +250 788 123 456. Cancellation
-						policies apply as per booking terms.
-					</Text>
-				</View>
-			</Page>
-		</Document>
-	);
+        <View style={styles.terms}>
+          <Text style={styles.termsTitle}>Important Information</Text>
+          <Text style={styles.termsText}>
+            This e-ticket is valid only for the named guest and specified dates.
+            Please present this ticket along with a valid ID at check-in. The QR
+            code can be scanned for verification. For assistance, contact
+            support@vizit-africa.com or call +250 788 123 456. Cancellation
+            policies apply as per booking terms.
+          </Text>
+        </View>
+      </Page>
+    </Document>
+  );
 }
 
 export default TicketPDF;

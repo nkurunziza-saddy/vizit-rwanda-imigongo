@@ -7,21 +7,16 @@ import { CuratorNote } from "@/components/landing/curator-note";
 import { DestinationAccordion } from "@/components/landing/destination-accordion";
 import { EditorialTestimonials } from "@/components/landing/editorial-testimonials";
 import { FeaturedStays } from "@/components/landing/featured-stays";
-import { Hero } from "@/components/landing/hero";
-import { ImageMarquee } from "@/components/landing/image-marquee";
-import { ParallaxSection } from "@/components/landing/parallax-section";
-import { TravelJournal } from "@/components/landing/travel-journal";
-import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
-} from "@/components/ui/accordion";
-import { ChapterDivider } from "@/components/ui/chapter-divider";
-import { ChapterHeader } from "@/components/ui/chapter-header";
 import { PageNavigator } from "@/components/ui/page-navigator";
+import { ChapterHeader } from "@/components/ui/chapter-header";
+import { ChapterDivider } from "@/components/ui/chapter-divider";
+import { TravelJournal } from "@/components/landing/travel-journal";
 import { PatternZigZag } from "@/components/ui/patterns";
 import { Reveal } from "@/components/ui/reveal";
+import { ParallaxSection } from "@/components/landing/parallax-section";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Hero } from "@/components/landing/hero";
+import { ImageMarquee } from "@/components/landing/image-marquee";
 export const Route = createFileRoute("/_app/")({
 	component: IndexPage,
 });
