@@ -128,12 +128,10 @@ export default function ListingCard({
 						className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-[1.02]"
 						loading="lazy"
 					/>
-					{/* New "Badge" style label */}
 					<div className="absolute left-0 top-4 z-10 bg-primary px-3 py-1 text-xs font-bold uppercase tracking-widest text-white shadow-md">
 						{listing.listingType?.replace("_", " ")}
 					</div>
 
-					{/* Action Buttons */}
 					<div className="absolute top-2 right-2 z-20 flex flex-col gap-2">
 						<Button
 							variant="ghost"
@@ -172,10 +170,8 @@ export default function ListingCard({
 					</AnimatePresence>
 				</div>
 
-				{/* Decorative Strip */}
 				<div className="h-1 w-full bg-foreground/10 group-hover:bg-primary transition-colors duration-300" />
 
-				{/* Content Section */}
 				<div className="p-3 flex flex-col flex-grow relative bg-white group-hover:bg-zinc-50 transition-colors duration-300">
 					<div className="flex flex-col gap-2 mb-4">
 						<div className="flex justify-between items-center border-b border-dashed border-foreground/10 pb-2">
