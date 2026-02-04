@@ -1,9 +1,9 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute } from "@tanstack/react-router";
 import {
 	AlertCircle,
 	Camera,
 	CheckCircle,
+	ChevronDown,
 	Globe,
 	Lock,
 	Mail,
@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -28,27 +27,22 @@ import { Label } from "@/components/ui/label";
 import { Reveal } from "@/components/ui/reveal";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useAuth } from "@/context/auth-context";
-import {
-	changePasswordSchema,
-	updateProfileSchema,
-} from "@/schemas/user.schema";
+import { MOCK_USER } from "@/lib/data";
+
 
 export const Route = createFileRoute("/_app/profile")({
 	component: ProfilePage,
 });
 
-type ProfileFormData = z.infer<typeof updateProfileSchema>;
-type PasswordFormData = z.infer<typeof changePasswordSchema>;
 
 function ProfilePage() {
-	const { user } = useAuth();
+	const [user, setUser] = useState(MOCK_USER);
+	
 	const [isUpdating, setIsUpdating] = useState(false);
 	const [updateSuccess, setUpdateSuccess] = useState(false);
 	const [updateError, setUpdateError] = useState<string | null>(null);
 
-	const profileForm = useForm<ProfileFormData>({
-		resolver: zodResolver(updateProfileSchema),
+	const profileForm = useForm({
 		defaultValues: {
 			fullName: user?.fullName || "",
 			email: user?.email || "",
@@ -57,8 +51,7 @@ function ProfilePage() {
 		},
 	});
 
-	const passwordForm = useForm<PasswordFormData>({
-		resolver: zodResolver(changePasswordSchema),
+	const passwordForm = useForm({
 		defaultValues: {
 			currentPassword: "",
 			newPassword: "",
@@ -66,7 +59,7 @@ function ProfilePage() {
 		},
 	});
 
-	const handleProfileUpdate = async (data: ProfileFormData) => {
+	const handleProfileUpdate = async (data: any) => {
 		setIsUpdating(true);
 		setUpdateSuccess(false);
 		setUpdateError(null);
@@ -74,20 +67,13 @@ function ProfilePage() {
 		try {
 			await new Promise((resolve) => setTimeout(resolve, 1000));
 
-			const storedUser = localStorage.getItem("vizit_current_user");
-			if (storedUser) {
-				const currentUser = JSON.parse(storedUser);
-				localStorage.setItem(
-					"vizit_current_user",
-					JSON.stringify({
-						...currentUser,
-						fullName: data.fullName,
-						email: data.email,
-						phone: data.phone,
-						preferred_currency: data.preferredCurrency,
-					}),
-				);
-			}
+			setUser(prev => ({
+				...prev,
+				fullName: data.fullName,
+				email: data.email,
+				phone: data.phone || prev.phone,
+				preferredCurrency: data.preferredCurrency || prev.preferredCurrency,
+			}));
 
 			setUpdateSuccess(true);
 			setTimeout(() => setUpdateSuccess(false), 3000);
@@ -98,7 +84,7 @@ function ProfilePage() {
 		}
 	};
 
-	const handlePasswordChange = async (_data: PasswordFormData) => {
+	const handlePasswordChange = async (_data: any) => {
 		setIsUpdating(true);
 		setUpdateSuccess(false);
 		setUpdateError(null);
@@ -343,7 +329,7 @@ function ProfilePage() {
 															<option value="RWF">RWF - Rwandan Franc</option>
 														</select>
 														<div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-															<ChevronDownIcon className="h-4 w-4 text-muted-foreground" />
+															<ChevronDown className="h-4 w-4 text-muted-foreground" />
 														</div>
 													</div>
 												</div>
@@ -533,7 +519,7 @@ function ProfilePage() {
 															<option value="rw">Kinyarwanda</option>
 														</select>
 														<div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-															<ChevronDownIcon className="h-4 w-4 text-muted-foreground" />
+															<ChevronDown className="h-4 w-4 text-muted-foreground" />
 														</div>
 													</div>
 												</div>
@@ -550,7 +536,7 @@ function ProfilePage() {
 															<option value="US/Pacific">US/Pacific</option>
 														</select>
 														<div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-															<ChevronDownIcon className="h-4 w-4 text-muted-foreground" />
+															<ChevronDown className="h-4 w-4 text-muted-foreground" />
 														</div>
 													</div>
 												</div>
@@ -570,26 +556,6 @@ function ProfilePage() {
 				</div>
 			</div>
 		</div>
-	);
-}
-
-function ChevronDownIcon(props: any) {
-	return (
-		<svg
-			{...props}
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<title>Down Arrow</title>
-			<path d="m6 9 6 6 6-6" />
-		</svg>
 	);
 }
 

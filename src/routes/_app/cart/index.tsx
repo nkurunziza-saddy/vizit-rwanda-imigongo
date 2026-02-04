@@ -9,39 +9,41 @@ import {
 	Trash2,
 	Users2,
 } from "lucide-react";
-import { useRef } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Reveal } from "@/components/ui/reveal";
 import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/context/auth-context";
-import { useCart } from "@/context/cart-context";
+import { useCart, type CartItem } from "@/context/cart-context";
 
 export const Route = createFileRoute("/_app/cart/")({
 	component: CartPage,
 });
 
 function CartPage() {
-	const { cart, removeFromCart, updateCartItem, clearCart } = useCart();
-	const { user, isAuthenticated } = useAuth();
+	const { cart, removeFromCart } = useCart();
+	const isAuthenticated = true;
 	const navigate = useNavigate();
-	const _checkoutRef = useRef<HTMLDivElement>(null);
 
-	const subtotal = cart.reduce((total, item) => {
-		let itemTotal = item.price * item.quantity;
-		if (item.listingType !== "experience") {
-			const days = Math.ceil(
-				(item.endDate?.getTime() - item.startDate?.getTime()) /
-					(1000 * 60 * 60 * 24),
-			);
-			itemTotal = item.price * days * item.quantity;
+	const subtotal = cart.reduce((total: number, item: CartItem) => {
+		let itemTotal = item.listing.basePrice * item.guests;
+		if (item.listing.listingType !== "experience") {
+			const startDate = item.dateRange.from;
+			const endDate = item.dateRange.to;
+            const days = startDate && endDate 
+                ? Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) 
+                : 0;
+			
+            // Ensure at least 1 day if it's nightly
+			const nights = days > 0 ? days : 1;
+            
+			itemTotal = item.listing.basePrice * nights; // Matches CartContext logic more closely (unit price * nights)
 		}
 
 		if (item.selectedAddons) {
 			const addonsTotal = item.selectedAddons.reduce(
-				(sum, addon) => sum + addon.price,
+				(sum: number, itemAddon) => sum + itemAddon.addon.price * itemAddon.quantity,
 				0,
 			);
 			itemTotal += addonsTotal;
@@ -53,21 +55,13 @@ function CartPage() {
 	const tax = subtotal * 0.18;
 	const total = subtotal + tax;
 
-	const _handleUpdateDates = (
-		_itemId: number,
-		_date: Date | undefined,
-		_isStart: boolean,
-	) => {
-		toast.info("Date update logic would trigger here");
-	};
-
 	const handleCheckout = () => {
 		if (!isAuthenticated) {
 			toast.error("Please login to complete your booking");
 			navigate({ to: "/login" });
 			return;
 		}
-		toast.success("Proceeding to payment gateway...");
+		navigate({ to: "/cart/checkout" });
 	};
 
 	if (cart.length === 0) {
@@ -117,18 +111,18 @@ function CartPage() {
 
 				<div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 					<div className="lg:col-span-8 space-y-8">
-						{cart.map((item, index) => (
+						{cart.map((item: CartItem, index: number) => (
 							<Reveal key={item.id} delay={index * 0.1}>
 								<div className="group relative flex flex-col sm:flex-row border border-border/60 rounded-xl overflow-hidden bg-card hover:bg-muted/5 hover:border-border transition-all duration-300 shadow-sm hover:shadow-md">
 									<div className="relative w-full sm:w-64 h-48 sm:h-auto bg-muted shrink-0 overflow-hidden">
 										<img
-											src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
-											alt={item.title}
+											src={item.listing.imageUrl || "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"}
+											alt={item.listing.title}
 											className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
 										/>
 										<div className="absolute top-3 left-3">
 											<Badge className="bg-background/90 backdrop-blur-md text-foreground border-none rounded-sm uppercase tracking-wider text-[10px] font-bold px-2 py-1">
-												{item.listingType}
+												{item.listing.listingType}
 											</Badge>
 										</div>
 									</div>
@@ -137,11 +131,11 @@ function CartPage() {
 										<div>
 											<div className="flex justify-between items-start mb-2">
 												<Link
-													to={`/listings/${item.id}`}
+													to={`/listings/${item.listing.id}`}
 													className="hover:text-primary transition-colors"
 												>
 													<h3 className="font-bold text-lg leading-tight">
-														{item.title}
+														{item.listing.title}
 													</h3>
 												</Link>
 												<Button
@@ -155,19 +149,19 @@ function CartPage() {
 											</div>
 
 											<div className="flex flex-wrap gap-4 text-sm mt-4">
-												{item.startDate && (
+												{item.dateRange.from && (
 													<div className="flex items-center gap-2 bg-muted/40 px-3 py-1.5 rounded-md border border-border/50">
 														<CalendarDays className="h-4 w-4 text-muted-foreground" />
 														<span className="font-medium text-xs uppercase tracking-wide">
-															{format(item.startDate, "MMM d")} -{" "}
-															{format(item.endDate!, "MMM d, yyyy")}
+															{format(item.dateRange.from, "MMM d")} -{" "}
+															{item.dateRange.to ? format(item.dateRange.to, "MMM d, yyyy") : ""}
 														</span>
 													</div>
 												)}
 												<div className="flex items-center gap-2 bg-muted/40 px-3 py-1.5 rounded-md border border-border/50">
 													<Users2 className="h-4 w-4 text-muted-foreground" />
 													<span className="font-medium text-xs uppercase tracking-wide">
-														{item.quantity} Guest{item.quantity > 1 ? "s" : ""}
+														{item.guests} Guest{item.guests > 1 ? "s" : ""}
 													</span>
 												</div>
 											</div>
@@ -175,13 +169,13 @@ function CartPage() {
 											{item.selectedAddons &&
 												item.selectedAddons.length > 0 && (
 													<div className="mt-4 flex flex-wrap gap-2">
-														{item.selectedAddons.map((addon) => (
+														{item.selectedAddons.map((itemAddon) => (
 															<Badge
-																key={addon.id}
+																key={itemAddon.addon.id}
 																variant="outline"
 																className="text-[10px] text-muted-foreground border-dashed"
 															>
-																+ {addon.name}
+																+ {itemAddon.addon.name}
 															</Badge>
 														))}
 													</div>
@@ -191,11 +185,11 @@ function CartPage() {
 										<div className="mt-6 flex justify-between items-end border-t border-dashed border-border pt-4">
 											<div className="text-xs text-muted-foreground">
 												Base price:{" "}
-												<span className="font-mono">{item.price} RWF</span> /
+												<span className="font-mono">{item.listing.basePrice} RWF</span> /
 												unit
 											</div>
 											<div className="text-lg font-black text-primary">
-												{item.price * item.quantity} RWF
+												{item.listing.basePrice * (item.listing.listingType === "experience" ? item.guests : 1)} RWF
 											</div>
 										</div>
 									</div>

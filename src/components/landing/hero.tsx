@@ -2,13 +2,14 @@ import { ArrowRight, Calendar, MapPin, Search, Users } from "lucide-react";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { PatternVerticalDiamond, PatternZigZag } from "../ui/patterns";
+import { Label } from "../ui/label";
 
 export function Hero() {
 	return (
 		<div className="relative min-h-screen w-full flex flex-col justify-end pb-20 overflow-hidden bg-foreground">
 			<div className="absolute inset-0 z-0">
 				<img
-					src="https://images.unsplash.com/photo-1688647668631-f925f5431fcd?q=80&w=2600&auto=format&fit=crop"
+					src="https://images.unsplash.com/photo-1511283878565-0833bf39de9d?q=80&w=1474&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 					alt="African Cultural Heritage"
 					className="w-full h-full object-cover grayscale-20 contrast-125 brightness-50"
 				/>
@@ -96,9 +97,9 @@ export function Hero() {
 
 						<div className="grid gap-px bg-foreground/10 border-b border-foreground/10">
 							<div className="group relative bg-card hover:bg-foreground/5 transition-colors p-6 cursor-pointer">
-								<label className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1 block font-medium">
+								<Label className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1 block font-medium">
 									Where to?
-								</label>
+								</Label>
 								<div className="flex items-center justify-between">
 									<span className="text-2xl text-foreground font-serif italic tracking-wide">
 										Kigali
@@ -109,9 +110,9 @@ export function Hero() {
 
 							<div className="grid grid-cols-2 gap-px bg-foreground/10">
 								<div className="group relative bg-card hover:bg-foreground/5 transition-colors p-6 cursor-pointer">
-									<label className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1 block font-medium">
+									<Label className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1 block font-medium">
 										When?
-									</label>
+									</Label>
 									<div className="flex items-center justify-between">
 										<span className="text-lg text-foreground font-serif italic">
 											Anytime
@@ -120,9 +121,9 @@ export function Hero() {
 									</div>
 								</div>
 								<div className="group relative bg-card hover:bg-foreground/5 transition-colors p-6 cursor-pointer">
-									<label className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1 block font-medium">
+									<Label className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1 block font-medium">
 										Who?
-									</label>
+									</Label>
 									<div className="flex items-center justify-between">
 										<span className="text-lg text-foreground font-bold tracking-tight">
 											2 Adults

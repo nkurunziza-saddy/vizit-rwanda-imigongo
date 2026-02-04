@@ -32,7 +32,6 @@ export const useIsomorphicLayoutEffect =
 	typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 interface PreventScrollOptions {
-	/** Whether the scroll lock is disabled. */
 	isDisabled?: boolean;
 	focusCallback?: () => void;
 }
@@ -47,7 +46,6 @@ function chain(...callbacks: any[]): (...args: any[]) => void {
 	};
 }
 
-// @ts-expect-error
 const visualViewport = typeof document !== "undefined" && window.visualViewport;
 
 export function isScrollable(node: Element): boolean {

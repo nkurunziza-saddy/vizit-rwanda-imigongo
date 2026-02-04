@@ -9,7 +9,7 @@ const regions = [
 		name: "Volcanoes",
 		subtitle: "The Kingdom of Gorillas",
 		image:
-			"https://images.unsplash.com/photo-1664303847960-586318f59035?q=80&w=2600&auto=format&fit=crop",
+			"https://images.unsplash.com/photo-1580060839134-75a5edca2e99?q=80&w=2600&auto=format&fit=crop",
 		desc: "Mist-covered peaks and rare encounters in the Virunga Massif.",
 	},
 	{

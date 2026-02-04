@@ -13,10 +13,8 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/context/auth-context";
 import { useCart } from "@/context/cart-context";
-import { useCreateBooking } from "@/hooks/use-bookings";
-import type { Booking } from "@/utils/mock-db";
+import { MOCK_USER } from "@/lib/data";
 
 export const Route = createFileRoute("/_app/cart/checkout")({
 	component: CheckoutPage,
@@ -24,8 +22,9 @@ export const Route = createFileRoute("/_app/cart/checkout")({
 
 function CheckoutPage() {
 	const { cart, totalPrice, clearCart } = useCart();
-	const { user, isAuthenticated } = useAuth();
-	const { mutateAsync: createBooking } = useCreateBooking();
+	// Mock auth context
+	const user = MOCK_USER;
+	const isAuthenticated = true;
 
 	const [isProcessing, setIsProcessing] = useState(false);
 
@@ -36,28 +35,16 @@ function CheckoutPage() {
 
 		setIsProcessing(true);
 		try {
-			const bookingItems = cart.map((item) => {
-				return {
-					listingId: item.listing.id,
-					startDate: item.dateRange.from?.toISOString(),
-					endDate: item.dateRange.to?.toISOString(),
-					quantity: 1,
-					selectedAddons: item.selectedAddons.map((sa) => ({
-						addonId: sa.addon.id,
-						quantity: sa.quantity,
-					})),
-				};
-			});
+			// Mock booking creation
+			await new Promise((resolve) => setTimeout(resolve, 2000));
 
-			const bookingResult = (await createBooking({
-				items: bookingItems,
-			})) as Booking;
-
+			const mockOrderId = Math.floor(Math.random() * 1000000);
+			
 			toast.success("Booking created successfully!");
 			clearCart();
 			navigate({
 				to: "/cart/success",
-				search: { orderId: bookingResult.id.toString() },
+				search: { orderId: mockOrderId.toString() },
 			});
 		} catch (error) {
 			console.error("Failed to create booking:", error);

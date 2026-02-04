@@ -1,7 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import { differenceInDays, format } from "date-fns";
 import { Trash2 } from "lucide-react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
 	Empty,
@@ -20,22 +19,15 @@ import {
 	SheetHeader,
 	SheetTitle,
 } from "@/components/ui/sheet";
-import { useAuth } from "@/context/auth-context";
 import { useCart } from "@/context/cart-context";
 
 export function CartSheet() {
 	const { cart, openCart, setOpenCart, totalPrice, removeFromCart } = useCart();
 	const navigate = useNavigate();
-	const { isAuthenticated } = useAuth();
 
 	const handleCheckout = () => {
 		setOpenCart(false);
-		if (isAuthenticated) {
-			navigate({ to: "/cart/checkout" });
-		} else {
-			toast.info("Please login to continue checkout");
-			navigate({ to: "/login", search: { redirect: "/cart/checkout" } });
-		}
+		navigate({ to: "/cart/checkout" });
 	};
 
 	return (

@@ -33,7 +33,7 @@ const stays = [
 		description:
 			"Set amidst the rich tea plantations on the edge of the ancient rainforest, offering wellness and chimpanzee trekking.",
 		image:
-			"https://images.unsplash.com/photo-1445019980597-93fa8acb746c?q=80&w=2600&auto=format&fit=crop", // Forest vibe
+			"https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2600&auto=format&fit=crop", // Forest vibe
 	},
 ];
 

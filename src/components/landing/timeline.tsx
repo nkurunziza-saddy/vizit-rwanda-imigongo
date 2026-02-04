@@ -12,21 +12,28 @@ const timelineEvents = [
 		title: "The Arrival",
 		desc: "Touch down in the heart of Africa. The air is crisp, the streets are spotless.",
 		image:
-			"https://images.unsplash.com/photo-1580060092241-402b8d003b54?q=80&w=2574&auto=format&fit=crop", // Kigali City
+			"https://images.unsplash.com/photo-1687986261123-b17f08f2796c?q=80&w=1031&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
 	},
 	{
 		year: "CLEAN",
 		title: "Greenest City",
 		desc: "A ban on plastic bags since 2008. Umuganda community work keeps the city pristine.",
 		image:
-			"https://images.unsplash.com/photo-1528659560411-eb66f272a74c?q=80&w=2670&auto=format&fit=crop", // Clean streets / Greenery
+			"https://images.unsplash.com/photo-1756245994848-1eb2be3b9b63?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 	},
 	{
-		year: "TECH",
-		title: "Innovation Hub",
-		desc: "From drone blood deliveries to Norrsken House. The future is being written here.",
+		year: "ANIMALS",
+		title: "Gorillas",
+		desc: "Rwanda is one of only two countries in the world where you can trek to see mountain gorillas in the wild. These majestic creatures are critically endangered, and tourism plays a vital role in their conservation.",
 		image:
-			"https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2670&auto=format&fit=crop", // Modern architecture
+			"https://images.unsplash.com/photo-1590692995294-564cea87a687?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+	},
+	{
+		year: "YOUTH",
+		title: "Youth",
+		desc: "Rwanda is home to some of the most innovative and forward-thinking youth in Africa. From tech startups to social entrepreneurs, Rwanda is a hub for young talent.",
+		image:
+			"https://images.unsplash.com/photo-1759720107956-1cbad755e952?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 	},
 ];
 

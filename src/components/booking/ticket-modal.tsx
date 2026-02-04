@@ -49,19 +49,22 @@ export function TicketSelectionModal({
 
 	const ticketListing: Listing = {
 		id: 99999,
-		vendorId: 1,
-		locationId: 1,
+		locationId: "Kigali",
 		title: `Round Trip Flight: ${fromLocation} to Kigali`,
 		listingType: "ticket",
 		description: `Economy class round trip ticket from ${fromLocation} to Kigali International Airport (KGL). Includes baggage and meals.`,
 		basePrice: 850,
 		currency: "USD",
 		capacity: 100,
-		status: "active",
 		imageUrl:
 			"https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000&auto=format&fit=crop",
-		createdAt: new Date().toISOString(),
+		rating: 5,
+		reviewCount: 0,
+		amenities: ["Baggage", "Meals"],
 		addons: [],
+		images: [
+			"https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000&auto=format&fit=crop",
+		],
 	};
 
 	const handleSearch = () => {
@@ -80,7 +83,7 @@ export function TicketSelectionModal({
 
 		addToCart({
 			listing: ticketListing,
-			image: ticketListing.imageUrl!,
+			image: ticketListing.imageUrl,
 			dateRange,
 			guests,
 			selectedAddons: [],

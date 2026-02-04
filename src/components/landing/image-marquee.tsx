@@ -1,10 +1,10 @@
 const images = [
-	"https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=2600&auto=format&fit=crop",
-	"https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2600&auto=format&fit=crop",
-	"https://images.unsplash.com/photo-1518182170546-07fb612d5c2e?q=80&w=2600&auto=format&fit=crop",
-	"https://images.unsplash.com/photo-1544605159-075b637d4060?q=80&w=2600&auto=format&fit=crop",
-	"https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80&w=2600&auto=format&fit=crop",
-	"https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?q=80&w=2600&auto=format&fit=crop",
+	"https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=2600&auto=format&fit=crop",
+	"https://images.pexels.com/photos/3889843/pexels-photo-3889843.jpeg?auto=compress&cs=tinysrgb&w=2600",
+	"https://images.unsplash.com/photo-1535941339077-2dd1c7963098?q=80&w=2600&auto=format&fit=crop",
+	"https://images.unsplash.com/photo-1504567961542-e24d9439a724?q=80&w=2600&auto=format&fit=crop",
+	"https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?q=80&w=2600&auto=format&fit=crop",
+	"https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?q=80&w=2600&auto=format&fit=crop",
 ];
 
 export function ImageMarquee() {

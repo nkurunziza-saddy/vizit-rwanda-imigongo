@@ -3,11 +3,10 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { downloadTicketPdf, useDownloadTicketPdf } from "@/hooks/use-tickets";
-import type { Ticket } from "@/schemas/ticket.schema";
+
 
 interface TicketCardProps {
-	ticket: Ticket;
+	ticket: any;
 	showDownload?: boolean;
 	showValidation?: boolean;
 }
@@ -18,16 +17,13 @@ export function TicketCard({
 	showValidation = false,
 }: TicketCardProps) {
 	const [isDownloading, setIsDownloading] = useState(false);
-	const downloadMutation = useDownloadTicketPdf();
 
 	const handleDownload = async () => {
 		setIsDownloading(true);
 		try {
-			const result = await downloadMutation.mutateAsync(ticket);
-			downloadTicketPdf(
-				result.pdfBase64,
-				`ticket-${ticket.bookingReference}.pdf`,
-			);
+			await new Promise(resolve => setTimeout(resolve, 1500));
+			console.log("Downloading ticket:", ticket.bookingReference);
+			alert("Ticket download simulation: " + ticket.bookingReference);
 		} catch (error) {
 			console.error("Failed to download ticket:", error);
 		} finally {
@@ -44,7 +40,7 @@ export function TicketCard({
 		});
 	};
 
-	const getStatusColor = (status: Ticket["status"]) => {
+	const getStatusColor = (status: any) => {
 		switch (status) {
 			case "active":
 				return "bg-green-100 text-green-800";

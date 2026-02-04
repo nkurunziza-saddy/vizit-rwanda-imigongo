@@ -9,36 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppStoryRouteImport } from './routes/_app/story'
 import { Route as AppSavedRouteImport } from './routes/_app/saved'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as AppGalleryRouteImport } from './routes/_app/gallery'
-import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppContactRouteImport } from './routes/_app/contact'
-import { Route as AppBecomeVendorRouteImport } from './routes/_app/become-vendor'
 import { Route as AppAboutRouteImport } from './routes/_app/about'
 import { Route as AppListingsIndexRouteImport } from './routes/_app/listings/index'
-import { Route as AppDashboardIndexRouteImport } from './routes/_app/dashboard/index'
 import { Route as AppCartIndexRouteImport } from './routes/_app/cart/index'
 import { Route as AppListingsIdRouteImport } from './routes/_app/listings/$id'
 import { Route as AppLegalTermsRouteImport } from './routes/_app/legal/terms'
 import { Route as AppLegalPrivacyRouteImport } from './routes/_app/legal/privacy'
-import { Route as AppDashboardVendorBookingsRouteImport } from './routes/_app/dashboard/vendor-bookings'
-import { Route as AppDashboardUsersRouteImport } from './routes/_app/dashboard/users'
-import { Route as AppDashboardSettingsRouteImport } from './routes/_app/dashboard/settings'
-import { Route as AppDashboardListingsRouteImport } from './routes/_app/dashboard/listings'
-import { Route as AppDashboardApprovalsRouteImport } from './routes/_app/dashboard/approvals'
 import { Route as AppCartSuccessRouteImport } from './routes/_app/cart/success'
 import { Route as AppCartCheckoutRouteImport } from './routes/_app/cart/checkout'
 
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AppRoute = AppRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
@@ -68,19 +54,9 @@ const AppGalleryRoute = AppGalleryRouteImport.update({
   path: '/gallery',
   getParentRoute: () => AppRoute,
 } as any)
-const AppDashboardRoute = AppDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppContactRoute = AppContactRouteImport.update({
   id: '/contact',
   path: '/contact',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppBecomeVendorRoute = AppBecomeVendorRouteImport.update({
-  id: '/become-vendor',
-  path: '/become-vendor',
   getParentRoute: () => AppRoute,
 } as any)
 const AppAboutRoute = AppAboutRouteImport.update({
@@ -92,11 +68,6 @@ const AppListingsIndexRoute = AppListingsIndexRouteImport.update({
   id: '/listings/',
   path: '/listings/',
   getParentRoute: () => AppRoute,
-} as any)
-const AppDashboardIndexRoute = AppDashboardIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppDashboardRoute,
 } as any)
 const AppCartIndexRoute = AppCartIndexRouteImport.update({
   id: '/cart/',
@@ -118,32 +89,6 @@ const AppLegalPrivacyRoute = AppLegalPrivacyRouteImport.update({
   path: '/legal/privacy',
   getParentRoute: () => AppRoute,
 } as any)
-const AppDashboardVendorBookingsRoute =
-  AppDashboardVendorBookingsRouteImport.update({
-    id: '/vendor-bookings',
-    path: '/vendor-bookings',
-    getParentRoute: () => AppDashboardRoute,
-  } as any)
-const AppDashboardUsersRoute = AppDashboardUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
-  getParentRoute: () => AppDashboardRoute,
-} as any)
-const AppDashboardSettingsRoute = AppDashboardSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AppDashboardRoute,
-} as any)
-const AppDashboardListingsRoute = AppDashboardListingsRouteImport.update({
-  id: '/listings',
-  path: '/listings',
-  getParentRoute: () => AppDashboardRoute,
-} as any)
-const AppDashboardApprovalsRoute = AppDashboardApprovalsRouteImport.update({
-  id: '/approvals',
-  path: '/approvals',
-  getParentRoute: () => AppDashboardRoute,
-} as any)
 const AppCartSuccessRoute = AppCartSuccessRouteImport.update({
   id: '/cart/success',
   path: '/cart/success',
@@ -157,33 +102,22 @@ const AppCartCheckoutRoute = AppCartCheckoutRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
-  '/login': typeof LoginRoute
   '/about': typeof AppAboutRoute
-  '/become-vendor': typeof AppBecomeVendorRoute
   '/contact': typeof AppContactRoute
-  '/dashboard': typeof AppDashboardRouteWithChildren
   '/gallery': typeof AppGalleryRoute
   '/profile': typeof AppProfileRoute
   '/saved': typeof AppSavedRoute
   '/story': typeof AppStoryRoute
   '/cart/checkout': typeof AppCartCheckoutRoute
   '/cart/success': typeof AppCartSuccessRoute
-  '/dashboard/approvals': typeof AppDashboardApprovalsRoute
-  '/dashboard/listings': typeof AppDashboardListingsRoute
-  '/dashboard/settings': typeof AppDashboardSettingsRoute
-  '/dashboard/users': typeof AppDashboardUsersRoute
-  '/dashboard/vendor-bookings': typeof AppDashboardVendorBookingsRoute
   '/legal/privacy': typeof AppLegalPrivacyRoute
   '/legal/terms': typeof AppLegalTermsRoute
   '/listings/$id': typeof AppListingsIdRoute
   '/cart/': typeof AppCartIndexRoute
-  '/dashboard/': typeof AppDashboardIndexRoute
   '/listings/': typeof AppListingsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/login': typeof LoginRoute
   '/about': typeof AppAboutRoute
-  '/become-vendor': typeof AppBecomeVendorRoute
   '/contact': typeof AppContactRoute
   '/gallery': typeof AppGalleryRoute
   '/profile': typeof AppProfileRoute
@@ -192,26 +126,17 @@ export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
   '/cart/checkout': typeof AppCartCheckoutRoute
   '/cart/success': typeof AppCartSuccessRoute
-  '/dashboard/approvals': typeof AppDashboardApprovalsRoute
-  '/dashboard/listings': typeof AppDashboardListingsRoute
-  '/dashboard/settings': typeof AppDashboardSettingsRoute
-  '/dashboard/users': typeof AppDashboardUsersRoute
-  '/dashboard/vendor-bookings': typeof AppDashboardVendorBookingsRoute
   '/legal/privacy': typeof AppLegalPrivacyRoute
   '/legal/terms': typeof AppLegalTermsRoute
   '/listings/$id': typeof AppListingsIdRoute
   '/cart': typeof AppCartIndexRoute
-  '/dashboard': typeof AppDashboardIndexRoute
   '/listings': typeof AppListingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
-  '/login': typeof LoginRoute
   '/_app/about': typeof AppAboutRoute
-  '/_app/become-vendor': typeof AppBecomeVendorRoute
   '/_app/contact': typeof AppContactRoute
-  '/_app/dashboard': typeof AppDashboardRouteWithChildren
   '/_app/gallery': typeof AppGalleryRoute
   '/_app/profile': typeof AppProfileRoute
   '/_app/saved': typeof AppSavedRoute
@@ -219,49 +144,32 @@ export interface FileRoutesById {
   '/_app/': typeof AppIndexRoute
   '/_app/cart/checkout': typeof AppCartCheckoutRoute
   '/_app/cart/success': typeof AppCartSuccessRoute
-  '/_app/dashboard/approvals': typeof AppDashboardApprovalsRoute
-  '/_app/dashboard/listings': typeof AppDashboardListingsRoute
-  '/_app/dashboard/settings': typeof AppDashboardSettingsRoute
-  '/_app/dashboard/users': typeof AppDashboardUsersRoute
-  '/_app/dashboard/vendor-bookings': typeof AppDashboardVendorBookingsRoute
   '/_app/legal/privacy': typeof AppLegalPrivacyRoute
   '/_app/legal/terms': typeof AppLegalTermsRoute
   '/_app/listings/$id': typeof AppListingsIdRoute
   '/_app/cart/': typeof AppCartIndexRoute
-  '/_app/dashboard/': typeof AppDashboardIndexRoute
   '/_app/listings/': typeof AppListingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/login'
     | '/about'
-    | '/become-vendor'
     | '/contact'
-    | '/dashboard'
     | '/gallery'
     | '/profile'
     | '/saved'
     | '/story'
     | '/cart/checkout'
     | '/cart/success'
-    | '/dashboard/approvals'
-    | '/dashboard/listings'
-    | '/dashboard/settings'
-    | '/dashboard/users'
-    | '/dashboard/vendor-bookings'
     | '/legal/privacy'
     | '/legal/terms'
     | '/listings/$id'
     | '/cart/'
-    | '/dashboard/'
     | '/listings/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/login'
     | '/about'
-    | '/become-vendor'
     | '/contact'
     | '/gallery'
     | '/profile'
@@ -270,25 +178,16 @@ export interface FileRouteTypes {
     | '/'
     | '/cart/checkout'
     | '/cart/success'
-    | '/dashboard/approvals'
-    | '/dashboard/listings'
-    | '/dashboard/settings'
-    | '/dashboard/users'
-    | '/dashboard/vendor-bookings'
     | '/legal/privacy'
     | '/legal/terms'
     | '/listings/$id'
     | '/cart'
-    | '/dashboard'
     | '/listings'
   id:
     | '__root__'
     | '/_app'
-    | '/login'
     | '/_app/about'
-    | '/_app/become-vendor'
     | '/_app/contact'
-    | '/_app/dashboard'
     | '/_app/gallery'
     | '/_app/profile'
     | '/_app/saved'
@@ -296,33 +195,19 @@ export interface FileRouteTypes {
     | '/_app/'
     | '/_app/cart/checkout'
     | '/_app/cart/success'
-    | '/_app/dashboard/approvals'
-    | '/_app/dashboard/listings'
-    | '/_app/dashboard/settings'
-    | '/_app/dashboard/users'
-    | '/_app/dashboard/vendor-bookings'
     | '/_app/legal/privacy'
     | '/_app/legal/terms'
     | '/_app/listings/$id'
     | '/_app/cart/'
-    | '/_app/dashboard/'
     | '/_app/listings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
-  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_app': {
       id: '/_app'
       path: ''
@@ -365,25 +250,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppGalleryRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/dashboard': {
-      id: '/_app/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AppDashboardRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/contact': {
       id: '/_app/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof AppContactRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/become-vendor': {
-      id: '/_app/become-vendor'
-      path: '/become-vendor'
-      fullPath: '/become-vendor'
-      preLoaderRoute: typeof AppBecomeVendorRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/about': {
@@ -399,13 +270,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/listings/'
       preLoaderRoute: typeof AppListingsIndexRouteImport
       parentRoute: typeof AppRoute
-    }
-    '/_app/dashboard/': {
-      id: '/_app/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof AppDashboardIndexRouteImport
-      parentRoute: typeof AppDashboardRoute
     }
     '/_app/cart/': {
       id: '/_app/cart/'
@@ -435,41 +299,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLegalPrivacyRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/dashboard/vendor-bookings': {
-      id: '/_app/dashboard/vendor-bookings'
-      path: '/vendor-bookings'
-      fullPath: '/dashboard/vendor-bookings'
-      preLoaderRoute: typeof AppDashboardVendorBookingsRouteImport
-      parentRoute: typeof AppDashboardRoute
-    }
-    '/_app/dashboard/users': {
-      id: '/_app/dashboard/users'
-      path: '/users'
-      fullPath: '/dashboard/users'
-      preLoaderRoute: typeof AppDashboardUsersRouteImport
-      parentRoute: typeof AppDashboardRoute
-    }
-    '/_app/dashboard/settings': {
-      id: '/_app/dashboard/settings'
-      path: '/settings'
-      fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof AppDashboardSettingsRouteImport
-      parentRoute: typeof AppDashboardRoute
-    }
-    '/_app/dashboard/listings': {
-      id: '/_app/dashboard/listings'
-      path: '/listings'
-      fullPath: '/dashboard/listings'
-      preLoaderRoute: typeof AppDashboardListingsRouteImport
-      parentRoute: typeof AppDashboardRoute
-    }
-    '/_app/dashboard/approvals': {
-      id: '/_app/dashboard/approvals'
-      path: '/approvals'
-      fullPath: '/dashboard/approvals'
-      preLoaderRoute: typeof AppDashboardApprovalsRouteImport
-      parentRoute: typeof AppDashboardRoute
-    }
     '/_app/cart/success': {
       id: '/_app/cart/success'
       path: '/cart/success'
@@ -487,33 +316,9 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AppDashboardRouteChildren {
-  AppDashboardApprovalsRoute: typeof AppDashboardApprovalsRoute
-  AppDashboardListingsRoute: typeof AppDashboardListingsRoute
-  AppDashboardSettingsRoute: typeof AppDashboardSettingsRoute
-  AppDashboardUsersRoute: typeof AppDashboardUsersRoute
-  AppDashboardVendorBookingsRoute: typeof AppDashboardVendorBookingsRoute
-  AppDashboardIndexRoute: typeof AppDashboardIndexRoute
-}
-
-const AppDashboardRouteChildren: AppDashboardRouteChildren = {
-  AppDashboardApprovalsRoute: AppDashboardApprovalsRoute,
-  AppDashboardListingsRoute: AppDashboardListingsRoute,
-  AppDashboardSettingsRoute: AppDashboardSettingsRoute,
-  AppDashboardUsersRoute: AppDashboardUsersRoute,
-  AppDashboardVendorBookingsRoute: AppDashboardVendorBookingsRoute,
-  AppDashboardIndexRoute: AppDashboardIndexRoute,
-}
-
-const AppDashboardRouteWithChildren = AppDashboardRoute._addFileChildren(
-  AppDashboardRouteChildren,
-)
-
 interface AppRouteChildren {
   AppAboutRoute: typeof AppAboutRoute
-  AppBecomeVendorRoute: typeof AppBecomeVendorRoute
   AppContactRoute: typeof AppContactRoute
-  AppDashboardRoute: typeof AppDashboardRouteWithChildren
   AppGalleryRoute: typeof AppGalleryRoute
   AppProfileRoute: typeof AppProfileRoute
   AppSavedRoute: typeof AppSavedRoute
@@ -530,9 +335,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAboutRoute: AppAboutRoute,
-  AppBecomeVendorRoute: AppBecomeVendorRoute,
   AppContactRoute: AppContactRoute,
-  AppDashboardRoute: AppDashboardRouteWithChildren,
   AppGalleryRoute: AppGalleryRoute,
   AppProfileRoute: AppProfileRoute,
   AppSavedRoute: AppSavedRoute,
@@ -551,8 +354,16 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
-  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

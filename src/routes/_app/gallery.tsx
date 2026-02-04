@@ -18,31 +18,31 @@ const galleryItems = [
 		category: "Landscape",
 	},
 	{
-		src: "https://images.unsplash.com/photo-1544605159-075b637d4060?q=80&w=2670&auto=format&fit=crop",
+		src: "https://images.unsplash.com/photo-1579547056746-16b54ded5745?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		title: "Silverback Gaze",
 		location: "Volcanoes NP",
 		category: "Wildlife",
 	},
 	{
-		src: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop",
+		src: "https://images.unsplash.com/photo-1756245994771-f06fcaee3a36?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		title: "Tea Plantations",
 		location: "Nyungwe",
 		category: "Nature",
 	},
 	{
-		src: "https://images.unsplash.com/photo-1532798369041-b333486e1e82?q=80&w=2600&auto=format&fit=crop",
+		src: "https://images.pexels.com/photos/8969707/pexels-photo-8969707.jpeg?auto=compress&cs=tinysrgb&w=2600",
 		title: "Intore Dancers",
 		location: "Nyanza",
 		category: "Culture",
 	},
 	{
-		src: "https://images.unsplash.com/photo-1628175787679-5095e1eb2465?q=80&w=2670&auto=format&fit=crop",
+		src: "https://images.pexels.com/photos/2119760/pexels-photo-2119760.jpeg?auto=compress&cs=tinysrgb&w=2600",
 		title: "Kigali Convention",
 		location: "Kigali",
 		category: "City",
 	},
 	{
-		src: "https://images.unsplash.com/photo-1617308722744-93ff93b048d0?q=80&w=2574&auto=format&fit=crop",
+		src: "https://images.pexels.com/photos/1295133/pexels-photo-1295133.jpeg?auto=compress&cs=tinysrgb&w=2600",
 		title: "Lake Kivu Sunset",
 		location: "Rubavu",
 		category: "Landscape",
@@ -99,7 +99,7 @@ function GalleryPage() {
 				className="relative h-[60vh] overflow-hidden flex items-center justify-center border-b border-foreground"
 			>
 				<motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
-					<div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?q=80&w=3474&auto=format&fit=crop')] bg-cover bg-center grayscale opacity-20" />
+					<div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/2387793/pexels-photo-2387793.jpeg?auto=compress&cs=tinysrgb&w=2600')] bg-cover bg-center grayscale opacity-20" />
 				</motion.div>
 
 				<div className="relative z-10 text-center container px-4">

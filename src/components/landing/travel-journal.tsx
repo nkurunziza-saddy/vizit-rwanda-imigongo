@@ -16,7 +16,7 @@ const articles = [
 		category: "Guide",
 		readTime: "8 min read",
 		image:
-			"https://images.unsplash.com/photo-1544605159-075b637d4060?q=80&w=2600&auto=format&fit=crop",
+			"https://images.unsplash.com/photo-1567016376408-0226e4d0c1ea?q=80&w=2600&auto=format&fit=crop",
 	},
 	{
 		id: 3,
@@ -24,7 +24,7 @@ const articles = [
 		category: "Culture",
 		readTime: "6 min read",
 		image:
-			"https://images.unsplash.com/photo-1532798369041-b333486e1e82?q=80&w=2600&auto=format&fit=crop", // Placeholder for art
+			"https://images.pexels.com/photos/4348401/pexels-photo-4348401.jpeg?auto=compress&cs=tinysrgb&w=2600", // African art
 	},
 	{
 		id: 4,

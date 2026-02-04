@@ -41,7 +41,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Slider } from "@/components/ui/slider";
 import { useDebounce } from "@/hooks/use-debounce";
-import { useListings } from "@/hooks/use-listings";
+import { MOCK_LISTINGS } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 const searchSchema = z.object({
@@ -185,7 +185,7 @@ function Listings() {
 	useEffect(() => {
 		if (debouncedSearchQuery !== (searchParams.search || "")) {
 			navigate({
-				search: (prev) => ({
+				search: (prev: any) => ({
 					...prev,
 					search: debouncedSearchQuery || undefined,
 					page: 1,
@@ -200,13 +200,13 @@ function Listings() {
 
 	const setCategory = (category: string) => {
 		navigate({
-			search: (prev) => ({ ...prev, category: category, page: 1 }),
+			search: (prev: any) => ({ ...prev, category: category, page: 1 }),
 		});
 	};
 
 	const setPriceRangeParam = (range: number[]) => {
 		navigate({
-			search: (prev) => ({ ...prev, priceRange: range, page: 1 }),
+			search: (prev: any) => ({ ...prev, priceRange: range, page: 1 }),
 		});
 	};
 
@@ -219,14 +219,16 @@ function Listings() {
 	const clearFilters = () => {
 		setLocalSearchQuery("");
 		navigate({
-			search: (prev) => ({
+			search: (prev: any) => ({
 				...prev,
 				page: 1,
 			}),
 		});
 	};
 
-	const { data: listings, isLoading } = useListings();
+    // Static Data
+    const listings = MOCK_LISTINGS;
+    const isLoading = false;
 
 	if (isLoading) {
 		return (
@@ -538,7 +540,7 @@ function Listings() {
 													e.preventDefault();
 													if (currentPage > 1) {
 														navigate({
-															search: (prev) => ({
+															search: (prev: any) => ({
 																...prev,
 																page: Math.max(1, currentPage - 1),
 															}),
@@ -572,7 +574,7 @@ function Listings() {
 														onClick={(e) => {
 															e.preventDefault();
 															navigate({
-																search: (prev) => ({ ...prev, page: p }),
+																search: (prev: any) => ({ ...prev, page: p }),
 															});
 														}}
 														className={cn(
@@ -593,7 +595,7 @@ function Listings() {
 													e.preventDefault();
 													if (currentPage < totalPages) {
 														navigate({
-															search: (prev) => ({
+															search: (prev: any) => ({
 																...prev,
 																page: Math.min(totalPages, currentPage + 1),
 															}),

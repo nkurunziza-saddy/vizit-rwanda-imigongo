@@ -9,27 +9,27 @@
 :root {
   --background: oklch(
     0.98 0.005 50
-  ); /* Slightly warmer off-white (Imigongo Light) */
-  --foreground: oklch(0.145 0 0); /* Imigongo Black */
+  );
+  --foreground: oklch(0.145 0 0);
   --card: oklch(0.98 0.005 50);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(0.98 0.005 50);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.48 0.17 40); /* Imigongo Ochre */
+  --primary: oklch(0.48 0.17 40);
   --primary-foreground: oklch(0.98 0.005 50);
-  --primary-green: oklch(0.45 0.15 140); /* Nature Green */
-  --secondary: oklch(0.145 0 0); /* Black as secondary */
+  --primary-green: oklch(0.45 0.15 140);
+  --secondary: oklch(0.145 0 0);
   --secondary-foreground: oklch(0.98 0.005 50);
   --muted: oklch(0.92 0.005 50);
   --muted-foreground: oklch(0.4 0 0);
-  --accent: oklch(0.48 0.17 40); /* Ochre as accent */
+  --accent: oklch(0.48 0.17 40);
   --accent-foreground: oklch(0.98 0.005 50);
   --destructive: oklch(0.58 0.22 27);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.145 0 0 / 0.1); /* Subtle black border */
+  --border: oklch(0.145 0 0 / 0.1);
   --input: oklch(0.145 0 0 / 0.1);
-  --ring: oklch(0.48 0.17 40); /* Ochre ring */
-  --radius: 0rem; /* Sharp edges */
+  --ring: oklch(0.48 0.17 40);
+  --radius: 0rem;
 }
 
 .dark {
@@ -39,7 +39,7 @@
   --card-foreground: oklch(0.98 0.005 50);
   --popover: oklch(0.18 0 0);
   --popover-foreground: oklch(0.98 0.005 50);
-  --primary: oklch(0.48 0.17 40); /* Keep Ochre in dark mode */
+  --primary: oklch(0.48 0.17 40);
   --primary-foreground: oklch(0.98 0.005 50);
   --primary-green: oklch(0.45 0.15 140);
   --secondary: oklch(0.98 0.005 50);
@@ -84,9 +84,6 @@
   --radius-2xl: 0;
   --radius-3xl: 0;
   --radius-4xl: 0;
-  --color-imigongo-ochre: var(--primary);
-  --color-imigongo-black: var(--foreground);
-  --color-imigongo-white: var(--background);
 }
 
 @layer base {

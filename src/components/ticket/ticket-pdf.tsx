@@ -6,7 +6,6 @@ import {
 	Text,
 	View,
 } from "@react-pdf/renderer";
-import type { Ticket } from "@/schemas/ticket.schema";
 
 const styles = StyleSheet.create({
 	page: {
@@ -167,7 +166,7 @@ const styles = StyleSheet.create({
 });
 
 interface TicketPDFProps {
-	ticket: Ticket;
+	ticket: any;
 }
 
 export function TicketPDF({ ticket }: TicketPDFProps) {

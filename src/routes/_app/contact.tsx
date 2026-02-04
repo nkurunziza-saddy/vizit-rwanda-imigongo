@@ -36,7 +36,7 @@ function ContactPage() {
 			>
 				<motion.div style={{ y }} className="absolute inset-0 z-0 opacity-60">
 					<img
-						src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2572&auto=format&fit=crop"
+						src="https://images.pexels.com/photos/1252500/pexels-photo-1252500.jpeg?auto=compress&cs=tinysrgb&w=2600"
 						alt="Contact Us Background"
 						className="w-full h-full object-cover grayscale contrast-125"
 					/>
@@ -128,7 +128,7 @@ function ContactPage() {
 
 							<div className="relative group overflow-hidden border border-foreground/10 bg-muted/20 h-80">
 								<img
-									src="https://images.unsplash.com/photo-1577934415446-2401bb266205?q=80&w=2074&auto=format&fit=crop"
+									src="https://images.pexels.com/photos/3935702/pexels-photo-3935702.jpeg?auto=compress&cs=tinysrgb&w=2000"
 									alt="Map Location"
 									className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-700"
 								/>

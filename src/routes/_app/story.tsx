@@ -44,7 +44,7 @@ function RwandaStoryPage() {
 				<div className="relative min-h-[110vh] w-full flex flex-col justify-end pb-32 overflow-hidden bg-foreground">
 					<div className="absolute inset-0 z-0">
 						<img
-							src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=2600&auto=format&fit=crop"
+							src="https://images.pexels.com/photos/147411/italy-mountains-dawn-daybreak-147411.jpeg?auto=compress&cs=tinysrgb&w=2600"
 							alt="Rwanda Hills"
 							className="w-full h-full object-cover grayscale-40 contrast-125 brightness-50"
 						/>
@@ -127,7 +127,7 @@ function RwandaStoryPage() {
 
 				<StorySection
 					category="NATURE"
-					imageSrc="https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=2600&auto=format&fit=crop"
+					imageSrc="https://images.pexels.com/photos/2559941/pexels-photo-2559941.jpeg?auto=compress&cs=tinysrgb&w=2600"
 					title={
 						<>
 							Geography <br />
@@ -172,7 +172,7 @@ function RwandaStoryPage() {
 				<StorySection
 					category="CULTURE"
 					reversed
-					imageSrc="https://images.unsplash.com/photo-1532798369041-b333486e1e82?q=80&w=2600&auto=format&fit=crop"
+					imageSrc="https://images.pexels.com/photos/31283471/pexels-photo-31283471/free-photo-of-children-performing-traditional-rwandan-dance.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
 					title={
 						<>
 							People <br />
@@ -204,7 +204,7 @@ function RwandaStoryPage() {
 
 				<StorySection
 					category="RESILIENCE"
-					imageSrc="https://images.unsplash.com/photo-1518182170546-07fb612d5c2e?q=80&w=2600&auto=format&fit=crop"
+					imageSrc="https://images.pexels.com/photos/1939485/pexels-photo-1939485.jpeg?auto=compress&cs=tinysrgb&w=2600"
 					title={
 						<>
 							History <br />

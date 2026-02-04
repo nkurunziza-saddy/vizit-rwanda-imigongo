@@ -12,7 +12,7 @@ const parks = [
 		title: "Volcanoes",
 		subtitle: "Home of the Mountain Gorilla",
 		image:
-			"https://images.unsplash.com/photo-1688647668631-f925f5431fcd?q=80&w=1974&auto=format&fit=crop",
+			"https://images.unsplash.com/photo-1723036123249-1955f57f6d8c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fHw%3D",
 		desc: "A chain of dormant volcanoes forming a sanctuary for the gentle giants.",
 		id: "01",
 	},

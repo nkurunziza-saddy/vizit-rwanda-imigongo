@@ -18,7 +18,8 @@ import {
 import { Reveal } from "@/components/ui/reveal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCart } from "@/context/cart-context";
-import { useListing } from "@/hooks/use-listings";
+import { MOCK_LISTINGS } from "@/lib/data";
+import type { Addon } from "@/types";
 
 export const Route = createFileRoute("/_app/listings/$id")({
 	component: ListingDetail,
@@ -26,7 +27,8 @@ export const Route = createFileRoute("/_app/listings/$id")({
 
 function ListingDetail() {
 	const { id } = useParams({ from: "/_app/listings/$id" });
-	const { data, isLoading: isListingLoading } = useListing(parseInt(id, 10));
+	const listing = MOCK_LISTINGS.find((l) => l.id === Number(id));
+
 	const { addToCart } = useCart();
 
 	const [date, setDate] = useState<DateRange | undefined>({
@@ -35,10 +37,10 @@ function ListingDetail() {
 	});
 
 	const [selectedAddons, setSelectedAddons] = useState<
-		{ addon: any; quantity: number }[]
+		{ addon: Addon; quantity: number }[]
 	>([]);
 
-	if (isListingLoading || !data) {
+	if (!listing) {
 		return (
 			<div className="min-h-screen bg-background flex flex-col pb-20">
 				<Skeleton className="h-[60vh] w-full" />
@@ -47,16 +49,8 @@ function ListingDetail() {
 						<div className="p-8">
 							<div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 								<div className="lg:col-span-8 space-y-8">
-									<Skeleton className="h-12 w-3/4" />
-									<Skeleton className="h-6 w-1/2" />
-									<div className="space-y-4 pt-8">
-										<Skeleton className="h-4 w-full" />
-										<Skeleton className="h-4 w-full" />
-										<Skeleton className="h-4 w-2/3" />
-									</div>
-								</div>
-								<div className="lg:col-span-4">
-									<Skeleton className="h-96 w-full" />
+									<h2 className="text-xl">Listing Not Found</h2>
+									<Link to="/listings">Back to Listings</Link>
 								</div>
 							</div>
 						</div>
@@ -66,7 +60,6 @@ function ListingDetail() {
 		);
 	}
 
-	const { listing } = data;
 
 	const nights =
 		date?.from && date?.to ? differenceInDays(date.to, date.from) : 0;
@@ -81,7 +74,7 @@ function ListingDetail() {
 		return baseTotal + addonsTotal;
 	})();
 
-	const handleAddonSelect = (addon: any, quantity: number) => {
+	const handleAddonSelect = (addon: Addon, quantity: number) => {
 		setSelectedAddons((prev) => {
 			const existing = prev.findIndex((p) => p.addon.id === addon.id);
 			if (quantity <= 0) {
@@ -101,15 +94,17 @@ function ListingDetail() {
 			toast.error("Please select dates first");
 			return;
 		}
-		addToCart({
-			listing,
-			image:
-				listing.imageUrl ||
-				"https://placehold.co/600x400/f1f5f9/cbd5e1?text=Image+Unavailable",
-			dateRange: date,
-			guests: 1,
-			selectedAddons: selectedAddons,
-		});
+		if (listing) {
+			addToCart({
+				listing,
+				image:
+					listing.imageUrl ||
+					"https://placehold.co/600x400/f1f5f9/cbd5e1?text=Image+Unavailable",
+				dateRange: date,
+				guests: 1,
+				selectedAddons: selectedAddons,
+			});
+		}
 	};
 
 	const imageUrl =
@@ -188,7 +183,6 @@ function ListingDetail() {
 								</h3>
 								<p className="text-muted-foreground leading-relaxed text-lg">
 									{listing.description}
-									{listing.description}{" "}
 								</p>
 							</div>
 
@@ -197,15 +191,7 @@ function ListingDetail() {
 									Amenities
 								</h3>
 								<div className="flex flex-wrap gap-3">
-									{[
-										"Wifi",
-										"Parking",
-										"Pool",
-										"Kitchen",
-										"Air conditioning",
-										"Private Patrol",
-										"Butler Service",
-									].map((item) => (
+									{(listing.amenities || []).map((item) => (
 										<Badge
 											key={item}
 											variant="outline"
@@ -310,10 +296,10 @@ function ListingDetail() {
 										<div className="space-y-4 py-4 border-t border-border/50 border-b">
 											<div className="flex justify-between text-sm">
 												<span className="text-muted-foreground underline decoration-dotted decoration-border">
-													${listing.basePrice} x {nights} nights
+													${listing?.basePrice ?? 0} x {nights} nights
 												</span>
 												<span className="font-medium">
-													${listing.basePrice * nights}
+													${(listing?.basePrice ?? 0) * nights}
 												</span>
 											</div>
 											{selectedAddons.length > 0 && (

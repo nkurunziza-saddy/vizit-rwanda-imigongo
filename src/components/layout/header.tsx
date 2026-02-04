@@ -1,8 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ShoppingCart } from "lucide-react";
-import { useState } from "react";
 import { CurrencySwitcher, LanguageSwitcher } from "@/components/i18n";
-import { NotificationBell } from "@/components/notifications";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,37 +19,20 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useAuth } from "@/context/auth-context";
 import { useCart } from "@/context/cart-context";
-import type { Notification } from "@/schemas/notification.schema";
-
-const mockNotifications: Notification[] = [
-	{
-		id: "1",
-		userId: "1",
-		type: "booking_confirmed",
-		title: "Booking Confirmed",
-		message: "Your booking at Kigali Marriott has been confirmed",
-		isRead: false,
-		createdAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-	},
-	{
-		id: "2",
-		userId: "1",
-		type: "payment_received",
-		title: "Payment Received",
-		message: "Payment of $180 received for booking #1234",
-		isRead: true,
-		createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-	},
-];
+import { MOCK_USER } from "@/lib/data";
 
 export function Header() {
-	const { user, logout, isAuthenticated } = useAuth();
+	// Static user for demo
+	const user = MOCK_USER;
+	const isAuthenticated = true; // Always authenticated in demo mode
+	const logout = () => {
+		console.log("Logout clicked - Demo mode");
+		window.location.reload();
+	};
+
 	const { cart, setOpenCart } = useCart();
 	const navigate = useNavigate();
-	const [notifications, setNotifications] =
-		useState<Notification[]>(mockNotifications);
 
 	return (
 		<header className="sticky top-0 z-50 w-full bg-white border-b-2 border-foreground">
@@ -126,23 +107,14 @@ export function Header() {
 					</Button>
 
 					{isAuthenticated && user && (
-						<NotificationBell
-							notifications={notifications}
-							onMarkAsRead={(id) => {
-								setNotifications((prev) =>
-									prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
-								);
-							}}
-							onMarkAllAsRead={() => {
-								setNotifications((prev) =>
-									prev.map((n) => ({ ...n, isRead: true })),
-								);
-							}}
-							onDelete={(id) => {
-								setNotifications((prev) => prev.filter((n) => n.id !== id));
-							}}
-							onViewAll={() => navigate({ to: "/dashboard" })}
-						/>
+						<Button
+							variant="ghost"
+							size="icon"
+							className="relative h-9 w-9 rounded hover:bg-accent hover:text-accent-foreground"
+							onClick={() => navigate({ to: "/dashboard" })}
+						>
+							<div className="h-5 w-5 bg-muted rounded-full" /> 
+						</Button>
 					)}
 
 					{isAuthenticated && user ? (
